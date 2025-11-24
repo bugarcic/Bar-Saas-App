@@ -1,0 +1,199 @@
+{
+  "form_c_moral_character": {
+    "header": {
+      "department_1st": {
+        "field": "Moral Character Button",
+        "type": "radio",
+        "option": "Choice1"
+      },
+      "department_2nd": {
+        "field": "Moral Character Button",
+        "type": "radio",
+        "option": "Choice2"
+      },
+      "department_3rd": {
+        "field": "Moral Character Button",
+        "type": "radio",
+        "option": "Choice3"
+      },
+      "department_4th": {
+        "field": "Moral Character Button",
+        "type": "radio",
+        "option": "Choice4"
+      },
+      "applicant_name": "Moral Character Text Field 1",
+      "bole_id": "Moral Character Text Field 2"
+    }
+  },
+  "form_d_employment": {
+    "header": {
+      "department_1st": {
+        "field": "Check Box 1",
+        "type": "checkbox"
+      },
+      "department_2nd": {
+        "field": "Check Box 2",
+        "type": "checkbox"
+      },
+      "department_3rd": {
+        "field": "Check Box 3",
+        "type": "checkbox"
+      },
+      "department_4th": {
+        "field": "Check Box 4",
+        "type": "checkbox"
+      },
+      "applicant_name": "Employment Text Field 1",
+      "bole_id": "Employment Text Field 53"
+    },
+    "employer_prefill": {
+      "employer_name": "Employment Text Field 36",
+      "street": "Employment Text Field 37",
+      "city": "Employment Text Field 38",
+      "state": "Employment Text Field 39",
+      "zip": "Employment Text Field 40",
+      "country": "Employment Text Field 41",
+      "phone": "Employment Text Field 42",
+      "nature_of_business": "Employment Text Field 43",
+      "from_date": "Employment Text Field 44",
+      "to_date": "Employment Text Field 45"
+    },
+    "signature_block": {
+      "printed_name": "Character Printed Name",
+      "date": "Employment Dated"
+    }
+  },
+  "form_e_law_school": {
+    "header": {
+      "applicant_name": "Certificate Text Field 1",
+      "bole_id": "Certificate Text Field 2",
+      "street": "Certificate Text Field 3",
+      "city": "Certificate Text Field 4",
+      "state": "Certificate Text Field 5",
+      "zip": "Certificate Text Field 6",
+      "country": "Certificate Text Field 7",
+      "phone": "Certificate Text Field 8",
+      "email": "Certificate Text Field 9",
+      "ssn": "Certificate Text Field 10"
+    },
+    "school_target": {
+      "school_name": "Certificate Text Field 11",
+      "school_street": "Certificate Text Field 12",
+      "school_city": "Certificate Text Field 13",
+      "school_state": "Certificate Text Field 14",
+      "school_zip": "Certificate Text Field 15",
+      "school_country": "Certificate Text Field 16"
+    },
+    "authorization": {
+      "applicant_name_print": "Certificate Text Field 21",
+      "school_name_print": "Certificate Text Field 22"
+    },
+    "department_selection": {
+      "dept_1": { "field": "Check Box 1", "type": "checkbox" },
+      "dept_2": { "field": "Check Box 2", "type": "checkbox" },
+      "dept_3": { "field": "Check Box 3", "type": "checkbox" },
+      "dept_4": { "field": "Check Box 4", "type": "checkbox" }
+    }
+  },
+  "form_f_pro_bono": {
+    "header": {
+      "applicant_name": "Pro Bono Requirements 1",
+      "bole_id": "Pro Bono Requirements 2",
+      "street": "Pro Bono Requirements 3",
+      "city": "Pro Bono Requirements 4",
+      "state": "Pro Bono Requirements 5",
+      "zip": "Pro Bono Requirements 6",
+      "country": "Pro Bono Requirements 7"
+    },
+    "project_details": {
+      "organization_name": "Pro Bono Requirements 8",
+      "supervisor_name": "Pro Bono Requirements 9",
+      "org_street": "Pro Bono Requirements 10",
+      "org_city": "Pro Bono Requirements 11",
+      "org_state": "Pro Bono Requirements 12",
+      "org_zip": "Pro Bono Requirements 14",
+      "org_phone": "Pro Bono Requirements 15",
+      "org_email": "Pro Bono Requirements 16"
+    },
+    "service_info": {
+      "from_date": "Pro Bono Requirements 17",
+      "to_date": "Pro Bono Requirements 18",
+      "hours": "Pro Bono Requirements 19",
+      "description": "Pro Bono Requirements 20",
+      "category_legal_provider": { "field": "Check Box 1", "type": "checkbox" },
+      "category_govt": { "field": "Check Box 2", "type": "checkbox" },
+      "category_law_school": { "field": "Check Box 3", "type": "checkbox" },
+      "category_other": { "field": "Check Box 4", "type": "checkbox" }
+    },
+    "signature_block": {
+      "state_country": "Pro Bono Requirements 21",
+      "county": "Pro Bono Requirements 22",
+      "city": "Pro Bono Requirements 23",
+      "applicant_name": "Pro Bono Requirements 24",
+      "date": "Requirements Dated 1"
+    }
+  },
+  "form_g_pbsp": {
+    "header": {
+      "applicant_name": "PBSP 1",
+      "bole_id": "PBSP 2",
+      "street": "PBSP 3",
+      "city": "PBSP 4",
+      "state": "PBSP 5",
+      "zip": "PBSP 6"
+    },
+    "education_placement": {
+      "law_school_name": "PBSP 7",
+      "placement_name": "PBSP 8",
+      "placement_street": "PBSC 9",
+      "placement_city": "PBSP 10",
+      "placement_state": "PBSP 11",
+      "placement_zip": "PBSP 12"
+    },
+    "service_details": {
+      "from_date": "PBSP 13",
+      "to_date": "PBSP 14",
+      "hours_service": "PBSP 15",
+      "hours_academic": "PBSP 16",
+      "credits_earned": "PBSP 17",
+      "description": "PBSP 18"
+    },
+    "signature_block": {
+      "state_country": "PBSP 19",
+      "county": "PBSP 20",
+      "city": "PBSP 21",
+      "applicant_name": "PBSP 22",
+      "date": "Scholars Dated 1"
+    }
+  },
+  "form_h_skills": {
+    "header": {
+      "applicant_name": "Skills Text Field 1",
+      "bole_id": "Skills Text Field 2",
+      "street": "Skills Text Field 3",
+      "city": "Skills Text Field 4",
+      "state": "Skills Text Field 5",
+      "zip": "Skills Text Field 6",
+      "country": "Skills Text Field 7",
+      "phone": "Skills Text Field 8",
+      "email": "Skills Text Field 9"
+    },
+    "department_selection": {
+      "dept_1": { "field": "Check Box 1", "type": "checkbox" },
+      "dept_2": { "field": "Check Box 2", "type": "checkbox" },
+      "dept_3": { "field": "Check Box 3", "type": "checkbox" },
+      "dept_4": { "field": "Check Box 4", "type": "checkbox" }
+    },
+    "pathway_selection": {
+      "pathway_1": { "field": "Check Box 5", "type": "checkbox" },
+      "pathway_2": { "field": "Check Box 6", "type": "checkbox" },
+      "pathway_3": { "field": "Check Box 7", "type": "checkbox" },
+      "pathway_4": { "field": "Check Box 8", "type": "checkbox" },
+      "pathway_5": { "field": "Check Box 9", "type": "checkbox" }
+    },
+    "pathway_1_details": {
+      "applicant_name_body": "Skills Text Field 13"
+    }
+  }
+}
+

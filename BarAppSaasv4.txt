@@ -1,0 +1,881 @@
+﻿Bar Application Saas Co
+Same for ALL 4 Departments
+Forms (same statewide):
+– Application for Admission Questionnaire 
+– Good Moral Character Affirmations (2) 
+– Law-Related Employment
+– Law School Certificate(s) 
+– 50-Hour Pro Bono Affidavit (exam admission only)
+– Skills Competency & Professional Values Affidavit
+Attorney Registration (OCA): All applicants must complete online attorney registration and pay the biennial fee (currently $375) before admission. Only the Second Department requires the OCA registration receipt to be filed with the admission packet.
+Three-year filing deadline (exam admission): A complete application must be filed within 3 years under Court rules (for UBE takers, 3 years from the second day of the UBE, subject to any extension the Appellate Division may grant for good cause).
+ First Department (AD1 – Manhattan / Bronx)
+* When you can file
+   * You cannot file AD1 application papers until after you’ve passed and been certified to AD1 by BOLE.
+* How you file
+   * All completed application materials must be uploaded to AD1’s online portal as PDFs.
+* Law School Certificate handling
+   * Your law school must send the Law School Certificate as a PDF directly by email to ad1cfc@nycourts.gov (not by paper mail). 
+* Orientation to the Profession (AD1-specific flavor)
+   * AD1 requires you to complete a two-hour online Orientation to the Profession Program within one year before admission. You must watch the video, collect embedded codes, and submit an Orientation Certificate of Completion as part of your application package (or supplement later if you do the program after you file).
+Second Department (AD2 – Brooklyn / Queens / Staten Island / Long Island)
+* Orientation to the Profession
+   * AD2 also requires an Orientation to the Profession Program (three-hour online). You must attach the original, signed Orientation Certificate of Completion as the last exhibit in your application package. 
+* OCA registration receipt: AD2 is the only department that requires you to attach proof you’ve registered with OCA and paid the fee:
+   * After you receive your Notice of Certification, you must register online with OCA and attach a copy of the OCA registration receipt to your application. 
+* How you file
+   * AD2 requires the entire completed application package to be submitted by email in PDF form to AD2CCF@nycourts.gov. 
+   * You must include a statement in the email that the digitized documents are a complete and accurate representation of the originals, and you must keep all originals in case they ask for them. 
+* When to file (practical preference)
+   * Legally, like AD3/AD4, you may file after taking the bar. But AD2’s supplemental instructions say that “in the normal course” you should only file after you have your Notice of Certification (or motion-letter for admission on motion). 
+* Moral-character & employment rules (stricter AD2 tweaks)
+   * AD2 bans moral-character affirmations from:
+      * people who signed your employment affirmations, and
+      * people who know you solely through an employment relationship. 
+   * The “dated within 60 days of filing” rule for character/employment proofs is stated and can be waived in the Committee’s discretion (this timing rule is much more explicit in AD2 than elsewhere).
+* Extra supporting documents explicitly required with the application
+   * AD2 tells you to attach (not just “be prepared to show”) the following when applicable:
+      * Marriage certificate or court order for any name change.
+      * Certificate of disposition or similar original for any criminal or alcohol-related offense (if “yes” to Q26).
+      * Copies of judgments or other dispositions in civil cases.
+      * Supporting documentation if “yes” to Q33 (discipline / licenses, etc.).
+* Pro Bono / Skills affidavits can be unsworn affirmations
+   * AD2 explicitly says the Pro Bono and Skills forms may be completed as affirmations under penalty of perjury (instead of notarized affidavits). 
+Third Department (AD3 – Albany / upstate default for non-NY residents)
+1. Who gets sent to AD3 by default
+   * If you neither live nor work in New York, BOLE certifies you by default to the Third Department.
+2. How you file
+   * Under the current AD3 “How to Apply” instructions, all applications and supporting documents MUST be submitted via email in digital (PDF) format.
+   * Like AD2, you must include a statement that the digitized documents are a complete and accurate representation of the originals, and the court can later require production of the originals.
+3. Timing & process flavor
+   * AD3 reiterates the general rule that you can file after the exam; then, once you’re certified and have submitted a complete application, you get put in line for the next available ceremony on a first-come, first-served basis.
+   * You pay the OCA registration fee after your application is approved but before the ceremony; they don’t require you to attach the receipt to the application like AD2 does.
+4. Orientation
+   * There is no separate AD3 Orientation to the Profession program requirement in their rules; the orientation requirement is expressly only for the First and Second Departments.
+Fourth Department (AD4 – Western / Central NY) 
+1. Encouraged early filing
+   * Like AD2/AD3, AD4 allows filing after taking the exam, and they explicitly encourage you to submit your application before results are released.
+2. Hard ceremony deadlines tied to postmark dates
+   * AD4 is unique in having strict, published deadlines for each admission ceremony:
+      * Example: for the January 14, 2026 ceremony, completed applications and all required affidavits/certificates must be postmarked on or before September 30, 2025; miss that and you’re bumped to the June ceremony.
+   * So AD4’s practical workflow is “complete application by a certain date or you wait ~6 months,” unlike AD1–AD3, which run on a rolling/queue basis.
+3. How you file
+   * AD4’s current site describes a traditional mail-based system: you send the application questionnaire and all supporting forms/affidavits to the Rochester address; the page emphasizes postmarked deadlines and does not substitute an email-PDF requirement like AD2/AD3.
+4. Orientation
+   * AD4 does not have a department-specific Orientation to the Profession requirement in its rules; the orientation requirement is limited to the First and Second Departments.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INFO NEEDED
+Letter / Notice of Certification from BOLE
+Required When: All applicants admitted on exam.
+The site should prompt the user to upload the PDF of the BOLE certification and confirm that the Department on the letter matches.
+Information the SaaS must capture/track:
+* First/Last Name
+* BOLE ID number.
+* Date of the BOLE certification letter (as shown on the letter).
+* Appellate Division Department.
+* Confirmation (checkboxes) that BOLE reflects completion of:
+   * UBE (or NY bar pre-2016),
+   * NYLC,
+   * NYLE,
+   * MPRE.
+Second, Third, and Fourth Departments: application papers “may be filed at any time after you have taken the Bar examination, regardless of whether or not the results of the Bar examination have been issued.”
+Default (what 99% of your users will use): “I have my Notice of Certification” and upload.
+Optional advanced path for 2/3/4: “I want to start my application before results” → let them fill everything except the BOLE letter upload and then send reminder later to upload the letter once they get it.
+Application for Admission Questionnaire
+Required When: All applicants.
+A. Personal Identification
+* Full legal name (first, middle, last, suffix). [should have from Letter]
+* All other names ever used (e.g., maiden name, former married name, prior legal name, professional name), with for each:
+   * Full name,
+   * Reason used (marriage, court order, adoption, etc.),
+   * Dates used (from/to).
+* Social Security Number.
+* BOLE ID number. [should have from Letter]
+* Date of birth.
+* Place of birth (city, state/province, country).
+* Current residence address (street, city, state, ZIP/postal code, country).
+* Current residence phone number.
+* Primary email address.
+B. Residence History
+* Prior residence addresses for the relevant period (as specified in the form [provide this]), with for each:
+   * Street address,
+   * City, state/province, ZIP/postal code, country,
+   * Dates of residence (from/to).
+C. Education History
+For each non-law college, university, or professional school:
+* Institution name.
+* Address (city, state/province, country).
+* Dates attended (from/to).
+* Degree received (if any) and date.
+* If no degree: explanation (e.g., transferred, withdrew).
+For each law school attended:
+* Law school name.
+* Address (city, state/province, country).
+* Dates attended (from/to).
+* Degree(s) received (JD, LLM, etc.) and date(s).
+* If no degree: explanation.
+Education discipline / character issues
+* Any denial of admission to an educational institution for reasons reflecting on character/fitness:
+   * Institution name,
+   * Date,
+   * Detailed explanation.
+* Any academic or disciplinary action above elementary level (probation, suspension, expulsion, reprimand, etc.):
+   * Institution name,
+   * Dates,
+   * Nature of charge and sanction,
+   * Explanation and outcome.
+* Any request or “invitation” to withdraw or discontinue studies:
+   * Institution name,
+   * Dates,
+   * Circumstances and explanation.
+D. Employment and Law-Related Work
+For the period required by the form (e.g., since age 21 or last 10 years, whichever is shorter):
+For each job or engagement (law-related or not):
+* Employer name.
+* Employer address (street, city, state, ZIP, country).
+* Employer phone number.
+* Nature of employer’s business.
+* Applicant’s position/title.
+* Full-time or part-time; approximate weekly hours if part-time.
+* Dates of employment (month/year from/to).
+* Name and title of supervisor.
+* Reason for leaving (if ended).
+For self-employment / partnership / solo practice:
+* Exact business name.
+* Business form (solo, partnership, corporation, etc.).
+* Office address(es).
+* Dates of operation (from/to).
+* Names and addresses of partners (if any).
+* Nature of the practice or business.
+The app must distinguish which entries are law-related (to trigger Law-Related Employment/Solo Practice Affirmations) and which are not.
+E. Bar Exams and Admissions Elsewhere
+* Each jurisdiction (state, D.C., territory, foreign country) where applicant has:
+   * Taken a bar exam, or
+   * Filed an application for admission.
+For each:
+* Jurisdiction.
+* Date(s) of exam(s)/application(s).
+* Result/status (passed, failed, withdrawn, pending, denied).
+* If admitted:
+   * Name of court or licensing authority,
+   * Date of admission,
+   * Current status (active, inactive, retired, suspended, disbarred, resigned).
+* Any pending bar applications or character & fitness investigations and their status.
+F. Military Service
+If applicable:
+* Branch of service.
+* Service dates (from/to).
+* Final rank.
+* Type of discharge (honorable, general, other).
+* Any military discipline or court-martial:
+   * Nature of the charge,
+   * Outcome,
+   * Copies of relevant orders.
+G. Criminal History
+For every incident that must be disclosed under the instructions:
+* Date of arrest/incident.
+* Location (city, county, state, country).
+* Law enforcement agency.
+* Charge(s) filed (including traffic offenses where required).
+* Court (name and location).
+* Case/docket number (if any).
+* Disposition (dismissed, ACOD, plea, conviction, diversion, etc.).
+* Sentence (fine, probation, community service, incarceration) and whether fully completed.
+* Brief factual description.
+The app should apply the form’s scope rules explicitly, including at minimum:
+* Always include (even if old or “minor”):
+   * Any felony or misdemeanor charge or offense,
+   * Any alcohol- or drug-related driving offense (e.g., DUI/DWI, DWAI), regardless of age or date,
+   * Any matter that began as a criminal charge even if later reduced to a non-criminal violation.
+* Generally exclude only those matters the form explicitly carves out (e.g., very minor traffic infractions under the specific monetary thresholds or categories listed in the instructions).
+The scope rules should be encoded as simple yes/no guidance in the UI so the user knows what must be entered and what can be omitted.
+[need guidance on how this will be uploaded, ie. Old tickets]
+H. Civil, Administrative, and Professional Discipline
+Civil cases
+* Any civil case where applicant was a party (plaintiff, defendant, third-party, etc.), with:
+   * Case caption,
+   * Court and jurisdiction,
+   * Index/docket number,
+   * Role of applicant,
+   * Nature of case,
+   * Outcome (judgment, settlement, dismissal, pending).
+Administrative / professional discipline
+* Any disciplinary, grievance, or administrative proceeding involving applicant’s conduct (employment discipline, professional association discipline, licensing board, etc.):
+   * Body/agency,
+   * Jurisdiction,
+   * Case/file number (if any),
+   * Date(s),
+   * Nature of allegations,
+   * Outcome.
+I. Financial Responsibility / Debts (Including Child Support)
+General financial issues
+* Any personal or business bankruptcy:
+   * Court and jurisdiction,
+   * Case number,
+   * Chapter filed under,
+   * Filing date,
+   * Discharge/dismissal date,
+   * Explanation.
+* Any outstanding judgments, defaults, or significant debts in collection:
+   * Creditor,
+   * Amount,
+   * Basis of debt,
+   * Date of judgment/default,
+   * Steps taken to satisfy or resolve.
+* Any tax liens or substantial unpaid taxes:
+   * Taxing authority,
+   * Amount,
+   * Tax year(s),
+   * Status (payment plan, paid in full, contested, etc.).
+Child support (specific sub-questions)
+* Whether applicant is subject to a child support obligation.
+* If yes:
+   * Whether applicant is more than four months in arrears,
+   * Whether payments are being made under an income execution or court-ordered payment plan,
+   * Whether any child support obligation is the subject of a pending court or administrative proceeding,
+   * Whether applicant is receiving public assistance or SSI,
+   * Detailed explanation if there are serious arrears or enforcement actions.
+J. Licenses and Other Professional Credentials
+* Any other professional or occupational licenses held (e.g., CPA, real estate, medical, securities, etc.), with for each:
+   * Licensing authority and jurisdiction,
+   * License type and number,
+   * Date issued,
+   * Current status (active, inactive, revoked, suspended).
+* Any denial, suspension, revocation, or discipline concerning such licenses:
+   * Authority,
+   * Dates,
+   * Nature of action and reasons.
+K. Unauthorized Practice / Ethics Issues
+* Any conduct that may have constituted unauthorized practice of law by applicant, with full factual narrative (dates, location, circumstances, outcomes).
+* Any instance where applicant worked for or with others whose conduct was challenged as unauthorized practice and applicant’s role in that.
+* Any allegations or findings involving dishonesty, fraud, or professional misconduct not already covered above.
+L. Condition / Impairment and Related Consequences
+* Any conduct that has been attributed to or caused by a condition or impairment (including mental health or substance-related conditions) that resulted in or contributed to:
+   * Investigation or inquiry by a court, school, employer, licensing agency, or professional body,
+   * Academic or employment discipline,
+   * Termination of employment or exclusion from a program,
+   * Licensing problems,
+   * Involuntary hospitalization by court order.
+* For each such instance:
+   * Date(s),
+   * Institution/employer/agency,
+   * Nature of conduct and condition/impairment as described by the institution,
+   * Sanctions or consequences,
+   * Current status and, if appropriate, treatment/rehabilitation information.
+M. Current Illegal Drug Use
+* Whether the applicant is currently using any illegal drugs (yes/no).
+* If “yes”:
+   * Details of the substances, frequency, and context,
+   * Explanation of current status and any treatment or remedial steps.
+N. Loyalty / Oaths / Rules of Professional Conduct
+* Acknowledgment that applicant will support the constitutions and laws of the United States and New York.
+* Acknowledgment of obligation to abide by the New York Rules of Professional Conduct.
+* Confirmation of Appellate Division Department for admission (First Department).
+O. Designation of Agent for Non-Residents / Non-Full-Time NY Employees
+For applicants who do not reside in New York State and are not employed full-time in New York:
+* Execution of the Designation of Agent section designating the Clerk of the Appellate Division, First Department, as agent for service of process.
+* Applicant’s signature, date, and notarization in the designated block.
+(The app should conditionally show this section based on residence/employment responses.)
+P. Signature / Notarization
+* Applicant’s sworn signature (oath/affirmation) that all information is true, complete, and correct.
+* Date of execution.
+* Notary/attesting officer information, signature, and seal.
+* If executed outside the U.S. before an officer who is not a notary with seal: the app should also prompt for a certificate of the attesting officer’s authority (see Section 15).
+First Department: Upload the completed application (including the Admission Questionnaire) as a PDF through the First Department’s online portal; do not mail hard copies unless specifically requested.
+Second Department: Email the application package as PDFs (including the Questionnaire) to AD2CCF@nycourts.gov with subject line “New Application for Admission – Last Name, First Name,” stating that the digitized documents are complete and accurate copies, with the Orientation Certificate filed last. 
+Third Department: Email the entire application package (including the Questionnaire) to AD3AdmissionsOffice@nycourts.gov as one single, non-fillable PDF, with a statement that the digitized document is a complete and accurate representation of the original; do not send hard copies unless specifically directed.
+Fourth Department: File the Admission Questionnaire as part of an original hard-copy application packet with the Fourth Department (by mail or in person), timely postmarked by the Court’s deadline; completed forms may not be filed electronically.
+
+
+Two Affirmations of Good Moral Character
+Required When: All applicants (two original affirmations from two different individuals).
+Baseline requirements
+* Each affirmant must have known the applicant for at least two years.
+* The two affirmants must be different people.
+* As a practical rule from the instructions, the Committee prefers that these not be the same individuals who sign the Law-Related Employment / Solo Practice Affirmations; the app should warn or discourage overlap where possible.
+* Affirmants do not have to be attorneys. Attorneys are fine and may carry more weight, but non-attorney affirmants who know the applicant well are also acceptable.
+* Relatives are not automatically prohibited, but the relationship must be disclosed on the form and may carry less weight; the app should capture and flag familial relationships.
+Information needed for each affirmation
+* Applicant’s name and BOLE ID (pre-filled by the system).
+* Appellate Division Department (First) (pre-filled).
+Affirmant information
+* Full name.
+* Home address (street, city, state, ZIP, country).
+* Home phone and email.
+* Business/office name.
+* Business/office address, phone, and email.
+* Occupation/profession and job title.
+* Whether the affirmant is an attorney; if yes:
+   * Jurisdiction(s) of admission,
+   * Year(s) admitted.
+* Whether the affirmant is related to the applicant by blood or marriage; if yes, explanation of the relationship.
+Relationship and character statement
+* How long the affirmant has known the applicant (years and approximate dates).
+* How they know the applicant (colleague, supervisor, professor, community member, etc.).
+* Frequency and nature of their interactions.
+* Detailed narrative describing:
+   * Applicant’s honesty, reliability, judgment, and overall moral character,
+   * Applicant’s general fitness to practice law,
+   * Any adverse information known (if any).
+* Explicit statement whether the affirmant recommends the applicant for admission to the bar.
+Execution
+* Perjury/affirmation language (as in the form).
+* Affirmant’s signature.
+* Date.
+* Notary/attesting officer block and seal (plus certificate of authority if sworn overseas as described in Section 15).
+* If the affirmation is in a language other than English, the app must trigger the translation requirements in Section 14.
+Statewide (all Depts): Same C-Bar form; 2 affirmants who have known you 2+ years, are reputable, and are not relatives, employers, law-school faculty/admin, or other applicants.
+Second Department (D2 only): Character affirmants cannot also sign your employment affirmations, cannot know you only as an employer/supervisor, and their affirmations are expected to be dated within 60 days before filing (waivable).
+First, Third, Fourth (D1/D3/D4): Follow only the statewide C-Bar rules above; no extra timing/identity restrictions like D2’s 60-day rule.
+
+
+Law-Related Employment and/or Solo Practice Affirmations
+Required when: For each law-related job or solo practice period shown as law-related in the Questionnaire.
+Information needed for each employment/solo practice affirmation
+* Applicant name and BOLE ID (pre-filled).
+Affirmant / supervisor information
+* Name.
+* Title and role (e.g., partner, supervising attorney, professor, judge).
+* Employer/organization name.
+* Work address, phone, and email.
+* Whether affirmant is an attorney; if yes: jurisdictions of admission and years admitted.
+Employment details
+* Employer/organization name (law firm, agency, clinic, court, etc.).
+* Employer address and phone.
+* Nature of organization’s business (legal services, government, court, in-house, etc.).
+* Applicant’s position (e.g., summer associate, law clerk, extern, RA, staff attorney).
+* Dates of employment or engagement (from/to, month/year).
+* Full-time or part-time; approximate weekly hours.
+* If employment ended:
+   * How it ended (resigned, term ended, terminated, etc.),
+   * Reason for ending.
+Description of work and performance
+* Description of the nature and extent of law-related work performed by the applicant (research, drafting, client interaction, court appearances, etc.).
+* Explanation of how closely the affirmant (or named supervisor) monitored or supervised the applicant.
+* Whether the applicant’s work and conduct were satisfactory (yes/no); if no, explanation.
+* Any facts the affirmant believes bear on applicant’s qualifications, moral character, or fitness.
+Execution
+* Affirmation language as in the form.
+* Affirmant’s signature.
+* Date.
+* Notary/attesting officer block, including foreign certificate if required (see Section 15).
+* If the affirmation is not in English, translation + translator certification must be provided (Section 14).
+The app should enforce one such affirmation per law-related job unless a specific exception applies (e.g., work already covered via a Pro Bono Scholars or pro bono affidavit where the form expressly allows).
+[make sure employment dates match up so in email to employers – provide those dates, maybe give space for them to explain what they did if it was a while ago etc.]
+
+
+Pro Bono Compliance Affidavit(s) (50-Hour Requirement)
+Required When: All exam-based applicants subject to the 50-hour rule.
+Information needed – applicant section
+* Applicant name.
+* BOLE ID.
+* Appellate Division Department (First).
+* Total number of pro bono hours being counted (must be ≥ 50).
+For each qualifying placement/project:
+* Organization/court name.
+* Organization/court address and phone.
+* Type of placement (legal services provider, government, law school clinic/externship, court-based program, other qualifying program).
+* Supervising attorney’s name.
+* Supervising attorney’s title and employer.
+* Supervising attorney’s email and phone.
+* Dates of service (from/to).
+* Total hours at that placement.
+* Detailed description of work to show it meets the NY rule (law-related, supervised, serving persons of limited means/public interest, etc.).
+* Whether the work was compensated or for credit (and if so, how).
+Information needed – supervisor certification
+* Supervising attorney’s name, title, and employer.
+* Jurisdictions and years admitted (as required by the form).
+* Confirmation that they supervised or oversaw the applicant’s work.
+* Confirmation of dates and hours.
+* Confirmation that the work was law-related and qualifies under the NY 50-hour rule.
+* Any remarks about the applicant’s performance and character.
+* Supervisor’s contact information (address, phone, email).
+* Supervisor’s signature and date.
+* Notary/attesting officer block and seal; foreign certificate if necessary (Section 15).
+* If this form or any supervisor letter is not in English, attach translation + translator certification (Section 14).
+
+
+Statewide (all Depts): Use the standard 50-hour pro bono affidavit form; by default it’s a notarized affidavit by the applicant with a supervisor certification.
+Second Department (D2 only): Applicant’s 50-hour proof may be submitted either as an affirmation under penalty of perjury (no notary) or as the usual notarized affidavit.
+First, Third, Fourth (D1/D3/D4): Follow the standard notarized affidavit form only; they do not publish D2’s “affirmation instead of notary” option.
+
+
+Pro Bono Scholars Program Completion Affidavit (If Applicable) https://ww2.nycourts.gov/attorneys/probonoscholars/index.shtml 
+Required When: Only for applicants who participated in the Pro Bono Scholars Program.
+Information needed
+* Applicant name.
+* BOLE ID.
+* Identification of the Pro Bono Scholars Program (law school and program description).
+* Dates of participation and completion.
+* Description of full-time pro bono work done under the program.
+* Certification by law school or program official that the applicant successfully completed the Pro Bono Scholars Program and met all requirements.
+* Official’s name, title, contact information, signature, and date.
+* Applicant’s signature and notarization, if the official form requires it.
+* Translation / foreign-notary rules as in Sections 14 and 15 if executed outside the U.S. or in another language.
+The app should trigger this document only if the applicant indicates they were a Pro Bono Scholar.
+For Pro Bono Scholars, the app should trigger one extra package: the applicant must, at the time they file their admission packet, submit the original “Form Affidavit as to Applicant’s Completion of the Pro Bono Scholars Program” (completed with their identifying info, BOLE ID, law school and placement details, dates, hours, and work description, then notarized and countersigned by the placement supervisor and faculty supervisor) together with the Skills Competency & Professional Values Affidavit marked Pathway 3 – Pro Bono Scholars, which simply confirms they completed PBSP and cross-references that completion affidavit; that PBSP affidavit serves as the required pro bono proof for those hours and replaces the standard 50-hour pro bono affidavits for the PBSP work.
+
+
+Skills Competency and Professional Values Affidavit (Rule 520.18)
+Required When: All exam-based applicants whose legal education falls under Rule 520.18.
+22 NYCRR 520.18 applies to almost all exam-route/UBE applicants whose JD or qualifying foreign/LLM studies began after the cutoff dates—JD or foreign-education-only programs that started after August 1, 2016, and LL.M. programs that started after August 1, 2018—but it does not apply to applicants admitted on motion under Rule 520.10, those qualifying via law-office study (520.4) or unapproved school + 5 years’ practice (520.5), or earlier cohorts whose studies began before those dates.
+Common front-page information
+* Applicant name.
+* BOLE ID.
+* Appellate Division Department (First).
+* Identification of law school(s) and degree(s) relevant to skills competency.
+* Pathway number used under Rule 520.18:
+   * Pathway 1 – Law school curricular plan
+   * Pathway 2 – 15 credits of experiential coursework
+   * Pathway 3 – Pro Bono Scholars program
+   * Pathway 4 – Apprenticeship
+   * Pathway 5 – Practice in another jurisdiction
+Pathway-specific information
+* Pathway 1 – Law school curricular plan
+   * Law school name.
+   * Law school official’s name, title, and contact info.
+   * Certification that:
+      * The law school has filed a plan with the Court of Appeals under Rule 520.18(a)(1), and
+      * The applicant has satisfied that plan’s requirements.
+   * Official’s signature, date, and school seal.
+* Pathway 2 – 15 credits of experiential coursework
+   * Law school name.
+   * Law school official’s name, title, and contact info.
+   * Identification of practice-based experiential courses completed (course names and credits).
+   * Certification that applicant has completed at least 15 credits of qualifying experiential courses under 520.18(a)(2).
+   * Official’s signature, date, and school seal.
+* Pathway 3 – Pro Bono Scholars
+   * Confirmation that applicant participated in and completed the Pro Bono Scholars Program.
+   * Cross-reference to the Pro Bono Scholars Completion Affidavit and pro bono documentation.
+   * Applicant’s sworn statement and signature.
+   * Notary/attesting officer block and, if foreign, certificate of authority (Section 15) and, if needed, translation (Section 14).
+* Pathway 4 – Apprenticeship
+   * Description of six-month (or equivalent part-time) apprenticeship(s):
+      * Employer/organization names and addresses,
+      * Supervising attorney names,
+      * Jurisdictions where supervisors are admitted,
+      * Dates of apprenticeship(s),
+      * Total hours,
+      * Detailed description of tasks and skills developed.
+   * Supervising attorney certifications:
+      * Confirmation of supervision,
+      * Description of oversight, feedback, and reflection opportunities,
+      * Statement that the apprenticeship satisfied Rule 520.18 requirements.
+   * Signatures of applicant and supervising attorney(s), dates, and notary blocks (with foreign/translation logic as in Sections 14–15).
+* Pathway 5 – Practice in another jurisdiction
+   * Jurisdiction(s) where applicant is admitted and has practiced.
+   * Courts of admission and dates.
+   * Duration and nature of practice (e.g., type of practice, positions held, responsibilities).
+   * Certificates of good standing from those jurisdictions.
+   * Affidavits or letters from employers/supervisors describing practice experience.
+   * Applicant’s sworn statement and notarization (translation/foreign-notary logic as in Sections 14–15).
+Statewide (all Depts): If 22 NYCRR 520.18 applies, you must file the standard H-form “Form Affidavit as to Applicant’s Compliance with the Skills Competency and Professional Values Requirement” (Pathways 1–5) as part of the admission packet, with the required law-school/supervisor certifications and notarization. 
+Second Department (D2 only): Same H-form, but AD2’s supplemental instructions allow it to be completed as an affirmation under penalty of perjury (no notary) instead of a notarized affidavit; they also restate the usual exemptions (commenced studies on/before Aug. 1, 2016, certain Spring 2020 grads). 
+First, Third, Fourth (D1/D3/D4): Use the same H-form and include one original Skills Affidavit in the packet whenever 520.18 applies; they do not offer AD2’s “affirmation instead of notarized” option.
+
+
+Law School Certificate(s)
+Required When: For each law school listed in the Questionnaire’s law school section (e.g., Question 10).
+Applicant-completed portion: 
+[good example that this is all already obtained so really just need to show info and then say ‘do you authorize school to do this’ and the whole doc is done in one click]
+* Applicant name.
+* BOLE ID.
+* Social Security Number.
+* Current mailing address, phone, and email.
+* Law school name and address.
+* Designation of Appellate Division Department (First) and corresponding mailing address for return.
+* Applicant’s authorization for the school to release relevant records, with signature and date.
+Law school-completed portion (for reference)
+* Dates of attendance and degrees awarded.
+* Confirmation of academic standing and any discipline/misconduct.
+* Whether there is any discreditable information bearing on character/fitness.
+* Signature, title, and contact info of law school official; date; school seal.
+If the school supplies a non-English certificate, the app must trigger the translation + translator-certification requirements (Section 14).
+The app should generate one Law School Certificate per law school and pre-fill the applicant section.
+
+
+Certificates of Good Standing and Grievance / Disciplinary Letters (Other Jurisdictions)
+Required When: Only for applicants already admitted to practice elsewhere.
+Information to collect and track
+For each state, D.C., territory, or foreign jurisdiction of admission:
+* Court/licensing authority name.
+* Date of admission.
+* Current status (active, inactive, retired, suspended, resigned, etc.).
+* Original certificate of good standing (recently dated, per the instructions).
+* Original disciplinary/grievance letter from the relevant authority indicating whether there is any past or pending discipline.
+For each U.S. federal court where applicant is admitted:
+* Name of court (e.g., S.D.N.Y., 2d Cir.).
+* Date of admission.
+* Original certificate of good standing from each such court.
+The app should:
+* Prompt the user to list all courts of admission (state/foreign and U.S. federal).
+* Prompt upload of each certificate/letter and record dates requested/received.
+* Trigger additional explanatory fields if any document notes past or pending discipline.
+* Trigger translation/foreign-notary logic where any certificate/letter is not in English or sworn abroad.
+
+
+“Other Papers” and Supporting Documents 
+For every “Yes” answer in the Questionnaire that asks for explanation, the app should:
+* Require a narrative explanation field, and
+* Provide an upload slot for supporting documents.
+* Provide example language
+Typical categories:
+* Identity / status: birth certificate, name-change orders, immigration documents.
+* Criminal matters: complaints, police reports, plea agreements, sentencing orders, proof of completion. [this is common, speeding and drinking tickets – people don’t know where to go or what to do so we should provide extra guidance here]
+* Civil matters: complaints, judgments, settlement agreements, orders.
+* Financial matters: bankruptcy petitions and discharge orders, tax notices, lien release, payment agreements, proof of payments.
+* Academic/Professional discipline: letters or orders describing violations and sanctions. [here too, don’t give legal advice though]
+* Child support and family law: orders, payment records, arrears statements.
+If a required record truly cannot be obtained, the app should generate an Affidavit of Inability to Comply with:
+* Exact description of missing document(s).
+* Explanation of why it cannot be obtained.
+* Description of efforts made to obtain it.
+* Applicant’s sworn signature and notarization (with foreign/translation logic as needed).
+
+
+Orientation to the Profession – Certificate of Completion (First Department)
+Handle everything through a single “Orientation / OCA” module driven by the user’s Department. For AD1, show three mutually exclusive options: (1) “I will complete Orientation” – remind them it’s required, collect viewing date(s)/codes, and require upload of the signed Orientation Certificate; (2) “I qualify for an AD1 Orientation exemption under 22 NYCRR 602.3” – collect basic info and exemption category, then generate or require upload of the § 602.3 Affidavit and remove the Orientation Certificate from their checklist; and (3) “I have a court/Committee-approved Orientation waiver/modification” – require upload of the order/letter (and any hardship affidavit) and likewise treat Orientation as satisfied with no certificate or § 602.3 affidavit. For AD2, show only the “Complete Orientation” path, require upload of the signed Orientation Certificate, and flag that file to print last in the AD2 packet; for AD3/AD4, do not show any Orientation document slot at all.
+Within the same module, add an OCA registration block for all Departments: display a universal reminder that initial online attorney registration with OCA and payment of the $375 fee is required before admission, let users record the registration date, and treat the OCA receipt as a required upload only for AD2 (optional/for user records in AD1, AD3, and AD4, so it never blocks their checklist outside AD2).
+Required When: Orientation to the Profession
+* AD1 & AD2: Must complete the online Orientation to the Profession and file the Certificate of Completion with the admission packet (name, BOLE ID/registration no., department, viewing date(s), all codes, signature/date). AD1: must be completed before admission; AD2: can be done any time after the bar exam/motion and the certificate must be the last exhibit in the AD2 packet.
+* AD3 & AD4: No separate online Orientation-to-the-Profession certificate is required in the admission packet; the SaaS does not need to track an orientation form for these Departments. 
+OCA Attorney Registration
+* All Departments (AD1–AD4): Before admission, applicants must complete online attorney registration with OCA and pay the $375 fee; there is no form for the app to generate, just a step to remind users about.
+* AD2 only: The OCA registration receipt / certificate of payment must be attached to the admission packet; for AD1, AD3, and AD4 the receipt is not a required exhibit (you can let users upload it optionally).
+Orientation Exemption – Affidavit Pursuant to 22 NYCRR § 2.3 (First Department)
+Orientation Exemption – Affidavit Pursuant to 22 NYCRR § 602.3 (AD1 only)
+AD1 applicants who qualify under 602.3(c) (no NY practice in first 2 years, 5+ years’ practice elsewhere, or full-time U.S. Armed Forces) may file an orientation exemption instead of a Certificate of Completion. The app should: (1) show an “I qualify for an AD1 orientation exemption” path, (2) collect basic applicant info (name, BOLE ID) and the exemption category with brief supporting facts, and (3) generate or prompt upload of the Affidavit Pursuant to § 602.3 (notarized, with translation/foreign-notary logic), then skip the orientation-certificate requirement in that user’s checklist.
+Orientation Waiver / Modification Request (Undue Hardship)
+For AD1 only, there is also a rare, discretionary Orientation waiver/modification for undue hardship, used when an applicant cannot reasonably complete Orientation and does not neatly qualify for a 22 NYCRR 602.3 exemption (e.g., serious illness, disability, military deployment) but the Court/Committee authorizes a waiver, extension, or alternate format; in the SaaS, this should not appear as a normal “path,” but simply let users who indicate they have a court- or Committee-approved Orientation waiver/modification upload the relevant order/letter or hardship affidavit (with any supporting documents) and, once uploaded, treat the Orientation item as satisfied without requiring a Certificate or 602.3 exemption affidavit.
+
+
+Translation Documentation (Non-English Documents)
+Required When: Whenever any document (forms, certificates, court records, etc.) is not in English.
+Information needed for each non-English document
+* Identification of the original document (e.g., “Spanish criminal record dated…”).
+* Complete English translation.
+* Translator’s certification including:
+   * Translator’s full name, contact information, and qualifications,
+   * Statement that the translation is accurate and complete.
+The app should:
+* Ask “Is this document in English?” on upload;
+* If “no,” require an associated translation + translator certification.
+These rules apply to:
+* Character affirmations,
+* Employment affirmations,
+* Pro bono/skills affidavits,
+* Law school certificates,
+* Good standing / grievance letters,
+* Orientation/waiver/exemption forms,
+* Any supporting court, academic, or financial documents.
+
+
+Certificate of Attesting Officer’s Authority (Foreign Notarizations)
+When required
+If any affidavit, affirmation, or the Questionnaire is sworn outside the U.S., its commonwealths, territories, or possessions before an officer who is not a notary public with a recognized seal.
+Information needed
+* Country/jurisdiction of execution.
+* Title/office of the attesting officer.
+* Separate certificate or document from appropriate authority confirming that the officer is authorized to administer oaths/affirmations or witness signatures in that jurisdiction.
+* Date of such certificate.
+The app should trigger this requirement whenever a user indicates they signed before a non-U.S. notary/attesting officer without a standard notary seal.
+
+
+Optional Additional Supporting Letters / Explanations
+Relevant when: Applicants may choose to provide more than the minimum (e.g., additional character references, explanatory letters).
+Information handled:
+* “Add optional character/reference letters” – upload plus short description.
+* “Add an explanatory statement” – structured template referencing relevant Questionnaire question(s), with space for a narrative.
+
+
+
+
+
+
+
+
+Ex Application for Admission Questionnaire Questions 
+Group 1 – Start, Application Type, and Notice of Certification
+1. Have you passed the New York bar exam and received your “Notice of Certification” from the New York State Board of Law Examiners?
+   * If yes:
+Please upload your Notice of Certification now. If you don’t have it saved yet, you can download it from the BOLE portal and then upload it here. Email with bar results will lead you there.
+   * If no:
+If First Department: “You can still answer the rest of these questions now so we can prepare your application, but under the First Department’s rules you cannot actually file your application with the Court until you have your Notice of Certification. Once your Notice is available in the BOLE portal, come back, upload it here, and we will mark your packet as ready to file.”
+If Second, Third, or Fourth Department: “You have not received your Notice of Certification yet, but because you are applying to the Second, Third, or Fourth Department, you may still complete the rest of this application after you have taken the exam. We will prepare your packet now and mark the Notice of Certification as ‘pending.’ When your Notice appears in the BOLE portal, upload it here so we can attach a copy to your final filing.”
+2. If you uploaded your Notice of Certification, we found this information. Is it all correct?
+Show and allow edit:
+   * Full name
+   * BOLE ID
+   * Exam (for example, “July 2025 UBE”)
+   * UBE score
+   * Appellate Division department (for example, “First Department”)
+   * Date of Notice of Certification
+Ask: ‘If anything is not correct, please fix it.’
+      3. If you did not upload a Notice of Certification, please tell us:
+      * Your BOLE ID number
+      * Which Appellate Division you are applying to (First, Second, Third, or Fourth Department)
+      4. How are you applying for admission?
+      * Admission on examination
+      * Admission on motion without examination [need to figure out]*
+      5. Did you participate in the Pro Bono Scholars Program as your route to admission?
+      * Yes / No [need details]*
+Group 2 – Personal Identity
+      6. Please confirm your personal details.
+      * Your full legal name (we will show the name from your Notice if we have it)
+      * If your name includes a suffix (such as Jr., Sr., II, III), what is the suffix?
+      * Your date of birth
+      * Your current age
+      * Your place of birth (city, state or province, and country)
+      7. Do you have a United States Social Security number?
+      * If yes: what is your Social Security number?
+      8. Have you ever used or been known by any other name?
+(This includes prior legal names, maiden names, married names, and professional names.)
+         * If yes, for each other name:
+         * What was the name?
+         * Why did you use it?
+         * During what dates did you use it?
+Group 3 – Contact Information and Addresses
+         9. How can the court contact you?
+         * Your primary email address
+         * Your main telephone number
+         10. Where do you live now, and where did you live before?
+         * Your current home address (street, city or town, state, ZIP code, country)
+         * Your previous home address and the dates you lived there (month and year from / to)
+         11. Do you currently have a work or office address, such as a law firm or other employer office?
+         * If yes, for your current office:
+         * Employer or organization name
+         * Office address (street, city or town, state, ZIP code, country)
+         * Office telephone number
+         * Office email address (if there is one)
+Group 4 – Education
+         12. List your colleges, universities, and professional schools before law school.
+         * If you attended any, for each school:
+         * School name
+         * School address (city, state, country is enough for your dev; the form will use that)
+         * Dates you attended (month and year from / to)
+         * Degree you received and the date you received it, or an explanation of why no degree was received
+         13. List every law school you have attended, starting with the earliest.
+For each law school:
+            * Law school name
+            * Law school address (city, state, country)
+            * Dates you attended (month and year from / to)
+            * Degree you received (for example, J.D., LL.M.) and the date you received it, or an explanation of why no degree was received
+            14. Now a few questions about issues related to school:
+            * Have you ever been denied admission to any school, college, law school, or similar institution for a stated reason that might reflect on your character or fitness?
+            * If yes: which school, when it happened, and what the stated reason was.
+            * Have you ever been placed on probation, suspended, expelled, dropped, or otherwise disciplined by any educational institution beyond elementary school?
+            * If yes: for each incident, the school, the date, what happened, and why.
+            * Has any college, law school, or other professional or graduate school ever requested or advised you to discontinue your studies?
+            * If yes: which school, when it happened, and why you were asked or advised to leave.
+Group 5 – Work and Business History
+            15. List every job you have had since you turned 21, or in the last ten years, whichever period is shorter.
+(Do not include positions that will appear only on your 50-hour pro bono affidavit or Pro Bono Scholars completion affidavit.)
+For each job, ask:
+               * Employer name
+               * Employer address (street, city or town, state, ZIP code, country)
+               * Employer telephone number
+               * Your position or title
+               * Dates you worked there (month and year from / to)
+               * Type of business or organization
+               * Whether the work was law-related or not
+               * Why you left that job
+               16. Apart from those jobs, have you ever been involved on your own or with others in any business, occupation, or profession?
+               * If yes, for each business or occupation:
+               * What the business or work was
+               * Where it operated (address or at least city, state, country)
+               * Dates you were involved (month and year from / to)
+               * Your role
+               * If it was a partnership: names and addresses of your partners
+               * If it was a corporation and you held an office: corporation name, address, nature of the business, and your office or role
+               17. Were there any legal actions or judgments against any business or corporation you were involved in while you were associated with it?
+               * If yes: describe each action or judgment, the court or body involved, and when it occurred.
+               18. Have you ever been fired, discharged, or asked to resign from any job for cause?
+               * If yes: for each situation, say which job, when this happened, and why.
+Group 6 – Bar Exams, Admissions, and Acting as a Lawyer Before Admission
+               19. Have you ever applied in New York for any of the following: admission to the New York bar, admission pro hac vice, registration as in-house counsel, or a license as a foreign legal consultant?
+               * If yes, for each application:
+               * Type of application (admission, pro hac vice, in-house counsel registration, foreign legal consultant, etc.)
+               * Court or body it was filed with
+               * Date of the application
+               * Result and current status (granted, denied, pending, withdrawn, and so on)
+               20. Have you ever applied to take, or taken, a bar examination in any jurisdiction outside New York?
+               * If yes, for each exam:
+               * Jurisdiction
+               * Name of the exam
+               * Date of the exam
+               * Whether you passed, failed, did not sit, or are still waiting for a result
+               21. Have you ever applied for admission to practice law in any jurisdiction other than New York?
+               * If yes, for each jurisdiction:
+               * Jurisdiction and court
+               * Date of admission or application
+               * Current status (admitted, denied, pending, withdrawn, and so on)
+               22. Now a few questions about possible unauthorized practice of law:
+               * Have you ever engaged in conduct that was questioned as the unauthorized practice of law, such as giving legal advice, drafting legal documents, or holding yourself out as a lawyer when you were not admitted?
+               * If yes: explain what you did, when and where it happened, and how it was resolved.
+               * Have you ever worked for or been connected with any person, firm, or corporation that you know was accused of or investigated for unauthorized practice of law while you were associated with them?
+               * If yes: explain who it was, your relationship, and what the allegations were.
+               * Other than clearly authorized activities such as properly supervised law school clinics, have you ever acted as a lawyer in New York when you were not admitted here (for example, trying a case, arguing a motion, drafting legal papers without a supervising attorney, or giving legal advice)?
+               * If yes: explain what you did, when and where it happened, and under what circumstances.
+
+
+[Group 7- 12 should be on one page – unlikely that most students will need to input for several of them so have list and it would expand if they needed to answer any of them]*
+Group 7 – Military Service
+               23. Have you ever served in any branch of the United States armed forces, including the reserves or National Guard?
+               * If yes, for each period of service:
+               * Branch of service
+               * Nature of service rendered (for example, type of duties or assignments)
+               * Where you served
+               * Dates of service (month and year from / to)
+               * Rank
+               * If discharged: date and nature of discharge
+               24. Have you ever served in the armed forces of any country other than the United States?
+               * If yes, for each period of service:
+               * Country and branch
+               * Nature of service rendered
+               * Where you served
+               * Dates of service (month and year from / to)
+               * Rank
+               * If discharged: date and nature of discharge
+               25. If you have ever served in any armed forces, have you ever been charged or disciplined in a court-martial or similar military proceeding?
+               * If yes: for each proceeding, the charges, dates, and outcome.
+Group 8 – Criminal, Civil, and Other Legal Matters
+               26. Have you ever, at any age, been a defendant in a criminal case or been arrested, charged, indicted, tried, convicted, or pled guilty to any crime or offense, including alcohol- or drug-related driving offenses?
+Explain that they do not need to report juvenile delinquency matters in Family Court, parking tickets, and certain minor non-alcohol and non-drug traffic tickets the instructions say may be omitted.
+                  * If yes, for each incident:
+                  * Name of the court
+                  * Location of the court (city, state, country)
+                  * Charges
+                  * Dates of the incident, charges, and disposition
+                  * Outcome and any sentence
+                  * A brief explanation of what happened
+                  27. Have you ever been a complainant, party, or witness in any legal action, investigation, or proceeding in which you testified, refused to testify, or were granted immunity?
+                  * If yes: describe the matter, the court or agency, the dates, your role, and what happened.
+                  28. Have you ever failed to respond to any ticket, summons, subpoena, or other legal process served on you?
+                  * If yes: explain what the process was, where and when it happened, and what the outcome was.
+                  29. As a result of any failure to respond to legal process, has any warrant, subpoena, or other legal order ever been issued against you?
+                  * If yes: explain the details and outcome.
+                  30. Do you currently have any unpaid traffic or parking tickets that are in your name or relate to a vehicle registered to you?
+                  * If yes, for each ticket: where it was issued and the amount currently owed.
+                  31. Have you ever been charged with fraud or with any act involving moral turpitude, such as serious dishonesty or abuse of trust?
+                  * If yes: explain each incident, when and where it occurred, and the outcome.
+                  32. Apart from what you have already disclosed, have you ever been involved in any other civil or criminal action, proceeding, or investigation in any role (party, witness, complainant, or otherwise)?
+                  * If yes, for each matter: the court or agency, the dates, your role, and the outcome.
+Group 9 – Conditions, Impairments, and Fitness
+                  33. In the last seven years, has any condition or impairment, including any mental health or substance-related condition, been raised by you or by others as an explanation or defense for your conduct in any investigation, disciplinary action, licensing proceeding, or court proceeding involving you?
+                  * If yes, for each matter:
+                  * Name of the court, agency, employer, school, or other body
+                  * Full address of that body (street, city or town, state, ZIP code, country or province)
+                  * Telephone number of that body (if known)
+                  * Nature of the proceeding
+                  * Relevant dates of the proceeding
+                  * Disposition (for example, dismissed, probation, sanction)
+                  * Explanation, including what condition or impairment was raised
+                  34. In the last seven years, have you engaged in any conduct or behavior that resulted in any of the following: arrest, discipline, sanction, warning, termination or suspension from school or employment, loss or suspension of a license, an investigation or proceeding by an employer, school, government agency, professional body, or licensing authority, or involuntary hospitalization by court order?
+                  * If yes, for each situation:
+                  * Name of the court, agency, employer, school, or other body
+                  * Full address of that body (street, city or town, state, ZIP code, country or province)
+                  * Telephone number of that body (if known)
+                  * Nature of the proceeding or action
+                  * Relevant dates
+                  * Disposition
+                  * Explanation of what happened
+                  35. In the last seven years, apart from what you have already disclosed, have you engaged in any conduct or behavior, including behavior related to a condition or impairment, that could call into question your ability to practice law in a competent, ethical, and professional way?
+                  * If yes:
+                  * Relevant date or dates of the conduct
+                  * Explanation of what occurred
+                  36. Are you currently using any illegal drugs?
+                  * If yes: explain.
+Group 10 – Child Support
+                  37. Are you currently under a legal obligation to pay child support?
+If no, you may skip the rest of this group.
+If yes, ask all of the following on the same step:
+                  38. Are you four months or more behind on your child support payments?
+                  39. Are you making payments under an income execution, a court-ordered payment plan, or another agreed payment plan?
+                  40. Is your child support obligation currently the subject of any court or administrative proceeding?
+                  41. Are you currently receiving public assistance or Supplemental Security Income (SSI)?
+                  42. If you are four months or more behind and you are not under a payment plan, have no active proceeding about it, and are not on public assistance or SSI, please explain your situation and what steps you are taking to address it.
+Group 11 – Financial Responsibility and Debts
+                  43. Do you have any unsatisfied judgments against you?
+                  * If yes, for each judgment:
+                  * Name of the judgment creditor
+                  * Address of the judgment creditor
+                  * Court that entered the judgment and its location
+                  * Date of the judgment
+                  * Amount of the judgment
+                  * What the judgment is about
+                  44. Are you in default on any duty or obligation imposed on you by a judgment, court order, or directive from a government agency?
+                  * If yes: explain.
+                  45. Do you owe any debt of three hundred dollars or more that has been past due for more than ninety days?
+                  * If yes, for each such debt:
+                  * Name of the creditor
+                  * Address of the creditor
+                  * Amount currently owed
+                  * Date the debt became due
+                  * Nature of the debt (for example, credit card, student loan, rent, medical bill)
+                  46. Have you ever filed for bankruptcy or received a discharge in bankruptcy?
+                  * If yes:
+                  * Why you filed
+                  * Court that handled the case
+                  * Date you filed
+                  * Date of discharge or other outcome
+Group 12 – Licenses, Bonds, and Loyalty
+                  47. Have you ever applied for any license that required you to show good character, other than bar admission applications you have already listed?
+                  * If yes, for each license:
+                  * Type of license
+                  * Licensing authority or issuing body
+                  * Date you applied
+                  * If granted, date it was granted
+                  48. Has any such license application ever been denied?
+                  * If yes: which license it was and why it was denied.
+                  49. Has any such license ever been revoked, suspended, or otherwise disciplined?
+                  * If yes: which license, when it happened, and why.
+                  50. Have you ever held a position in which you were covered by a fidelity bond?
+                  * If yes:
+                  * Position you held
+                  * Period you were bonded (month and year from / to)
+                  51. Has anyone ever made a claim against, recovered on, or tried to cancel a fidelity bond because of your conduct?
+                  * If yes: explain.
+                  52. Have you ever organized, helped organize, or been a member of any organization or group that, during the time you were involved, you knew advocated or taught that the government of the United States or any state or political subdivision should be overthrown by force, violence, or other unlawful means?
+                  * If yes: explain.
+                  53. Can you truthfully say that you are loyal to and ready to support the constitutions and laws of the United States and New York, and that you will try to conduct yourself in accordance with the New York Rules of Professional Conduct?
+                  * If no: explain.
+Group 13 – Signing, Notary, and Nonresident Designation
+Guidance text (non-input):
+Before you sign, you will need a notary (or other authorized official) to watch you sign this application and, if required, your Designation of Agent.
+Best option if you work at a firm:
+Most firms have one or more in-house notaries (often assistants, reception, HR, or office services).
+                  * Ask your supervisor, HR contact, or office manager who the notaries are.
+                  * Email or message them to set up a short in-person signing.
+                  * Bring a government-issued ID and the printed application pages that need notarization.
+If your firm does not have a notary or you are not working yet:
+You can usually find a notary at:
+                  * Banks or credit unions
+                  * Shipping/office stores (for example, many UPS Store locations)
+                  * Local mailboxes/print shops or “Notary Public” storefronts
+Call ahead or check online to confirm hours, fees, and whether an appointment is required.
+Questions for the app (actual inputs)
+                  54. Where will you sign this application in front of a notary or other authorized official?
+                  * City
+                  * County
+                  * State or country
+                  55. On what date do you plan to sign this application?
+                  56. Do you currently live in New York State?
+                  * Yes / No
+                  57. Do you currently work full-time in New York State?
+                  * Yes / No
+                  58. If you do not live in New York and you do not work full-time in New York, do you understand and agree that the Clerk of the Appellate Division where you are applying will be your agent to receive legal papers related to your practice of law in New York?
+                  * Yes / No (if no, tell them they cannot complete the application without this designation)
+Questions should be able to be skipped – but remain red in form of checklist – so you can’t submit fully or get final pdf without all information/steps done.

@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:init": "node scripts/init-db.js",
+    "pdf:inspect": "node scripts/inspect-pdf.js",
+    "pdf:map": "node scripts/generate-visual-map.js",
+    "pdf:test-fill": "node scripts/test-fill-page1.js",
+    "pdf:test-fill-2": "node scripts/test-fill-page2.js",
+    "pdf:test-fill-3": "node scripts/test-fill-page3.js",
+    "types:generate": "ts-node scripts/generate-types.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "pdf-lib": "^1.17.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

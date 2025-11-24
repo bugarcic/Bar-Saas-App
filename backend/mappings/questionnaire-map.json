@@ -1,0 +1,430 @@
+{
+  "header": {
+     "admission_type": "Questionnaire Radio Button 1",
+     "department_selection": "Questionnaire Radio Button 2"
+  },
+  "personal_info": {
+    "first_name": "Questionnaire Text Field A1-1",
+    "middle_name": "Questionnaire Text Field A1-2",
+    "last_name": "Questionnaire Text Field A1-3",
+    "suffix": "Questionnaire Text Field A1-4",
+    "has_other_names": { "field": "Questionnaire Radio Button A2", "type": "radio" },
+    "other_names": [
+       { "name": "Questionnaire Text Field A2-1", "reason": "Questionnaire Text Field A2-2" },
+       { "name": "Questionnaire Text Field A2-3", "reason": "Questionnaire Text Field A2-4" }
+    ],
+    "ssn": "Questionnaire Text Field A3",
+    "bole_id": "Questionnaire Text Field A4",
+    "age": "Questionnaire Text Field A5-1",
+    "dob": "Questionnaire Text Field A5-2",
+    "birth_city": "Questionnaire Text Field A5-3",
+    "birth_state": "Questionnaire Text Field A5-4",
+    "birth_country": "Questionnaire Text Field A5-5"
+  },
+  "contact_info": {
+    "street": "Questionnaire Text Field A6-1",
+    "city": "Questionnaire Text Field A6-2",
+    "state": "Questionnaire Text Field A6-3",
+    "zip": "Questionnaire Text Field A6-4",
+    "country": "Questionnaire Text Field A6-5",
+    "phone": "Questionnaire Text Field A6-6",
+    "email": "Questionnaire Text Field A6-7"
+  },
+  "prior_residence": {
+    "from_date": "Questionnaire Text Field A7-1",
+    "to_date": "Questionnaire Text Field A7-2",
+    "street": "Questionnaire Text Field A7-3",
+    "city": "Questionnaire Text Field A7-4",
+    "state": "Questionnaire Text Field A7-5",
+    "zip": "Questionnaire Text Field A7-6",
+    "country": "Questionnaire Text Field A7-7"
+  },
+  "office_address": {
+    "name_and_street": "Questionnaire Text Field A8-1",
+    "city": "Questionnaire Text Field A8-2",
+    "state": "Questionnaire Text Field A8-3",
+    "zip": "Questionnaire Text Field A8-4",
+    "country": "Questionnaire Text Field A8-5",
+    "phone": "Questionnaire Text Field A8-6",
+    "email": "Questionnaire Text Field A8-7"
+  },
+  "education_undergrad": [
+    {
+      "from_date": "Questionnaire Text Field B9-1",
+      "to_date": "Questionnaire Text Field B9-2",
+      "school_name": "Questionnaire Text Field B9-3",
+      "degree": "Questionnaire Text Field B9-4",
+      "street": "Questionnaire Text Field B9-5",
+      "city": "Questionnaire Text Field B9-6",
+      "state": "Questionnaire Text Field B9-7",
+      "zip": "Questionnaire Text Field B9-8",
+      "country": "Questionnaire Text Field B9-9",
+      "no_degree_reason": "Questionnaire Text Field B9-10"
+    },
+    {
+      "from_date": "Questionnaire Text Field B9-11",
+      "to_date": "Questionnaire Text Field B9-12",
+      "school_name": "Questionnaire Text Field B9-13",
+      "degree": "Questionnaire Text Field B9-14",
+      "street": "Questionnaire Text Field B9-15",
+      "city": "Questionnaire Text Field B9-16",
+      "state": "Questionnaire Text Field B9-17",
+      "zip": "Questionnaire Text Field B9-18",
+      "country": "Questionnaire Text Field B9-19",
+      "no_degree_reason": "Questionnaire Text Field B9-20"
+    },
+    {
+      "from_date": "Questionnaire Text Field B9-21",
+      "to_date": "Questionnaire Text Field B9-22",
+      "school_name": "Questionnaire Text Field B9-23",
+      "degree": "Questionnaire Text Field B9-24",
+      "street": "Questionnaire Text Field B9-25",
+      "city": "Questionnaire Text Field B9-26",
+      "state": "Questionnaire Text Field B9-27",
+      "zip": "Questionnaire Text Field B9-28",
+      "country": "Questionnaire Text Field B9-29",
+      "no_degree_reason": "Questionnaire Text Field B9-30"
+    }
+  ],
+  "law_schools": [
+    {
+      "from_date": "Questionnaire Text Field 68",
+      "to_date": "Questionnaire Text Field 69",
+      "school_name": "Questionnaire Text Field 70",
+      "degree": "Questionnaire Text Field 71",
+      "street": "Questionnaire Text Field 72",
+      "city": "Questionnaire Text Field 73",
+      "state": "Questionnaire Text Field 74",
+      "zip": "Questionnaire Text Field 75",
+      "country": "Questionnaire Text Field 76",
+      "no_degree_reason": "Questionnaire Text Field 77"
+    },
+    {
+      "from_date": "Questionnaire Text Field 78",
+      "to_date": "Questionnaire Text Field 79",
+      "school_name": "Questionnaire Text Field 80",
+      "degree": "Questionnaire Text Field 81",
+      "street": "Questionnaire Text Field 82",
+      "city": "Questionnaire Text Field 83",
+      "state": "Questionnaire Text Field 84",
+      "zip": "Questionnaire Text Field 85",
+      "country": "Questionnaire Text Field 86",
+      "no_degree_reason": "Questionnaire Text Field 87"
+    }
+  ],
+  "character_issues": {
+    "denied_admission": {
+      "has_issue": { "field": "Questionnaire Radio Button 5", "type": "radio" },
+      "institution": "Questionnaire Text Field 88",
+      "date": "Questionnaire Text Field 89",
+      "reason": "Questionnaire Text Field 90"
+    },
+    "school_discipline": {
+      "has_issue": { "field": "Questionnaire Radio Button 6", "type": "radio" },
+      "institution": "Questionnaire Text Field 91",
+      "date": "Questionnaire Text Field 92",
+      "reason": "Questionnaire Text Field 93"
+    }
+  },
+  "discontinued_studies": {
+    "has_issue": { "field": "Questionnaire Radio Button 7", "type": "radio" },
+    "institution": "Questionnaire Text Field 94",
+    "date": "Questionnaire Text Field 95",
+    "reason": "Questionnaire Text Field 96"
+  },
+  "self_employment": {
+    "has_issue": { "field": "Questionnaire Radio Button 8", "type": "radio" },
+    "details": "Questionnaire Text Field 169",
+    "judgments": "Questionnaire Text Field 170"
+  },
+  "employment_discipline": {
+    "has_issue": { "field": "Questionnaire Radio Button 9", "type": "radio" },
+    "details": "Questionnaire Text Field 171"
+  },
+  "other_ny_applications": {
+    "has_issue": { "field": "Questionnaire Radio Button 10", "type": "radio" },
+    "details": "Questionnaire Text Field 172"
+  },
+  "other_bar_exams": {
+    "has_issue": { "field": "Questionnaire Radio Button 11", "type": "radio" },
+    "details": "Questionnaire Text Field 173"
+  },
+  "other_admissions": {
+    "has_issue": { "field": "Questionnaire Radio Button 12", "type": "radio" },
+    "details": "Questionnaire Text Field 173"
+  },
+  "unauthorized_practice_personal": {
+    "has_issue": { "field": "Questionnaire Radio Button 13", "type": "radio" },
+    "details": "Questionnaire Text Field 174"
+  },
+  "unauthorized_practice_associated": {
+    "has_issue": { "field": "Questionnaire Radio Button 14", "type": "radio" },
+    "details": "Questionnaire Text Field 175"
+  },
+  "unauthorized_practice_acting": {
+    "has_issue": { "field": "Questionnaire Radio Button 15", "type": "radio" },
+    "details": "Questionnaire Text Field 176"
+  },
+  "military_us": {
+    "has_service": { "field": "Questionnaire Radio Button 16", "type": "radio" },
+    "from_date": "Questionnaire Text Field 177",
+    "to_date": "Questionnaire Text Field 178",
+    "location": "Questionnaire Text Field 179",
+    "branch": "Questionnaire Text Field 180",
+    "nature_of_service": "Questionnaire Text Field 181",
+    "discharge_details": "Questionnaire Text Field 182"
+  },
+  "military_foreign": {
+    "has_service": { "field": "Questionnaire Radio Button 17", "type": "radio" },
+    "from_date": "Questionnaire Text Field 183",
+    "to_date": "Questionnaire Text Field 184",
+    "location": "Questionnaire Text Field 185",
+    "branch": "Questionnaire Text Field 186",
+    "nature_of_service": "Questionnaire Text Field 187",
+    "discharge_details": "Questionnaire Text Field 188"
+  },
+  "military_discipline": {
+    "has_issue": { "field": "Questionnaire Radio Button 18", "type": "radio" },
+    "details": "Questionnaire Text Field 189"
+  },
+  "criminal_history": {
+    "has_issue": { "field": "Questionnaire Radio Button 19", "type": "radio" },
+    "incidents": [
+      {
+        "court": "Questionnaire Text Field 190",
+        "charge": "Questionnaire Text Field 191",
+        "disposition_and_facts": "Questionnaire Text Field 192"
+      }
+    ]
+  },
+  "civil_matters": {
+    "testimony_immunity": { "has_issue": { "field": "Questionnaire Radio Button 20", "type": "radio" } },
+    "failed_to_answer_ticket": { "has_issue": { "field": "Questionnaire Radio Button 21", "type": "radio" } },
+    "warrants_issued": { "has_issue": { "field": "Questionnaire Radio Button 22", "type": "radio" } },
+    "unpaid_tickets": {
+      "has_issue": { "field": "Questionnaire Radio Button 23", "type": "radio" },
+      "details": [
+        { "description": "Questionnaire Text Field 193", "amount_date": "Questionnaire Text Field 194" },
+        { "description": "Questionnaire Text Field 195", "amount_date": "Questionnaire Text Field 196" },
+        { "description": "Questionnaire Text Field 197", "amount_date": "Questionnaire Text Field 198" },
+        { "description": "Questionnaire Text Field 199", "amount_date": "Questionnaire Text Field 200" },
+        { "description": "Questionnaire Text Field 201", "amount_date": "Questionnaire Text Field 202" }
+      ]
+    },
+    "fraud_charges": { "has_issue": { "field": "Questionnaire Radio Button 24", "type": "radio" } },
+    "other_civil_criminal_involvement": { "has_issue": { "field": "Questionnaire Radio Button 25", "type": "radio" } },
+    "general_explanation_27_to_32": "Questionnaire Text Field 203"
+  },
+  "fitness_conduct": {
+    "condition_defense": {
+      "has_issue": { "field": "Questionnaire Radio Button 26", "type": "radio" },
+      "entity_name": "Questionnaire Text Field 204",
+      "street": "Questionnaire Text Field 205",
+      "city": "Questionnaire Text Field 206",
+      "state": "Questionnaire Text Field 207",
+      "zip": "Questionnaire Text Field 208",
+      "country": "Questionnaire Text Field 209",
+      "province": "Questionnaire Text Field 210",
+      "phone": "Questionnaire Text Field 211",
+      "nature_of_proceeding": "Questionnaire Text Field 212",
+      "relevant_dates": "Questionnaire Text Field 213",
+      "disposition": "Questionnaire Text Field 214",
+      "explanation": "Questionnaire Text Field 215"
+    },
+    "conduct_behavior": {
+      "has_issue": { "field": "Questionnaire Radio Button 27", "type": "radio" },
+      "entity_name": "Questionnaire Text Field 216",
+      "street": "Questionnaire Text Field 217",
+      "city": "Questionnaire Text Field 218",
+      "state": "Questionnaire Text Field 219",
+      "zip": "Questionnaire Text Field 220",
+      "country": "Questionnaire Text Field 221",
+      "province": "Questionnaire Text Field 222",
+      "phone": "Questionnaire Text Field 223",
+      "nature_of_proceeding": "Questionnaire Text Field 224",
+      "relevant_dates": "Questionnaire Text Field 225",
+      "disposition": "Questionnaire Text Field 226",
+      "explanation": "Questionnaire Text Field 227"
+    }
+  },
+  "general_conduct": {
+    "has_issue": { "field": "Questionnaire Radio Button 28", "type": "radio" },
+    "dates": "Questionnaire Text Field 228",
+    "explanation": "Questionnaire Text Field 229"
+  },
+  "illegal_drugs": {
+    "has_issue": { "field": "Questionnaire Radio Button 29", "type": "radio" }
+  },
+  "child_support": {
+    "has_obligation": { "field": "Questionnaire Radio Button 30", "type": "radio" },
+    "arrears_4_months": { "field": "Questionnaire Radio Button 31", "type": "radio" },
+    "income_execution": { "field": "Questionnaire Radio Button 32", "type": "radio" },
+    "pending_proceeding": { "field": "Questionnaire Radio Button 33", "type": "radio" },
+    "public_assistance": { "field": "Questionnaire Radio Button 34", "type": "radio" },
+    "explanation": "Questionnaire Text Field 230"
+  },
+  "financial_judgments": {
+    "has_issue": { "field": "Questionnaire Radio Button 35", "type": "radio" },
+    "creditor_name": "Questionnaire Text Field 231",
+    "creditor_address": "Questionnaire Text Field 232",
+    "court": "Questionnaire Text Field 233",
+    "date": "Questionnaire Text Field 234",
+    "amount": "Questionnaire Text Field 235",
+    "nature_of_claim": "Questionnaire Text Field 236"
+  },
+  "financial_defaults": {
+    "has_issue": { "field": "Questionnaire Radio Button 36", "type": "radio" },
+    "explanation": "Questionnaire Text Field 237"
+  },
+  "past_due_debts": {
+    "has_issue": { "field": "Questionnaire Radio Button 37", "type": "radio" },
+    "debts": [
+      {
+        "creditor_name": "Questionnaire Text Field 238",
+        "creditor_address": "Questionnaire Text Field 239",
+        "amount": "Questionnaire Text Field 240",
+        "date": "Questionnaire Text Field 241",
+        "nature_of_debt": "Questionnaire Text Field 242"
+      },
+      {
+        "creditor_name": "Questionnaire Text Field 243",
+        "creditor_address": "Questionnaire Text Field 244",
+        "amount": "Questionnaire Text Field 245",
+        "date": "Questionnaire Text Field 246",
+        "nature_of_debt": "Questionnaire Text Field 247"
+      },
+      {
+        "creditor_name": "Questionnaire Text Field 248",
+        "creditor_address": "Questionnaire Text Field 249",
+        "amount": "Questionnaire Text Field 250",
+        "date": "Questionnaire Text Field 251",
+        "nature_of_debt": "Questionnaire Text Field 252"
+      }
+    ]
+  },
+  "bankruptcy": {
+    "has_issue": { "field": "Questionnaire Radio Button 38", "type": "radio" },
+    "explanation": "Questionnaire Text Field 253"
+  },
+  "licenses": {
+    "has_issue": { "field": "Questionnaire Radio Button 39", "type": "radio" },
+    "details": [
+      { "name": "Questionnaire Text Field 254", "date": "Questionnaire Text Field 255", "authority": "Questionnaire Text Field 256" },
+      { "name": "Questionnaire Text Field 257", "date": "Questionnaire Text Field 258", "authority": "Questionnaire Text Field 259" },
+      { "name": "Questionnaire Text Field 260", "date": "Questionnaire Text Field 261", "authority": "Questionnaire Text Field 262" },
+      { "name": "Questionnaire Text Field 263", "date": "Questionnaire Text Field 264", "authority": "Questionnaire Text Field 265" },
+      { "name": "Questionnaire Text Field 266", "date": "Questionnaire Text Field 267", "authority": "Questionnaire Text Field 268" },
+      { "name": "Questionnaire Text Field 269", "date": "Questionnaire Text Field 270", "authority": "Questionnaire Text Field 271" }
+    ],
+    "denial_explanation": "Questionnaire Text Field 272",
+    "revocation_explanation": "Questionnaire Text Field 273"
+  },
+  "fidelity_bond": {
+    "has_issue": { "field": "Questionnaire Radio Button 40", "type": "radio" },
+    "position": "Questionnaire Text Field 274",
+    "from_date": "Questionnaire Text Field 275",
+    "to_date": "Questionnaire Text Field 276",
+    "circumstances": "Questionnaire Text Field 277"
+  },
+  "signature_block": {
+    "state_country": "Questionnaire Text Field 280",
+    "county": "Questionnaire Text Field 281",
+    "city": "Questionnaire Text Field 282",
+    "applicant_name_in_oath": "Questionnaire Text Field 283",
+    "date": "Questionnaire Dated 1"
+  },
+  "designation_of_agent": {
+    "applicant_name": "Questionnaire Text Field 284",
+    "judicial_department": "Questionnaire Text Field 285",
+    "date": "Questionnaire Dated 2",
+    "notary_state": "Questionnaire Text Field 286",
+    "notary_county": "Questionnaire Text Field 287",
+    "notary_city": "Text Field 257"
+  },
+  "employment_history": [
+    {
+      "from_date": "Questionnaire Text Field 97",
+      "to_date": "Questionnaire Text Field 98",
+      "employer": "Questionnaire Text Field 99",
+      "position": "Questionnaire Text Field 100",
+      "street": "Questionnaire Text Field 101",
+      "city": "Questionnaire Text Field 102",
+      "state": "Questionnaire Text Field 103",
+      "zip": "Questionnaire Text Field 104",
+      "country": "Questionnaire Text Field 105",
+      "phone": "Questionnaire Text Field 106",
+      "nature_of_business": "Questionnaire Text Field 107",
+      "reason_for_leaving": "Questionnaire Text Field 108"
+    },
+    {
+      "from_date": "Questionnaire Text Field 109",
+      "to_date": "Questionnaire Text Field 110",
+      "employer": "Questionnaire Text Field 111",
+      "position": "Questionnaire Text Field 112",
+      "street": "Questionnaire Text Field 113",
+      "city": "Questionnaire Text Field 114",
+      "state": "Questionnaire Text Field 115",
+      "zip": "Questionnaire Text Field 116",
+      "country": "Questionnaire Text Field 117",
+      "phone": "Questionnaire Text Field 118",
+      "nature_of_business": "Questionnaire Text Field 119",
+      "reason_for_leaving": "Questionnaire Text Field 120"
+    },
+    {
+      "from_date": "Questionnaire Text Field 121",
+      "to_date": "Questionnaire Text Field 122",
+      "employer": "Questionnaire Text Field 123",
+      "position": "Questionnaire Text Field 124",
+      "street": "Questionnaire Text Field 125",
+      "city": "Questionnaire Text Field 126",
+      "state": "Questionnaire Text Field 127",
+      "zip": "Questionnaire Text Field 128",
+      "country": "Questionnaire Text Field 129",
+      "phone": "Questionnaire Text Field 130",
+      "nature_of_business": "Questionnaire Text Field 131",
+      "reason_for_leaving": "Questionnaire Text Field 132"
+    },
+    {
+      "from_date": "Questionnaire Text Field 133",
+      "to_date": "Questionnaire Text Field 134",
+      "employer": "Questionnaire Text Field 135",
+      "position": "Questionnaire Text Field 136",
+      "street": "Questionnaire Text Field 137",
+      "city": "Questionnaire Text Field 138",
+      "state": "Questionnaire Text Field 139",
+      "zip": "Questionnaire Text Field 140",
+      "country": "Questionnaire Text Field 141",
+      "phone": "Questionnaire Text Field 142",
+      "nature_of_business": "Questionnaire Text Field 143",
+      "reason_for_leaving": "Questionnaire Text Field 144"
+    },
+    {
+      "from_date": "Questionnaire Text Field 145",
+      "to_date": "Questionnaire Text Field 146",
+      "employer": "Questionnaire Text Field 147",
+      "position": "Questionnaire Text Field 148",
+      "street": "Questionnaire Text Field 149",
+      "city": "Questionnaire Text Field 150",
+      "state": "Questionnaire Text Field 151",
+      "zip": "Questionnaire Text Field 152",
+      "country": "Questionnaire Text Field 153",
+      "phone": "Questionnaire Text Field 154",
+      "nature_of_business": "Questionnaire Text Field 155",
+      "reason_for_leaving": "Questionnaire Text Field 156"
+    },
+    {
+      "from_date": "Questionnaire Text Field 157",
+      "to_date": "Questionnaire Text Field 158",
+      "employer": "Questionnaire Text Field 159",
+      "position": "Questionnaire Text Field 160",
+      "street": "Questionnaire Text Field 161",
+      "city": "Questionnaire Text Field 162",
+      "state": "Questionnaire Text Field 163",
+      "zip": "Questionnaire Text Field 164",
+      "country": "Questionnaire Text Field 165",
+      "phone": "Questionnaire Text Field 166",
+      "nature_of_business": "Questionnaire Text Field 167",
+      "reason_for_leaving": "Questionnaire Text Field 168"
+    }
+  ]
+}
