@@ -8,9 +8,11 @@ type SectionData = Record<string, SchemaValue>;
 interface ApplicationState {
   data: Partial<Record<SectionKey, SectionData>>;
   currentStep: number;
+  userId?: string;
   setField: (section: SectionKey, field: string, value: SchemaValue) => void;
   setSection: (section: SectionKey, value: SectionData) => void;
   setCurrentStep: (step: number) => void;
+  setUserId: (id: string) => void;
   reset: () => void;
 }
 
@@ -29,6 +31,7 @@ export const useApplicationStore = create<ApplicationState>()(
     (set) => ({
       data: {},
       currentStep: 0,
+      userId: undefined,
       setField: (section, field, value) =>
         set((state) => {
           const sectionData = state.data[section] ?? {};
@@ -50,6 +53,7 @@ export const useApplicationStore = create<ApplicationState>()(
           },
         })),
       setCurrentStep: (step) => set({ currentStep: step }),
+      setUserId: (id) => set({ userId: id }),
       reset: () => set({ data: {}, currentStep: 0 }),
     }),
     {

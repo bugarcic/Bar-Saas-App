@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useApplicationStore } from '../store/useApplicationStore';
 import Button from './ui/Button';
+import { saveDraft } from '../lib/api';
 
 const GROUPS = [
   'Group 1 · Applicant Info',
@@ -39,8 +40,29 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
   const handleNext = () => goToStep(currentStep + 1);
   const handleBack = () => goToStep(currentStep - 1);
-  const handleSaveDraft = () => {
-    console.log('Save draft clicked');
+  const data = useApplicationStore((state) => state.data);
+  const userId = useApplicationStore((state) => state.userId);
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
+
+  const handleSaveDraft = async () => {
+    if (!userId) {
+      setSaveMessage('Session not initialized yet.');
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      setSaveMessage(null);
+      await saveDraft(userId, data);
+      setSaveMessage('Draft saved!');
+    } catch (error) {
+      console.error(error);
+      setSaveMessage('Failed to save draft.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -90,9 +112,10 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
             <footer className="mt-8 border-t border-slate-200 pt-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <Button variant="outline" onClick={handleSaveDraft}>
+              <Button variant="outline" onClick={handleSaveDraft} disabled={isSaving}>
                   Save Draft
                 </Button>
+              {saveMessage && <p className="text-sm text-slate-600">{saveMessage}</p>}
                 <div className="flex gap-3">
                   <Button variant="secondary" onClick={handleBack} disabled={currentStep === 0}>
                     Back

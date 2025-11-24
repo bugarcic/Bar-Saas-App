@@ -11,17 +11,23 @@
     "pdf:test-fill": "node scripts/test-fill-page1.js",
     "pdf:test-fill-2": "node scripts/test-fill-page2.js",
     "pdf:test-fill-3": "node scripts/test-fill-page3.js",
-    "types:generate": "ts-node scripts/generate-types.ts"
+    "types:generate": "ts-node scripts/generate-types.ts",
+    "start": "ts-node server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "pdf-lib": "^1.17.1",
     "pg": "^8.16.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
