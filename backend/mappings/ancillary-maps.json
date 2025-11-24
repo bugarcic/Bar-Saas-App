@@ -1,62 +1,121 @@
 {
   "form_c_moral_character": {
+    "_note": "Two affirmations required - one PDF per affirmant. Fields 1-2 are applicant info (pre-filled), rest is affirmant info. Fields 18-21 are for attorney admissions (2 rows of jurisdiction + year).",
     "header": {
-      "department_1st": {
-        "field": "Moral Character Button",
-        "type": "radio",
-        "option": "Choice1"
-      },
-      "department_2nd": {
-        "field": "Moral Character Button",
-        "type": "radio",
-        "option": "Choice2"
-      },
-      "department_3rd": {
-        "field": "Moral Character Button",
-        "type": "radio",
-        "option": "Choice3"
-      },
-      "department_4th": {
-        "field": "Moral Character Button",
-        "type": "radio",
-        "option": "Choice4"
-      },
       "applicant_name": "Moral Character Text Field 1",
       "bole_id": "Moral Character Text Field 2"
+    },
+    "department_selection": {
+      "field": "Moral Character Button",
+      "type": "radio",
+      "options": {
+        "First Department": "Choice1",
+        "Second Department": "Choice2",
+        "Third Department": "Choice3",
+        "Fourth Department": "Choice4"
+      }
+    },
+    "affirmant_info": {
+      "full_name": "Moral Character Text Field 3",
+      "home_street": "Moral Character Text Field 4",
+      "home_city": "Moral Character Text Field 5",
+      "home_state": "Moral Character Text Field 6",
+      "home_zip": "Moral Character Text Field 7",
+      "home_country": "Moral Character Text Field 8",
+      "home_phone": "Moral Character Text Field 9",
+      "home_email": "Moral Character Text Field 10",
+      "business_street": "Moral Character Text Field 11",
+      "business_city": "Moral Character Text Field 12",
+      "business_state": "Moral Character Text Field 13",
+      "business_zip": "Moral Character Text Field 14",
+      "business_country": "Moral Character Text Field 15",
+      "business_phone": "Moral Character Text Field 16",
+      "business_email": "Moral Character Text Field 17"
+    },
+    "attorney_admissions": {
+      "_note": "Section 2: For attorneys only - jurisdiction and year of admission (2 rows)",
+      "jurisdiction_1": "Moral Character Text Field 18",
+      "year_1": "Moral Character Text Field 19",
+      "jurisdiction_2": "Moral Character Text Field 20",
+      "year_2": "Moral Character Text Field 21"
+    },
+    "character_statement": {
+      "_note": "Section 3: Large text field for character narrative",
+      "statement": "Moral Character Text Field 22"
+    },
+    "signature_block": {
+      "printed_name": "Character Printed Name",
+      "date": "Character Dated"
     }
   },
   "form_d_employment": {
+    "_note": "Employment Affirmation - one per law-related job. Affirmant is the supervisor who attests to applicant's work.",
     "header": {
-      "department_1st": {
-        "field": "Check Box 1",
-        "type": "checkbox"
-      },
-      "department_2nd": {
-        "field": "Check Box 2",
-        "type": "checkbox"
-      },
-      "department_3rd": {
-        "field": "Check Box 3",
-        "type": "checkbox"
-      },
-      "department_4th": {
-        "field": "Check Box 4",
-        "type": "checkbox"
+      "department_selection": {
+        "field": "Employment Radio Button",
+        "type": "radio",
+        "options": {
+          "First Department": "Choice1",
+          "Second Department": "Choice2",
+          "Third Department": "Choice3",
+          "Fourth Department": "Choice4"
+        }
       },
       "applicant_name": "Employment Text Field 1",
       "bole_id": "Employment Text Field 53"
     },
-    "employer_prefill": {
-      "employer_name": "Employment Text Field 36",
-      "street": "Employment Text Field 37",
-      "city": "Employment Text Field 38",
-      "state": "Employment Text Field 39",
-      "zip": "Employment Text Field 40",
-      "country": "Employment Text Field 41",
-      "phone": "Employment Text Field 42",
-      "nature_of_business": "Employment Text Field 43",
-      "from_date": "Employment Text Field 44",
-      "to_date": "Employment Text Field 45"
+    "affirmant_info": {
+      "_note": "Section 1: Person completing this affirmation (supervisor)",
+      "full_name": "Employment Text Field 3",
+      "title": "Employment Text Field 4",
+      "employer_name": "Employment Text Field 5",
+      "street": "Employment Text Field 6",
+      "city": "Employment Text Field 7",
+      "state": "Employment Text Field 8",
+      "zip": "Employment Text Field 9",
+      "country": "Employment Text Field 10",
+      "phone": "Employment Text Field 11",
+      "email": "Employment Text Field 12"
+    },
+    "attorney_status": {
+      "_note": "Section 2: If affirmant is attorney - jurisdiction and year (2 rows)",
+      "is_attorney": {
+        "field": "Employment Radio Button 2",
+        "type": "radio",
+        "options": {
+          "Yes": "Choice1",
+          "No": "Choice2"
+        }
+      },
+      "jurisdiction_1": "Employment Text Field 13",
+      "year_1": "Employment Text Field 14",
+      "jurisdiction_2": "Employment Text Field 15",
+      "year_2": "Employment Text Field 16"
+    },
+    "employment_details": {
+      "_note": "Section 3: Details of applicant's employment",
+      "employer_name": "Employment Text Field 17",
+      "street": "Employment Text Field 18",
+      "city": "Employment Text Field 19",
+      "state": "Employment Text Field 20",
+      "zip": "Employment Text Field 21",
+      "country": "Employment Text Field 22",
+      "phone": "Employment Text Field 23",
+      "nature_of_business": "Employment Text Field 24",
+      "applicant_position": "Employment Text Field 25",
+      "from_date": "Employment Text Field 26",
+      "to_date": "Employment Text Field 27",
+      "full_or_part_time": "Employment Text Field 28",
+      "hours_per_week": "Employment Text Field 29",
+      "how_ended": "Employment Text Field 30",
+      "reason_for_ending": "Employment Text Field 31"
+    },
+    "work_description": {
+      "_note": "Section 4: Description of work and performance",
+      "work_performed": "Employment Text Field 32",
+      "supervision_explanation": "Employment Text Field 33",
+      "was_satisfactory": "Employment Text Field 34",
+      "additional_info": "Employment Text Field 35"
     },
     "signature_block": {
       "printed_name": "Character Printed Name",
@@ -64,35 +123,39 @@
     }
   },
   "form_e_law_school": {
+    "_note": "PDF has typo: 'Cerfificate' instead of 'Certificate'",
     "header": {
-      "applicant_name": "Certificate Text Field 1",
-      "bole_id": "Certificate Text Field 2",
-      "street": "Certificate Text Field 3",
-      "city": "Certificate Text Field 4",
-      "state": "Certificate Text Field 5",
-      "zip": "Certificate Text Field 6",
-      "country": "Certificate Text Field 7",
-      "phone": "Certificate Text Field 8",
-      "email": "Certificate Text Field 9",
-      "ssn": "Certificate Text Field 10"
+      "applicant_name": "Cerfificate Text Field 1",
+      "bole_id": "Cerfificate Text Field 2",
+      "street": "Cerfificate Text Field 3",
+      "city": "Cerfificate Text Field 4",
+      "state": "Cerfificate Text Field 5",
+      "zip": "Cerfificate Text Field 6",
+      "country": "Cerfificate Text Field 7",
+      "phone": "Cerfificate Text Field 8",
+      "email": "Cerfificate Text Field 9",
+      "ssn": "Cerfificate Text Field 10"
     },
     "school_target": {
-      "school_name": "Certificate Text Field 11",
-      "school_street": "Certificate Text Field 12",
-      "school_city": "Certificate Text Field 13",
-      "school_state": "Certificate Text Field 14",
-      "school_zip": "Certificate Text Field 15",
-      "school_country": "Certificate Text Field 16"
+      "school_name": "Cerfificate Text Field 11",
+      "school_street": "Cerfificate Text Field 12",
+      "school_city": "Cerfificate Text Field 13",
+      "school_state": "Cerfificate Text Field 14",
+      "school_zip": "Cerfificate Text Field 15",
+      "school_country": "Cerfificate Text Field 16"
     },
     "authorization": {
-      "applicant_name_print": "Certificate Text Field 21",
-      "school_name_print": "Certificate Text Field 22"
+      "applicant_name_print": "Cerfificate Text Field 21",
+      "school_name_print": "Cerfificate Text Field 22"
     },
     "department_selection": {
-      "dept_1": { "field": "Check Box 1", "type": "checkbox" },
-      "dept_2": { "field": "Check Box 2", "type": "checkbox" },
-      "dept_3": { "field": "Check Box 3", "type": "checkbox" },
-      "dept_4": { "field": "Check Box 4", "type": "checkbox" }
+      "dept_1": { "field": "Certificate Radio Button 1", "type": "radio", "option": "Choice1" },
+      "dept_2": { "field": "Certificate Radio Button 2", "type": "radio", "option": "Choice1" },
+      "dept_3": { "field": "Certificate Radio Button 3", "type": "radio", "option": "Choice1" },
+      "dept_4": { "field": "Certificate Radio Button 4", "type": "radio", "option": "Choice1" }
+    },
+    "signature": {
+      "date": "Cerfificate Dated 1"
     }
   },
   "form_f_pro_bono": {
@@ -167,6 +230,7 @@
     }
   },
   "form_h_skills": {
+    "_note": "Skills Competency and Professional Values Affidavit (Rule 520.18). 5 pathways available. Field mappings based on visual inspection of PDF.",
     "header": {
       "applicant_name": "Skills Text Field 1",
       "bole_id": "Skills Text Field 2",
@@ -179,20 +243,86 @@
       "email": "Skills Text Field 9"
     },
     "department_selection": {
-      "dept_1": { "field": "Check Box 1", "type": "checkbox" },
-      "dept_2": { "field": "Check Box 2", "type": "checkbox" },
-      "dept_3": { "field": "Check Box 3", "type": "checkbox" },
-      "dept_4": { "field": "Check Box 4", "type": "checkbox" }
+      "field": "Skills Radio Button 1",
+      "type": "radio",
+      "options": {
+        "First Department": "Choice1",
+        "Second Department": "Choice2",
+        "Third Department": "Choice3",
+        "Fourth Department": "Choice4"
+      }
     },
     "pathway_selection": {
-      "pathway_1": { "field": "Check Box 5", "type": "checkbox" },
-      "pathway_2": { "field": "Check Box 6", "type": "checkbox" },
-      "pathway_3": { "field": "Check Box 7", "type": "checkbox" },
-      "pathway_4": { "field": "Check Box 8", "type": "checkbox" },
-      "pathway_5": { "field": "Check Box 9", "type": "checkbox" }
+      "field": "Skills Radio Button 2",
+      "type": "radio",
+      "options": {
+        "Pathway 1": "Choice1",
+        "Pathway 2": "Choice2",
+        "Pathway 3": "Choice3",
+        "Pathway 4": "Choice4",
+        "Pathway 5": "Choice5"
+      }
     },
-    "pathway_1_details": {
-      "applicant_name_body": "Skills Text Field 13"
+    "pathway_1": {
+      "_note": "Pathway 1 - Law school certification of competence in skills and professional values",
+      "school_official_name": "Skills Text Field 10",
+      "school_official_title": "Skills Text Field 11",
+      "law_school_name": "Skills Text Field 12",
+      "applicant_name": "Skills Text Field 13"
+    },
+    "pathway_2": {
+      "_note": "Pathway 2 - Law school certification of credit acquisition (15 credits experiential)",
+      "school_official_name": "Skills Text Field 14",
+      "school_official_title": "Skills Text Field 15",
+      "law_school_name": "Skills Text Field 16",
+      "applicant_name": "Skills Text Field 17"
+    },
+    "pathway_3": {
+      "_note": "Pathway 3 - Pro Bono Scholars Program",
+      "applicant_name": "Skills Text Field 18",
+      "signature_date": "Skills Dated 1"
+    },
+    "notary_section": {
+      "_note": "Notary section after Pathway 3",
+      "state_country": "Skills Text Field 19",
+      "county": "Skills Text Field 20",
+      "city": "Skills Text Field 21",
+      "applicant_name": "Skills Text Field 22",
+      "signature_date": "Skills Dated 2"
+    },
+    "pathway_4_section_a": {
+      "_note": "Pathway 4 - Apprenticeship - Section A: Applicant Certification",
+      "applicant_name": "Skills Text Field 23",
+      "apprenticeship_from": "Skills Text Field 24",
+      "apprenticeship_to": "Skills Text Field 25",
+      "employer_name": "Skills Text Field 26",
+      "employer_street": "Skills Text Field 27",
+      "employer_city": "Skills Text Field 28",
+      "employer_state": "Skills Text Field 29",
+      "employer_zip": "Skills Text Field 30",
+      "employer_country": "Skills Text Field 31"
+    },
+    "pathway_4_section_b": {
+      "_note": "Pathway 4 - Section B: Supervising Attorney Certification",
+      "attorney_name": "Skills Text Field 32",
+      "applicant_name": "Skills Text Field 33",
+      "unsatisfactory_explanation": "Skills Text Field 34",
+      "additional_facts": "Skills Text Field 35",
+      "attorney_printed_name": "Skills Text Field 36",
+      "attorney_date": "Skills Text Field 37",
+      "attorney_title": "Skills Text Field 38",
+      "attorney_employer": "Skills Text Field 39",
+      "attorney_jurisdiction": "Skills Text Field 40",
+      "attorney_email": "Skills Text Field 41",
+      "attorney_phone": "Skills Text Field 42"
+    },
+    "pathway_5": {
+      "_note": "Pathway 5 - Practice in another jurisdiction (fields 43-47 if they exist)",
+      "jurisdiction_admitted": "Skills Text Field 43",
+      "court_of_admission": "Skills Text Field 44",
+      "admission_date": "Skills Text Field 45",
+      "practice_duration": "Skills Text Field 46",
+      "applicant_name": "Skills Text Field 47"
     }
   }
 }

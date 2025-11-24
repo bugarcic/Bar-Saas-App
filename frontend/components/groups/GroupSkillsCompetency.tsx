@@ -1,0 +1,567 @@
+'use client';
+
+import React, { useMemo, useState } from 'react';
+import { useApplicationStore } from '../../store/useApplicationStore';
+import Input from '../ui/Input';
+import Label from '../ui/Label';
+import Button from '../ui/Button';
+import { saveDraft, generateFormH } from '../../lib/api';
+
+export interface SkillsCompetencyData {
+  // Which pathway is selected (1-5)
+  pathway?: string;
+  // Law school info (used by Pathway 1 & 2)
+  law_school_name?: string;
+  
+  // Pathway 1 - Law school certification of competence
+  p1_school_official_name?: string;
+  p1_school_official_title?: string;
+  
+  // Pathway 2 - Law school certification of credit acquisition (15 credits)
+  p2_school_official_name?: string;
+  p2_school_official_title?: string;
+  
+  // Pathway 3 - Pro Bono Scholars (minimal fields - just applicant name)
+  // No additional fields needed
+  
+  // Pathway 4 Section A - Applicant Certification
+  p4_from_date?: string;
+  p4_to_date?: string;
+  p4_employer_name?: string;
+  p4_employer_street?: string;
+  p4_employer_city?: string;
+  p4_employer_state?: string;
+  p4_employer_zip?: string;
+  p4_employer_country?: string;
+  
+  // Pathway 4 Section B - Supervising Attorney Certification
+  p4_attorney_name?: string;
+  p4_unsatisfactory_explanation?: string;
+  p4_additional_facts?: string;
+  p4_attorney_title?: string;
+  p4_attorney_employer?: string;
+  p4_attorney_jurisdiction?: string;
+  p4_attorney_email?: string;
+  p4_attorney_phone?: string;
+  
+  // Pathway 5 - Practice in another jurisdiction
+  p5_jurisdiction?: string;
+  p5_court_of_admission?: string;
+  p5_admission_date?: string;
+  p5_practice_duration?: string;
+}
+
+const SECTION_KEY = 'skills_competency';
+
+const PATHWAYS = [
+  { value: 'Pathway 1', label: 'Pathway 1 – Law School Certification of Competence', description: 'Law school certification that you have acquired sufficient competency in skills and professional values.' },
+  { value: 'Pathway 2', label: 'Pathway 2 – Law School Certification of Credit Acquisition', description: 'You have completed at least 15 credit hours of practice-based experiential coursework.' },
+  { value: 'Pathway 3', label: 'Pathway 3 – Pro Bono Scholars Program', description: 'You successfully completed the Pro Bono Scholars Program as prescribed in section 520.17.' },
+  { value: 'Pathway 4', label: 'Pathway 4 – Apprenticeship', description: 'You completed a six-month full-time apprenticeship meeting the requirements of section 520.18.' },
+  { value: 'Pathway 5', label: 'Pathway 5 – Practice in Another Jurisdiction', description: 'You are admitted and have practiced in another jurisdiction.' },
+];
+
+const getDefaultData = (): SkillsCompetencyData => ({
+  pathway: '',
+  law_school_name: '',
+  p1_school_official_name: '',
+  p1_school_official_title: '',
+  p2_school_official_name: '',
+  p2_school_official_title: '',
+  p4_from_date: '',
+  p4_to_date: '',
+  p4_employer_name: '',
+  p4_employer_street: '',
+  p4_employer_city: '',
+  p4_employer_state: '',
+  p4_employer_zip: '',
+  p4_employer_country: '',
+  p4_attorney_name: '',
+  p4_unsatisfactory_explanation: '',
+  p4_additional_facts: '',
+  p4_attorney_title: '',
+  p4_attorney_employer: '',
+  p4_attorney_jurisdiction: '',
+  p4_attorney_email: '',
+  p4_attorney_phone: '',
+  p5_jurisdiction: '',
+  p5_court_of_admission: '',
+  p5_admission_date: '',
+  p5_practice_duration: '',
+});
+
+const getData = (data: any): SkillsCompetencyData => {
+  return { ...getDefaultData(), ...(data || {}) };
+};
+
+export const GroupSkillsCompetency: React.FC = () => {
+  const rawData = useApplicationStore((state) => state.data[SECTION_KEY]);
+  const lawSchools = useApplicationStore((state) => state.data['law_schools']) as any[] | undefined;
+  const allData = useApplicationStore((state) => state.data);
+  const userId = useApplicationStore((state) => state.userId);
+  const setSection = useApplicationStore((state) => state.setSection);
+  
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const data = useMemo(() => getData(rawData), [rawData]);
+
+  const updateField = (field: keyof SkillsCompetencyData, value: string) => {
+    setSection(SECTION_KEY, { ...data, [field]: value } as any);
+  };
+
+  // Pre-fill law school from Group 4 if available
+  const prefillLawSchool = (schoolIndex: number) => {
+    const school = lawSchools?.[schoolIndex];
+    if (school) {
+      setSection(SECTION_KEY, {
+        ...data,
+        law_school_name: school.school_name || '',
+      } as any);
+    }
+  };
+
+  const handleGeneratePdf = async () => {
+    if (!userId) {
+      setMessage('Session not initialized yet.');
+      return;
+    }
+
+    if (!data.pathway) {
+      setMessage('Please select a pathway first.');
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      setMessage('Generating PDF...');
+      
+      await saveDraft(userId, allData);
+      const blob = await generateFormH(allData);
+      
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `skills-competency-${data.pathway?.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      setMessage('Form H downloaded!');
+    } catch (error) {
+      console.error('Error generating Form H:', error);
+      setMessage('Failed to generate PDF.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <h3 className="font-semibold text-amber-800">About Skills Competency (Form H)</h3>
+        <p className="mt-2 text-sm text-amber-700">
+          This form is required for exam-based applicants whose legal education falls under Rule 520.18 
+          (JD programs starting after August 1, 2016, or LLM programs starting after August 1, 2018).
+        </p>
+        <p className="mt-2 text-sm text-amber-700">
+          You must select <strong>one pathway</strong> and provide the required documentation for that pathway.
+        </p>
+      </div>
+
+      {message && (
+        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+          {message}
+        </div>
+      )}
+
+      {/* Pathway Selection */}
+      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 className="mb-4 text-lg font-semibold text-slate-900">Select Your Pathway</h3>
+        <div className="space-y-3">
+          {PATHWAYS.map((pathway) => (
+            <label
+              key={pathway.value}
+              className={`block cursor-pointer rounded-lg border p-4 transition-colors ${
+                data.pathway === pathway.value
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-start gap-3">
+                <input
+                  type="radio"
+                  name="pathway"
+                  value={pathway.value}
+                  checked={data.pathway === pathway.value}
+                  onChange={() => updateField('pathway', pathway.value)}
+                  className="mt-1 h-4 w-4 text-blue-600"
+                />
+                <div>
+                  <div className="font-medium text-slate-900">{pathway.label}</div>
+                  <div className="mt-1 text-sm text-slate-600">{pathway.description}</div>
+                </div>
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Pathway-specific fields */}
+      {data.pathway === 'Pathway 1' && (
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 1 – Law School Certification</h3>
+          <p className="mb-4 text-sm text-slate-600">
+            Your law school official will certify that the school has developed a plan and that you have 
+            acquired sufficient competency in skills and professional values.
+          </p>
+          
+          {lawSchools && lawSchools.length > 0 && (
+            <div className="mb-4 rounded-md bg-blue-50 p-4">
+              <Label className="text-blue-800">Pre-fill from Education History</Label>
+              <select
+                className="mt-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+                onChange={(e) => {
+                  const idx = parseInt(e.target.value, 10);
+                  if (!isNaN(idx)) prefillLawSchool(idx);
+                }}
+                defaultValue=""
+              >
+                <option value="">Select a law school...</option>
+                {lawSchools.map((school, i) => (
+                  <option key={i} value={i}>
+                    {school.school_name || `School #${i + 1}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label>Law School Official Name</Label>
+              <Input
+                value={data.p1_school_official_name}
+                onChange={(e) => updateField('p1_school_official_name', e.target.value)}
+                placeholder="Name of certifying official"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Title</Label>
+              <Input
+                value={data.p1_school_official_title}
+                onChange={(e) => updateField('p1_school_official_title', e.target.value)}
+                placeholder="e.g., Associate Dean, Registrar"
+              />
+            </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label>Law School Name</Label>
+              <Input
+                value={data.law_school_name}
+                onChange={(e) => updateField('law_school_name', e.target.value)}
+                placeholder="e.g., Fordham University School of Law"
+              />
+            </div>
+          </div>
+          <p className="mt-4 text-xs text-slate-500">
+            Note: The official will sign and date this form. Your name will be pre-filled from your application.
+          </p>
+        </div>
+      )}
+
+      {data.pathway === 'Pathway 2' && (
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 2 – 15 Credits Experiential Coursework</h3>
+          <p className="mb-4 text-sm text-slate-600">
+            Your law school official will certify that you have completed at least 15 credit hours of 
+            practice-based experiential coursework.
+          </p>
+          
+          {lawSchools && lawSchools.length > 0 && (
+            <div className="mb-4 rounded-md bg-blue-50 p-4">
+              <Label className="text-blue-800">Pre-fill from Education History</Label>
+              <select
+                className="mt-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+                onChange={(e) => {
+                  const idx = parseInt(e.target.value, 10);
+                  if (!isNaN(idx)) prefillLawSchool(idx);
+                }}
+                defaultValue=""
+              >
+                <option value="">Select a law school...</option>
+                {lawSchools.map((school, i) => (
+                  <option key={i} value={i}>
+                    {school.school_name || `School #${i + 1}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label>Law School Official Name</Label>
+              <Input
+                value={data.p2_school_official_name}
+                onChange={(e) => updateField('p2_school_official_name', e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Title</Label>
+              <Input
+                value={data.p2_school_official_title}
+                onChange={(e) => updateField('p2_school_official_title', e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label>Law School Name</Label>
+              <Input
+                value={data.law_school_name}
+                onChange={(e) => updateField('law_school_name', e.target.value)}
+                placeholder="e.g., Fordham University School of Law"
+              />
+            </div>
+          </div>
+          <p className="mt-4 text-xs text-slate-500">
+            Note: The official will sign and date this form. Your name will be pre-filled from your application.
+          </p>
+        </div>
+      )}
+
+      {data.pathway === 'Pathway 3' && (
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 3 – Pro Bono Scholars Program</h3>
+          <div className="rounded-md bg-green-50 p-4">
+            <p className="text-sm text-green-800">
+              <strong>Good news!</strong> If you completed the Pro Bono Scholars Program, this pathway is straightforward.
+            </p>
+            <p className="mt-2 text-sm text-green-700">
+              This form confirms that you successfully completed the Pro Bono Scholars Program as prescribed 
+              in section 520.17 of the Rules of the Court of Appeals. Proof is provided in the Form Affidavit 
+              of Applicant's Completion of the Pro Bono Scholars Program.
+            </p>
+            <p className="mt-2 text-sm text-green-700">
+              Your name will be pre-filled from your application. You will need to sign and date this form.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {data.pathway === 'Pathway 4' && (
+        <div className="space-y-6">
+          {/* Section A - Applicant Certification */}
+          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 4 – Section A: Applicant Certification</h3>
+            <p className="mb-4 text-sm text-slate-600">
+              Provide details about your six-month full-time apprenticeship.
+            </p>
+            
+            <div className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label>Dates of Apprenticeship - From (mm/dd/yyyy)</Label>
+                  <Input
+                    value={data.p4_from_date}
+                    onChange={(e) => updateField('p4_from_date', e.target.value)}
+                    placeholder="MM/DD/YYYY"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>To (mm/dd/yyyy)</Label>
+                  <Input
+                    value={data.p4_to_date}
+                    onChange={(e) => updateField('p4_to_date', e.target.value)}
+                    placeholder="MM/DD/YYYY"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Name of Firm/Law Office Where Apprenticeship Was Completed</Label>
+                <Input
+                  value={data.p4_employer_name}
+                  onChange={(e) => updateField('p4_employer_name', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Employer's Address</Label>
+                <Input
+                  value={data.p4_employer_street}
+                  onChange={(e) => updateField('p4_employer_street', e.target.value)}
+                  placeholder="Street Address"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-4">
+                <div className="space-y-1.5">
+                  <Label>City/Town/Village</Label>
+                  <Input value={data.p4_employer_city} onChange={(e) => updateField('p4_employer_city', e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>State</Label>
+                  <Input value={data.p4_employer_state} onChange={(e) => updateField('p4_employer_state', e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>ZIP</Label>
+                  <Input value={data.p4_employer_zip} onChange={(e) => updateField('p4_employer_zip', e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Country (if not US)</Label>
+                  <Input value={data.p4_employer_country} onChange={(e) => updateField('p4_employer_country', e.target.value)} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section B - Supervising Attorney Certification */}
+          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 4 – Section B: Supervising Attorney Certification</h3>
+            <p className="mb-4 text-sm text-slate-600">
+              Information about the supervising attorney who will certify your apprenticeship.
+            </p>
+            
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <Label>Name of Attorney (Supervisor)</Label>
+                <Input
+                  value={data.p4_attorney_name}
+                  onChange={(e) => updateField('p4_attorney_name', e.target.value)}
+                  placeholder="Full name of supervising attorney"
+                />
+              </div>
+
+              <div className="rounded-md bg-slate-50 p-4">
+                <p className="text-sm text-slate-700 font-medium mb-2">
+                  If the apprenticeship was NOT satisfactorily completed:
+                </p>
+                <div className="space-y-1.5">
+                  <Label>Explanation (if performance was not satisfactory)</Label>
+                  <textarea
+                    value={data.p4_unsatisfactory_explanation}
+                    onChange={(e) => updateField('p4_unsatisfactory_explanation', e.target.value)}
+                    className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    rows={3}
+                    placeholder="Leave blank if satisfactory"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Additional Facts (optional)</Label>
+                <textarea
+                  value={data.p4_additional_facts}
+                  onChange={(e) => updateField('p4_additional_facts', e.target.value)}
+                  className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  rows={3}
+                  placeholder="Any other facts bearing on applicant's qualifications, moral character, or fitness to practice law"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label>Attorney Title</Label>
+                  <Input
+                    value={data.p4_attorney_title}
+                    onChange={(e) => updateField('p4_attorney_title', e.target.value)}
+                    placeholder="e.g., Partner, Associate"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Attorney Employer</Label>
+                  <Input
+                    value={data.p4_attorney_employer}
+                    onChange={(e) => updateField('p4_attorney_employer', e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Jurisdiction Where Admitted</Label>
+                  <Input
+                    value={data.p4_attorney_jurisdiction}
+                    onChange={(e) => updateField('p4_attorney_jurisdiction', e.target.value)}
+                    placeholder="e.g., New York"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Attorney Email</Label>
+                  <Input
+                    value={data.p4_attorney_email}
+                    onChange={(e) => updateField('p4_attorney_email', e.target.value)}
+                    type="email"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Attorney Phone</Label>
+                  <Input
+                    value={data.p4_attorney_phone}
+                    onChange={(e) => updateField('p4_attorney_phone', e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {data.pathway === 'Pathway 5' && (
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 5 – Practice in Another Jurisdiction</h3>
+          <p className="mb-4 text-sm text-slate-600">
+            Provide details about your admission and practice in another jurisdiction.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label>Jurisdiction Admitted</Label>
+              <Input
+                value={data.p5_jurisdiction}
+                onChange={(e) => updateField('p5_jurisdiction', e.target.value)}
+                placeholder="e.g., California, District of Columbia"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Court of Admission</Label>
+              <Input
+                value={data.p5_court_of_admission}
+                onChange={(e) => updateField('p5_court_of_admission', e.target.value)}
+                placeholder="e.g., Supreme Court of California"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Date of Admission</Label>
+              <Input
+                value={data.p5_admission_date}
+                onChange={(e) => updateField('p5_admission_date', e.target.value)}
+                placeholder="MM/DD/YYYY"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Duration of Practice</Label>
+              <Input
+                value={data.p5_practice_duration}
+                onChange={(e) => updateField('p5_practice_duration', e.target.value)}
+                placeholder="e.g., 3 years"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Generate PDF Button */}
+      {data.pathway && (
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <Button
+            type="button"
+            onClick={handleGeneratePdf}
+            disabled={isGenerating || !data.pathway}
+            className="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-slate-300"
+          >
+            {isGenerating ? 'Generating...' : `Generate Form H PDF (${data.pathway})`}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default GroupSkillsCompetency;

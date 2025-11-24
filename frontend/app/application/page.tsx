@@ -21,6 +21,9 @@ import Group10ChildSupport from '../../components/groups/Group10ChildSupport';
 import Group11Financial from '../../components/groups/Group11Financial';
 import Group12Licenses from '../../components/groups/Group12Licenses';
 import Group13Signature from '../../components/groups/Group13Signature';
+import GroupCharacterAffirmants from '../../components/groups/GroupCharacterAffirmants';
+import GroupEmploymentAffirmants from '../../components/groups/GroupEmploymentAffirmants';
+import GroupSkillsCompetency from '../../components/groups/GroupSkillsCompetency';
 
 const STEPS = [
   Group1Start,
@@ -36,6 +39,9 @@ const STEPS = [
   Group11Financial,
   Group12Licenses,
   Group13Signature,
+  GroupCharacterAffirmants,
+  GroupEmploymentAffirmants,
+  GroupSkillsCompetency,
 ];
 
 export default function ApplicationPage() {

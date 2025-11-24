@@ -52,3 +52,93 @@ export async function generatePdf(payload: unknown): Promise<Blob> {
   
   return res.blob();
 }
+
+/**
+ * Generate Form E (Law School Certificate) for a specific law school
+ */
+export async function generateFormE(payload: unknown, lawSchoolIndex: number = 0): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-form-e`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload, lawSchoolIndex }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}
+
+/**
+ * Generate all Form E PDFs (one per law school)
+ */
+export async function generateAllFormE(payload: unknown): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-all-form-e`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}
+
+/**
+ * Generate Form C (Good Moral Character) for a specific affirmant
+ */
+export async function generateFormC(payload: unknown, affirmantIndex: number = 0): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-form-c`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload, affirmantIndex }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}
+
+/**
+ * Generate Form D (Employment Affirmation) for a specific employment
+ */
+export async function generateFormD(payload: unknown, affirmantIndex: number = 0): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-form-d`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload, affirmantIndex }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}
+
+/**
+ * Generate Form H (Skills Competency and Professional Values)
+ */
+export async function generateFormH(payload: unknown): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-form-h`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}
