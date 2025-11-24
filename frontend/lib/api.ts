@@ -20,6 +20,15 @@ export async function initSession(userId: string, email?: string): Promise<strin
   return data.userId;
 }
 
+export async function getDraft(userId: string): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/get-draft/${userId}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  const body = await handleResponse<{ data: any }>(res);
+  return body.data;
+}
+
 export async function saveDraft(userId: string, payload: unknown): Promise<void> {
   const res = await fetch(`${API_BASE}/api/save-draft`, {
     method: 'POST',
@@ -28,4 +37,3 @@ export async function saveDraft(userId: string, payload: unknown): Promise<void>
   });
   await handleResponse(res);
 }
-

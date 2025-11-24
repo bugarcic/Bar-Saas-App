@@ -6,19 +6,19 @@ import Button from './ui/Button';
 import { saveDraft } from '../lib/api';
 
 const GROUPS = [
-  'Group 1 · Applicant Info',
-  'Group 2 · Other Names',
-  'Group 3 · Identification',
-  'Group 4 · Birth Details',
-  'Group 5 · Contact Info',
-  'Group 6 · Prior Residence',
-  'Group 7 · Office Address',
-  'Group 8 · Employment History',
-  'Group 9 · Education',
-  'Group 10 · Character & Conduct',
+  'Group 1 · Start',
+  'Group 2 · Identity',
+  'Group 3 · Contact',
+  'Group 4 · Education',
+  'Group 5 · Work',
+  'Group 6 · Bar Admissions',
+  'Group 7 · Military',
+  'Group 8 · Legal Matters',
+  'Group 9 · Fitness',
+  'Group 10 · Child Support',
   'Group 11 · Financials',
-  'Group 12 · Licenses & Bonds',
-  'Group 13 · Signature & Agent',
+  'Group 12 · Licenses',
+  'Group 13 · Signature',
 ];
 
 interface WizardLayoutProps {
@@ -45,25 +45,44 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const lastSavedDataRef = React.useRef<string>('');
 
-  const handleSaveDraft = async () => {
+  const handleSaveDraft = async (silent = false) => {
     if (!userId) {
-      setSaveMessage('Session not initialized yet.');
+      if (!silent) setSaveMessage('Session not initialized yet.');
+      return;
+    }
+
+    const currentDataStr = JSON.stringify(data);
+    if (currentDataStr === lastSavedDataRef.current) {
+      if (!silent) setSaveMessage('No changes to save.');
       return;
     }
 
     try {
       setIsSaving(true);
-      setSaveMessage(null);
+      if (!silent) setSaveMessage(null);
       await saveDraft(userId, data);
-      setSaveMessage('Draft saved!');
+      lastSavedDataRef.current = currentDataStr;
+      setSaveMessage(`Saved at ${new Date().toLocaleTimeString()}`);
     } catch (error) {
       console.error(error);
-      setSaveMessage('Failed to save draft.');
+      if (!silent) setSaveMessage('Failed to save draft.');
     } finally {
       setIsSaving(false);
     }
   };
+
+  // Auto-save every 30 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (userId) {
+        handleSaveDraft(true);
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [userId, data]);
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -112,10 +131,12 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
             <footer className="mt-8 border-t border-slate-200 pt-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <Button variant="outline" onClick={handleSaveDraft} disabled={isSaving}>
-                  Save Draft
-                </Button>
-              {saveMessage && <p className="text-sm text-slate-600">{saveMessage}</p>}
+                <div className="flex items-center gap-4">
+                  <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving}>
+                    {isSaving ? 'Saving...' : 'Save Draft'}
+                  </Button>
+                  {saveMessage && <span className="text-sm text-slate-500">{saveMessage}</span>}
+                </div>
                 <div className="flex gap-3">
                   <Button variant="secondary" onClick={handleBack} disabled={currentStep === 0}>
                     Back
@@ -134,4 +155,3 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 };
 
 export default WizardLayout;
-

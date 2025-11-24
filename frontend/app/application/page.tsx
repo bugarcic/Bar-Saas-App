@@ -4,14 +4,45 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../lib/supabaseClient';
 import WizardLayout from '../../components/WizardLayout';
-import Group1Personal from '../../components/groups/Group1Personal';
 import { useApplicationStore } from '../../store/useApplicationStore';
-import { initSession } from '../../lib/api';
+import { initSession, getDraft } from '../../lib/api';
+
+// Import group components
+import Group1Start from '../../components/groups/Group1Start';
+import Group2Identity from '../../components/groups/Group2Identity';
+import Group3Contact from '../../components/groups/Group3Contact';
+import Group4Education from '../../components/groups/Group4Education';
+import Group5Employment from '../../components/groups/Group5Employment';
+import Group6BarAdmissions from '../../components/groups/Group6BarAdmissions';
+import Group7Military from '../../components/groups/Group7Military';
+import Group8LegalMatters from '../../components/groups/Group8LegalMatters';
+import Group9Condition from '../../components/groups/Group9Condition';
+import Group10ChildSupport from '../../components/groups/Group10ChildSupport';
+import Group11Financial from '../../components/groups/Group11Financial';
+import Group12Licenses from '../../components/groups/Group12Licenses';
+import Group13Signature from '../../components/groups/Group13Signature';
+
+const STEPS = [
+  Group1Start,
+  Group2Identity,
+  Group3Contact,
+  Group4Education,
+  Group5Employment,
+  Group6BarAdmissions,
+  Group7Military,
+  Group8LegalMatters,
+  Group9Condition,
+  Group10ChildSupport,
+  Group11Financial,
+  Group12Licenses,
+  Group13Signature,
+];
 
 export default function ApplicationPage() {
   const router = useRouter();
   const currentStep = useApplicationStore((state) => state.currentStep);
   const setUserId = useApplicationStore((state) => state.setUserId);
+  const setData = useApplicationStore((state) => state.setData);
   const userId = useApplicationStore((state) => state.userId);
   const [sessionChecked, setSessionChecked] = useState(false);
   const [sessionError, setSessionError] = useState<string | null>(null);
@@ -31,10 +62,17 @@ export default function ApplicationPage() {
         setSessionError(null);
         const supabaseUserId = session.user.id;
         setUserId(supabaseUserId);
-        initSession(supabaseUserId, session.user.email ?? undefined).catch((error) => {
-          console.error('Failed to init session', error);
-          setSessionError('Unable to initialize user session.');
-        });
+        initSession(supabaseUserId, session.user.email ?? undefined)
+          .then(() => getDraft(supabaseUserId))
+          .then((data) => {
+            if (data && Object.keys(data).length > 0) {
+              setData(data);
+            }
+          })
+          .catch((error) => {
+            console.error('Failed to init session or fetch draft', error);
+            setSessionError('Unable to initialize user session.');
+          });
       })
       .catch((error) => {
         console.error(error);
@@ -55,19 +93,16 @@ export default function ApplicationPage() {
     );
   }
 
+  const CurrentStepComponent = STEPS[currentStep] || (() => <p>Step not found</p>);
+
   return (
     <WizardLayout title="New Application Wizard">
       {sessionError && <p className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{sessionError}</p>}
       {!userId ? (
         <p className="text-slate-600">Preparing your workspace...</p>
-      ) : currentStep === 0 ? (
-        <Group1Personal />
       ) : (
-        <p className="text-slate-700">
-          Step {currentStep + 1} coming soon. Replace this placeholder with the actual step component.
-        </p>
+        <CurrentStepComponent />
       )}
     </WizardLayout>
   );
 }
-

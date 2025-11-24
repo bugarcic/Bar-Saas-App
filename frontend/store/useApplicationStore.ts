@@ -13,6 +13,7 @@ interface ApplicationState {
   setSection: (section: SectionKey, value: SectionData) => void;
   setCurrentStep: (step: number) => void;
   setUserId: (id: string) => void;
+  setData: (data: Partial<Record<SectionKey, SectionData>>) => void;
   reset: () => void;
 }
 
@@ -54,6 +55,7 @@ export const useApplicationStore = create<ApplicationState>()(
         })),
       setCurrentStep: (step) => set({ currentStep: step }),
       setUserId: (id) => set({ userId: id }),
+      setData: (newData) => set({ data: newData }),
       reset: () => set({ data: {}, currentStep: 0 }),
     }),
     {

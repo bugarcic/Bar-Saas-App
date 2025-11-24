@@ -26,7 +26,7 @@ const getSectionData = (data: PersonalInfoData | undefined) => ({
   ...(data ?? {}),
 });
 
-export const Group1Personal: React.FC = () => {
+export const Group2Identity: React.FC = () => {
   const data = useApplicationStore((state) => (state.data[SECTION_KEY] as PersonalInfoData | undefined));
   const setField = useApplicationStore((state) => state.setField);
 
@@ -177,6 +177,6 @@ const Field: React.FC<FieldProps> = ({ label, children }) => (
   </div>
 );
 
-export default Group1Personal;
+export default Group2Identity;
 
 
