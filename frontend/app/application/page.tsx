@@ -46,6 +46,7 @@ export default function ApplicationPage() {
   const userId = useApplicationStore((state) => state.userId);
   const [sessionChecked, setSessionChecked] = useState(false);
   const [sessionError, setSessionError] = useState<string | null>(null);
+  const [isDraftLoading, setIsDraftLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -62,16 +63,21 @@ export default function ApplicationPage() {
         setSessionError(null);
         const supabaseUserId = session.user.id;
         setUserId(supabaseUserId);
+        setIsDraftLoading(true);
         initSession(supabaseUserId, session.user.email ?? undefined)
           .then(() => getDraft(supabaseUserId))
           .then((data) => {
+            if (!active) return;
             if (data && Object.keys(data).length > 0) {
               setData(data);
             }
           })
           .catch((error) => {
             console.error('Failed to init session or fetch draft', error);
-            setSessionError('Unable to initialize user session.');
+            if (active) setSessionError('Unable to initialize user session.');
+          })
+          .finally(() => {
+            if (active) setIsDraftLoading(false);
           });
       })
       .catch((error) => {
@@ -98,8 +104,13 @@ export default function ApplicationPage() {
   return (
     <WizardLayout title="New Application Wizard">
       {sessionError && <p className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{sessionError}</p>}
-      {!userId ? (
-        <p className="text-slate-600">Preparing your workspace...</p>
+      {!userId || isDraftLoading ? (
+        <div className="flex min-h-[200px] items-center justify-center text-slate-600">
+          <div className="flex items-center gap-3">
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-blue-200 border-t-blue-600" />
+            <span>{!userId ? 'Preparing your workspace...' : 'Loading your saved responses...'}</span>
+          </div>
+        </div>
       ) : (
         <CurrentStepComponent />
       )}
