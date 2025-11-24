@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useApplicationStore } from '../store/useApplicationStore';
 import Button from './ui/Button';
-import { saveDraft } from '../lib/api';
+import { saveDraft, generatePdf } from '../lib/api';
 
 const GROUPS = [
   'Group 1 · Start',
@@ -44,6 +44,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   const userId = useApplicationStore((state) => state.userId);
 
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const lastSavedDataRef = React.useRef<string>('');
 
@@ -83,6 +84,41 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
     return () => clearInterval(interval);
   }, [userId, data]);
+
+  const handleGeneratePdf = async () => {
+    if (!userId) {
+      setSaveMessage('Session not initialized yet.');
+      return;
+    }
+
+    try {
+      setIsGeneratingPdf(true);
+      setSaveMessage('Generating PDF...');
+      
+      // First save the latest data
+      await saveDraft(userId, data);
+      
+      // Then generate the PDF
+      const blob = await generatePdf(data);
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'bar-admission-questionnaire.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      setSaveMessage('PDF downloaded!');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setSaveMessage('Failed to generate PDF.');
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -132,8 +168,11 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
             <footer className="mt-8 border-t border-slate-200 pt-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-4">
-                  <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving}>
+                  <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving || isGeneratingPdf}>
                     {isSaving ? 'Saving...' : 'Save Draft'}
+                  </Button>
+                  <Button onClick={handleGeneratePdf} disabled={isSaving || isGeneratingPdf}>
+                    {isGeneratingPdf ? 'Generating...' : 'Generate PDF'}
                   </Button>
                   {saveMessage && <span className="text-sm text-slate-500">{saveMessage}</span>}
                 </div>

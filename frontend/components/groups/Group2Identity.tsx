@@ -21,7 +21,7 @@ const getSectionData = (data: PersonalInfoData | undefined) => ({
   birth_city: '',
   birth_state: '',
   birth_country: '',
-  has_other_names: { field: 'Questionnaire Radio Button A2', type: 'radio', value: 'No' },
+  has_other_names: 'No',
   other_names: [] as Array<{ name: string; reason: string }>,
   ...(data ?? {}),
 });
@@ -32,12 +32,16 @@ export const Group2Identity: React.FC = () => {
 
   const section = useMemo(() => getSectionData(data), [data]);
   const otherNames = Array.isArray(section.other_names) ? section.other_names : [];
-  const hasOtherNames = (section.has_other_names as any)?.value === 'Yes';
+  // Support both legacy object format and new simple string format
+  const hasOtherNamesRaw = section.has_other_names;
+  const hasOtherNames = typeof hasOtherNamesRaw === 'object' && hasOtherNamesRaw !== null
+    ? (hasOtherNamesRaw as any).value === 'Yes'
+    : hasOtherNamesRaw === 'Yes';
 
   const updateField = (field: string, value: string) => setField(SECTION_KEY, field, value);
 
   const updateRadio = (value: 'Yes' | 'No') => {
-    setField(SECTION_KEY, 'has_other_names', { ...(section.has_other_names as any), value });
+    setField(SECTION_KEY, 'has_other_names', value);
     if (value === 'No') {
       setField(SECTION_KEY, 'other_names', []);
     }

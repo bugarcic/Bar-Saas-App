@@ -37,3 +37,18 @@ export async function saveDraft(userId: string, payload: unknown): Promise<void>
   });
   await handleResponse(res);
 }
+
+export async function generatePdf(payload: unknown): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-pdf`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}

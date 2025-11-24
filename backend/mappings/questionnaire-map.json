@@ -1,7 +1,7 @@
 {
   "header": {
-     "admission_type": "Questionnaire Radio Button 1",
-     "department_selection": "Questionnaire Radio Button 2"
+     "admission_type": { "field": "Questionnaire Radio Button 1", "type": "radio" },
+     "department_selection": { "field": "Questionnaire Radio Button 2", "type": "radio" }
   },
   "personal_info": {
     "first_name": "Questionnaire Text Field A1-1",

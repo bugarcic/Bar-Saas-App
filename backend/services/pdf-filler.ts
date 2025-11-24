@@ -73,9 +73,23 @@ function applyFieldValue(
 
   try {
     if (fieldType === 'radio') {
-      const radioValue = booleanToYesNo(value);
+      // Handle both simple string values ('Yes'/'No') and legacy object format ({ value: 'Yes' })
+      let rawValue = value;
+      if (typeof value === 'object' && value !== null && 'value' in value) {
+        rawValue = value.value;
+      }
       const radioGroup: PDFRadioGroup = form.getRadioGroup(fieldName);
-      radioGroup.select(radioValue);
+      const options = radioGroup.getOptions();
+      
+      // Map Yes/No to Choice1/Choice2 which is what the PDF uses
+      const radioValue = mapYesNoToChoice(rawValue, options, fieldName);
+      
+      console.log(`[pdf-filler] Radio "${fieldName}": mapping "${rawValue}" → "${radioValue}", available options: ${options.join(', ')}`);
+      if (options.includes(radioValue)) {
+        radioGroup.select(radioValue);
+      } else {
+        console.warn(`[pdf-filler] Option "${radioValue}" not found for radio group "${fieldName}". Options: ${options.join(', ')}`);
+      }
     } else if (fieldType === 'checkbox') {
       const checkbox: PDFCheckBox = form.getCheckBox(fieldName);
       if (!!value) {
@@ -108,6 +122,65 @@ function booleanToYesNo(input: any): string {
   return String(input);
 }
 
+/**
+ * Maps user-friendly values to PDF radio button options.
+ * Handles Yes/No → Choice1/Choice2 mapping and other patterns.
+ */
+function mapYesNoToChoice(input: any, availableOptions: string[], fieldName: string): string {
+  const strValue = booleanToYesNo(input);
+  const lowerValue = strValue.toLowerCase();
+  
+  // If the value is already one of the available options, use it directly
+  if (availableOptions.includes(strValue)) {
+    return strValue;
+  }
+  
+  // Try case-insensitive match first
+  const match = availableOptions.find(opt => opt.toLowerCase() === lowerValue);
+  if (match) return match;
+  
+  // Check if options are Choice1/Choice2 or "Choice 1"/"Choice 2" pattern (binary choice)
+  const hasChoice1 = availableOptions.some(opt => opt === 'Choice1' || opt === 'Choice 1');
+  const hasChoice2 = availableOptions.some(opt => opt === 'Choice2' || opt === 'Choice 2');
+  const choice1Option = availableOptions.find(opt => opt === 'Choice1' || opt === 'Choice 1');
+  const choice2Option = availableOptions.find(opt => opt === 'Choice2' || opt === 'Choice 2');
+  
+  if (hasChoice1 && hasChoice2 && choice1Option && choice2Option) {
+    // For Yes/No questions: Choice1 = No, Choice2 = Yes
+    if (lowerValue === 'yes' || lowerValue === 'true') {
+      return choice2Option;
+    }
+    if (lowerValue === 'no' || lowerValue === 'false') {
+      return choice1Option;
+    }
+    // For Examination/Motion: Choice 1 = Examination, Choice 2 = Motion
+    if (lowerValue === 'examination') {
+      return choice1Option;
+    }
+    if (lowerValue === 'motion') {
+      return choice2Option;
+    }
+  }
+  
+  // For multi-option radio buttons (more than 2 choices), try to match by index
+  if (availableOptions.length > 2) {
+    // Try matching by common patterns
+    const departmentMap: Record<string, number> = {
+      'first department': 0,
+      'second department': 1,
+      'third department': 2,
+      'fourth department': 3,
+    };
+    
+    if (departmentMap[lowerValue] !== undefined && availableOptions[departmentMap[lowerValue]]) {
+      return availableOptions[departmentMap[lowerValue]];
+    }
+  }
+  
+  // Return the original value if no mapping found
+  return strValue;
+}
+
 function formatValue(value: any): string {
   if (value instanceof Date) {
     return value.toISOString().split('T')[0];
@@ -115,6 +188,8 @@ function formatValue(value: any): string {
   if (typeof value === 'number') {
     return value.toString();
   }
-  return value;
+  if (typeof value === 'object') {
+      return JSON.stringify(value);
+  }
+  return String(value);
 }
-

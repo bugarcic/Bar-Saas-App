@@ -77,9 +77,11 @@ app.post('/api/save-draft', async (req, res) => {
 
 app.post('/api/generate-pdf', async (req, res) => {
   try {
-    // Placeholder for upcoming PDF generation integration
-    await generateQuestionnairePdf(req.body.data ?? {});
-    res.json({ success: true, message: 'PDF generation queued' });
+    const pdfBytes = await generateQuestionnairePdf(req.body.data ?? {});
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=questionnaire.pdf');
+    res.send(Buffer.from(pdfBytes));
   } catch (error) {
     console.error('Error generating PDF:', error);
     res.status(500).json({ error: 'Failed to generate PDF' });
