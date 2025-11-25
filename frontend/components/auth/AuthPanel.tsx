@@ -33,6 +33,15 @@ export const AuthPanel: React.FC = () => {
   }, []);
 
   const handleAuth = async (mode: 'signin' | 'signup') => {
+    // Validate credentials before submitting
+    if (!email.trim() || !password.trim()) {
+      setAuthMessage(mode === 'signup' 
+        ? 'Enter credentials to create an account' 
+        : 'Enter your email and password to sign in');
+      setMessageType('error');
+      return;
+    }
+
     setIsSubmitting(true);
     setAuthMessage(null);
     try {

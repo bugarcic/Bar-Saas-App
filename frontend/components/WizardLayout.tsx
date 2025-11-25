@@ -4,26 +4,52 @@ import React, { useState } from 'react';
 import { useApplicationStore } from '../store/useApplicationStore';
 import Button from './ui/Button';
 import { saveDraft, generatePdf, generateFormE, generateFormC, generateFormD, generateFormH, generateFormF, generateFormG } from '../lib/api';
+import { 
+  HiOutlinePlay, 
+  HiOutlineUser, 
+  HiOutlinePhone, 
+  HiOutlineAcademicCap, 
+  HiOutlineBriefcase, 
+  HiOutlineScale, 
+  HiOutlineShieldCheck,
+  HiOutlineDocumentText,
+  HiOutlineHeart,
+  HiOutlineUsers,
+  HiOutlineCurrencyDollar,
+  HiOutlineIdentification,
+  HiOutlinePencil
+} from 'react-icons/hi';
 
-const GROUPS = [
-  'Group 1 · Start',
-  'Group 2 · Identity',
-  'Group 3 · Contact',
-  'Group 4 · Education',
-  'Group 5 · Work',
-  'Group 6 · Bar Admissions',
-  'Group 7 · Military',
-  'Group 8 · Legal Matters',
-  'Group 9 · Fitness',
-  'Group 10 · Child Support',
-  'Group 11 · Financials',
-  'Group 12 · Licenses',
-  'Group 13 · Signature',
+// Main form items with icons
+const MAIN_FORM_ITEMS = [
+  { label: 'Start', icon: HiOutlinePlay },
+  { label: 'Identity', icon: HiOutlineUser },
+  { label: 'Contact', icon: HiOutlinePhone },
+  { label: 'Education', icon: HiOutlineAcademicCap },
+  { label: 'Employment', icon: HiOutlineBriefcase },
+  { label: 'Bar Admissions', icon: HiOutlineScale },
+  { label: 'Military', icon: HiOutlineShieldCheck },
+  { label: 'Legal Matters', icon: HiOutlineDocumentText },
+  { label: 'Fitness', icon: HiOutlineHeart },
+  { label: 'Child Support', icon: HiOutlineUsers },
+  { label: 'Financials', icon: HiOutlineCurrencyDollar },
+  { label: 'Licenses', icon: HiOutlineIdentification },
+  { label: 'Signature', icon: HiOutlinePencil },
+];
+
+// Affirmation form items (keep as simple strings)
+const AFFIRMATION_ITEMS = [
   'Character Affirmants',
   'Employment Affirmants',
   'Skills Competency',
   'Pro Bono (50 Hours)',
   'Pro Bono Scholars',
+];
+
+// Combined for total steps calculation
+const GROUPS = [
+  ...MAIN_FORM_ITEMS.map(item => item.label),
+  ...AFFIRMATION_ITEMS,
 ];
 
 interface WizardLayoutProps {
@@ -390,9 +416,13 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
               <nav className="space-y-1 text-sm">
                 {GROUPS.map((label, index) => {
                   const isActive = index === currentStep;
-                  const isAffirmantSection = index >= 13; // Groups 1-13 are questionnaire, rest are affirmants
+                  const isMainFormItem = index < 13;
+                  const isAffirmantSection = index >= 13;
                   const isFirstAffirmant = index === 13;
                   const isFirstGroup = index === 0;
+                  
+                  // Get icon for main form items
+                  const MainFormIcon = isMainFormItem ? MAIN_FORM_ITEMS[index]?.icon : null;
                   
                   return (
                     <React.Fragment key={label}>
@@ -421,7 +451,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                             : 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'
                         }`}
                       >
-                        {label}
+                        {isMainFormItem ? (
+                          <div className="flex items-center justify-between">
+                            <span>{label}</span>
+                            {MainFormIcon && <MainFormIcon className="h-4 w-4 opacity-60" />}
+                          </div>
+                        ) : (
+                          label
+                        )}
                       </button>
                     </React.Fragment>
                   );
