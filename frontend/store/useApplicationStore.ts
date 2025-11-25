@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
-import type { AncillaryMaps, QuestionnaireMap, SchemaValue } from '../types/schema';
 
-type SectionKey = keyof QuestionnaireMap | keyof AncillaryMaps | string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SchemaValue = any;
+type SectionKey = string;
 type SectionData = Record<string, SchemaValue>;
 
 interface ApplicationState {
