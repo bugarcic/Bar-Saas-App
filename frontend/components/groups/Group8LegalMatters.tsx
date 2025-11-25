@@ -42,8 +42,8 @@ const IncidentBlock: React.FC<{
   index: number;
   updateFn: (index: number, field: keyof CriminalIncident, value: string) => void;
 }> = ({ incident, index, updateFn }) => (
-  <div className="rounded border border-slate-200 bg-white p-4 shadow-sm">
-    <h4 className="mb-2 font-medium text-slate-700">Incident #{index + 1}</h4>
+  <div className="rounded border border-slate-700 bg-slate-800/50 p-4 ">
+    <h4 className="mb-2 font-medium text-slate-300">Incident #{index + 1}</h4>
     <div className="grid gap-4">
       <div className="space-y-2">
         <Label>Court & Location</Label>
@@ -58,7 +58,7 @@ const IncidentBlock: React.FC<{
         <textarea
           value={incident.disposition_and_facts}
           onChange={(e) => updateFn(index, 'disposition_and_facts', e.target.value)}
-          className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           rows={3}
         />
       </div>
@@ -119,34 +119,30 @@ export const Group8LegalMatters: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Criminal History */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Criminal History</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Criminal History</h3>
         <div className="space-y-4">
           <Label>Have you ever been arrested, charged, indicted, convicted, or pled guilty to any crime/offense (including DWI/DWAI)?</Label>
           <p className="text-xs text-slate-500">Include all matters, even if dismissed or sealed, unless strictly excepted by the instructions.</p>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={criminal.has_issue?.value === 'Yes'}
                 onChange={() => updateCriminalRadio('Yes')}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={criminal.has_issue?.value === 'No'}
                 onChange={() => updateCriminalRadio('No')}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
 
           {criminal.has_issue?.value === 'Yes' && (
-            <div className="space-y-6 rounded-md bg-slate-50 p-4">
+            <div className="space-y-6 rounded-md bg-slate-700/50 p-4">
               {criminal.incidents.map((incident, i) => (
                 <IncidentBlock
                   key={i}
@@ -162,8 +158,8 @@ export const Group8LegalMatters: React.FC = () => {
       </div>
 
       {/* Civil Matters */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Civil & Administrative Matters</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Civil & Administrative Matters</h3>
         
         <div className="space-y-6">
           <IssueBlock
@@ -204,7 +200,7 @@ export const Group8LegalMatters: React.FC = () => {
             <textarea
               value={generalExplanation}
               onChange={(e) => updateGeneralExplanation(e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={4}
               placeholder="Provide details for checked items..."
             />
@@ -217,23 +213,21 @@ export const Group8LegalMatters: React.FC = () => {
 
 const IssueBlock: React.FC<{ label: string; data: CivilMatterData; updateFn: (val: any) => void }> = ({ label, data, updateFn }) => (
   <div className="space-y-2">
-    <p className="text-sm font-medium text-slate-700">{label}</p>
+    <p className="text-sm font-medium text-slate-300">{label}</p>
     <div className="flex gap-4">
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
         <input
           type="radio"
           checked={data.has_issue?.value === 'Yes'}
           onChange={() => updateFn({ type: 'radio', value: 'Yes' })}
-          className="h-4 w-4 text-blue-600"
         />
         Yes
       </label>
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
         <input
           type="radio"
           checked={data.has_issue?.value === 'No'}
           onChange={() => updateFn({ type: 'radio', value: 'No' })}
-          className="h-4 w-4 text-blue-600"
         />
         No
       </label>

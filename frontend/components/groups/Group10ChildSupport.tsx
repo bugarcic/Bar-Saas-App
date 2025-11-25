@@ -40,36 +40,32 @@ export const Group10ChildSupport: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Child Support</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Child Support</h3>
         
         <div className="space-y-6">
           <div className="space-y-2">
             <Label>Are you currently under a legal obligation to pay child support?</Label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={section.has_obligation?.value === 'Yes'}
                   onChange={() => updateRadio('has_obligation', 'Yes')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> Yes             </label>
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={section.has_obligation?.value === 'No'}
                   onChange={() => updateRadio('has_obligation', 'No')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                No
-              </label>
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> No             </label>
             </div>
           </div>
 
           {section.has_obligation?.value === 'Yes' && (
-            <div className="space-y-4 rounded-md bg-slate-50 p-4">
+            <div className="space-y-4 rounded-md bg-slate-700/50 p-4">
               <YesNoQuestion
                 label="Are you 4 months or more in arrears?"
                 yes={section.arrears_4_months?.value === 'Yes'}
@@ -96,7 +92,7 @@ export const Group10ChildSupport: React.FC = () => {
                 <textarea
                   value={section.explanation}
                   onChange={(e) => updateField('explanation', e.target.value)}
-                  className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   rows={3}
                 />
               </div>
@@ -110,23 +106,21 @@ export const Group10ChildSupport: React.FC = () => {
 
 const YesNoQuestion: React.FC<{ label: string; yes: boolean; onChange: (val: string) => void }> = ({ label, yes, onChange }) => (
   <div className="space-y-1">
-    <p className="text-sm text-slate-700">{label}</p>
+    <p className="text-sm text-slate-300">{label}</p>
     <div className="flex gap-4">
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
         <input
           type="radio"
           checked={yes}
           onChange={() => onChange('Yes')}
-          className="h-4 w-4 text-blue-600"
         />
         Yes
       </label>
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
         <input
           type="radio"
           checked={!yes}
           onChange={() => onChange('No')}
-          className="h-4 w-4 text-blue-600"
         />
         No
       </label>

@@ -43,38 +43,34 @@ export const Group6BarAdmissions: React.FC = () => {
     sectionKey: string,
     data: IssueData
   ) => (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-4 text-base font-semibold text-slate-900">{title}</h3>
+    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+      <h3 className="mb-4 text-base font-semibold text-white">{title}</h3>
       <div className="space-y-4">
         <Label>{label}</Label>
         <div className="flex gap-4">
-          <label className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
             <input
               type="radio"
               checked={data.has_issue?.value === 'Yes'}
               onChange={() => updateIssue(sectionKey, 'has_issue', { type: 'radio', value: 'Yes' })}
-              className="h-4 w-4 text-blue-600"
-            />
-            Yes
-          </label>
-          <label className="flex items-center gap-2">
+              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+            /> Yes             </label>
+          <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
             <input
               type="radio"
               checked={data.has_issue?.value === 'No'}
               onChange={() => updateIssue(sectionKey, 'has_issue', { type: 'radio', value: 'No' })}
-              className="h-4 w-4 text-blue-600"
-            />
-            No
-          </label>
+              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+            /> No             </label>
         </div>
 
         {data.has_issue?.value === 'Yes' && (
-          <div className="space-y-2 rounded-md bg-slate-50 p-4">
+          <div className="space-y-2 rounded-md bg-slate-700/50 p-4">
             <Label>Explanation / Details</Label>
             <textarea
               value={data.details}
               onChange={(e) => updateIssue(sectionKey, 'details', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={3}
               placeholder="Provide full details (Dates, Courts, Outcomes, etc.)"
             />

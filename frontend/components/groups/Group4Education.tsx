@@ -122,9 +122,9 @@ export const Group4Education: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Undergraduate & Graduate Schools</h3>
-        <p className="mb-4 text-sm text-slate-600">List colleges, universities, and professional schools (other than law schools).</p>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Undergraduate & Graduate Schools</h3>
+        <p className="mb-4 text-sm text-slate-300">List colleges, universities, and professional schools (other than law schools).</p>
         {undergrad.map((entry, i) => (
           <SchoolEntry
              key={i}
@@ -136,9 +136,9 @@ export const Group4Education: React.FC = () => {
         ))}
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Law Schools</h3>
-        <p className="mb-4 text-sm text-slate-600">List every law school attended.</p>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Law Schools</h3>
+        <p className="mb-4 text-sm text-slate-300">List every law school attended.</p>
         {lawSchools.map((entry, i) => (
           <SchoolEntry
              key={i}
@@ -180,7 +180,7 @@ const SchoolEntry: React.FC<{
   updateFn: (index: number, field: keyof EducationEntry, value: string) => void;
   titlePrefix: string;
 }> = ({ entry, index, updateFn, titlePrefix }) => (
-  <div className="mb-6 rounded-md border border-slate-200 p-4">
+  <div className="mb-6 rounded-md border border-slate-700 p-4">
     <h4 className="mb-3 font-medium text-slate-800">{titlePrefix} #{index + 1}</h4>
     <div className="grid gap-4">
       <div className="space-y-2">
@@ -228,32 +228,28 @@ const DisciplineSection: React.FC<{
   data: EducationDiscipline | DiscontinuedStudies;
   updateFn: (field: string, value: any) => void;
 }> = ({ title, data, updateFn }) => (
-  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-    <h3 className="mb-4 text-base font-semibold text-slate-900">{title}</h3>
+  <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+    <h3 className="mb-4 text-base font-semibold text-white">{title}</h3>
     <div className="space-y-4">
       <div className="flex gap-4">
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
           <input
             type="radio"
             checked={data.has_issue?.value === 'Yes'}
             onChange={() => updateFn('has_issue', { type: 'radio', value: 'Yes' })}
-            className="h-4 w-4 text-blue-600"
-          />
-          Yes
-        </label>
-        <label className="flex items-center gap-2">
+            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+          /> Yes             </label>
+        <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
           <input
             type="radio"
             checked={data.has_issue?.value === 'No'}
             onChange={() => updateFn('has_issue', { type: 'radio', value: 'No' })}
-            className="h-4 w-4 text-blue-600"
-          />
-          No
-        </label>
+            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+          /> No             </label>
       </div>
 
       {data.has_issue?.value === 'Yes' && (
-        <div className="space-y-4 rounded-md bg-slate-50 p-4">
+        <div className="space-y-4 rounded-md bg-slate-700/50 p-4">
           <div className="space-y-2">
             <Label>Institution Name</Label>
             <Input value={data.institution} onChange={(e) => updateFn('institution', e.target.value)} />

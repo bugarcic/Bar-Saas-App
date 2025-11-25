@@ -100,33 +100,29 @@ export const Group11Financial: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Judgments */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Unsatisfied Judgments</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Unsatisfied Judgments</h3>
         <div className="space-y-4">
           <Label>Do you have any unsatisfied judgments against you?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={judgments.has_issue?.value === 'Yes'}
                 onChange={() => updateField('financial_judgments', 'has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={judgments.has_issue?.value === 'No'}
                 onChange={() => updateField('financial_judgments', 'has_issue', { type: 'radio', value: 'No' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
           
           {judgments.has_issue?.value === 'Yes' && (
-            <div className="grid gap-4 rounded-md bg-slate-50 p-4">
+            <div className="grid gap-4 rounded-md bg-slate-700/50 p-4">
               <div className="space-y-2">
                 <Label>Creditor Name</Label>
                 <Input value={judgments.creditor_name} onChange={(e) => updateField('financial_judgments', 'creditor_name', e.target.value)} />
@@ -155,37 +151,33 @@ export const Group11Financial: React.FC = () => {
       </div>
 
       {/* Defaults */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Default on Obligations</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Default on Obligations</h3>
         <div className="space-y-4">
           <Label>Are you in default on any duty/obligation (judgment, order, etc.)?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={defaults.has_issue?.value === 'Yes'}
                 onChange={() => updateField('financial_defaults', 'has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={defaults.has_issue?.value === 'No'}
                 onChange={() => updateField('financial_defaults', 'has_issue', { type: 'radio', value: 'No' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
           {defaults.has_issue?.value === 'Yes' && (
-            <div className="space-y-2 rounded-md bg-slate-50 p-4">
+            <div className="space-y-2 rounded-md bg-slate-700/50 p-4">
               <Label>Explanation</Label>
               <textarea
                 value={defaults.explanation}
                 onChange={(e) => updateField('financial_defaults', 'explanation', e.target.value)}
-                className="w-full rounded-md border border-slate-300 p-2 text-sm"
+                className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
                 rows={3}
               />
             </div>
@@ -194,36 +186,32 @@ export const Group11Financial: React.FC = () => {
       </div>
 
       {/* Past Due Debts */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Past Due Debts</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Past Due Debts</h3>
         <div className="space-y-4">
           <Label>Do you owe any debt of $300+ that is 90+ days past due?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={pastDue.has_issue?.value === 'Yes'}
                 onChange={() => updateField('past_due_debts', 'has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={pastDue.has_issue?.value === 'No'}
                 onChange={() => updateField('past_due_debts', 'has_issue', { type: 'radio', value: 'No' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
 
           {pastDue.has_issue?.value === 'Yes' && (
-            <div className="space-y-4 rounded-md bg-slate-50 p-4">
+            <div className="space-y-4 rounded-md bg-slate-700/50 p-4">
               {pastDue.debts?.map((debt, i) => (
-                <div key={i} className="grid gap-4 rounded border border-slate-200 bg-white p-4">
-                  <h4 className="font-medium text-slate-700">Debt #{i + 1}</h4>
+                <div key={i} className="grid gap-4 rounded border border-slate-700 bg-slate-800/50 p-4">
+                  <h4 className="font-medium text-slate-300">Debt #{i + 1}</h4>
                   <div className="space-y-2">
                     <Label>Creditor Name</Label>
                     <Input value={debt.creditor_name} onChange={(e) => updatePastDue(i, 'creditor_name', e.target.value)} />
@@ -240,7 +228,7 @@ export const Group11Financial: React.FC = () => {
                   </div>
                 </div>
               ))}
-              <button onClick={addDebt} className="text-sm text-blue-600 hover:underline">
+              <button onClick={addDebt} className="text-sm text-white hover:underline">
                 + Add another debt
               </button>
             </div>
@@ -249,37 +237,33 @@ export const Group11Financial: React.FC = () => {
       </div>
 
       {/* Bankruptcy */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Bankruptcy</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Bankruptcy</h3>
         <div className="space-y-4">
           <Label>Have you ever filed for bankruptcy?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                <input
                  type="radio"
                  checked={bankruptcy.has_issue?.value === 'Yes'}
                  onChange={() => updateField('bankruptcy', 'has_issue', { type: 'radio', value: 'Yes' })}
-                 className="h-4 w-4 text-blue-600"
-               />
-               Yes
-            </label>
-            <label className="flex items-center gap-2">
+                 className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+               /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                <input
                  type="radio"
                  checked={bankruptcy.has_issue?.value === 'No'}
                  onChange={() => updateField('bankruptcy', 'has_issue', { type: 'radio', value: 'No' })}
-                 className="h-4 w-4 text-blue-600"
-               />
-               No
-            </label>
+                 className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+               /> No             </label>
           </div>
           {bankruptcy.has_issue?.value === 'Yes' && (
-            <div className="space-y-2 rounded-md bg-slate-50 p-4">
+            <div className="space-y-2 rounded-md bg-slate-700/50 p-4">
               <Label>Explanation (Court, Date, Disposition)</Label>
               <textarea
                 value={bankruptcy.explanation}
                 onChange={(e) => updateField('bankruptcy', 'explanation', e.target.value)}
-                className="w-full rounded-md border border-slate-300 p-2 text-sm"
+                className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
                 rows={3}
               />
             </div>

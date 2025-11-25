@@ -83,36 +83,32 @@ export const Group12Licenses: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Licenses</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Licenses</h3>
         <div className="space-y-4">
           <Label>Have you ever applied for any license requiring good character (other than bar)?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={licenses.has_issue?.value === 'Yes'}
                 onChange={() => updateLicenseRadio('Yes')}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={licenses.has_issue?.value === 'No'}
                 onChange={() => updateLicenseRadio('No')}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
 
           {licenses.has_issue?.value === 'Yes' && (
-            <div className="space-y-4 rounded-md bg-slate-50 p-4">
+            <div className="space-y-4 rounded-md bg-slate-700/50 p-4">
               {licenses.details?.map((lic, i) => (
-                <div key={i} className="grid gap-4 rounded border border-slate-200 bg-white p-4">
-                   <h4 className="font-medium text-slate-700">License #{i + 1}</h4>
+                <div key={i} className="grid gap-4 rounded border border-slate-700 bg-slate-800/50 p-4">
+                   <h4 className="font-medium text-slate-300">License #{i + 1}</h4>
                    <div className="space-y-2">
                      <Label>Type of License</Label>
                      <Input value={lic.name} onChange={(e) => updateLicenseDetail(i, 'name', e.target.value)} />
@@ -129,7 +125,7 @@ export const Group12Licenses: React.FC = () => {
                    </div>
                 </div>
               ))}
-              <button onClick={addLicense} className="text-sm text-blue-600 hover:underline">+ Add another license</button>
+              <button onClick={addLicense} className="text-sm text-white hover:underline">+ Add another license</button>
 
               <div className="mt-4 space-y-4 border-t border-slate-200 pt-4">
                 <div className="space-y-2">
@@ -137,7 +133,7 @@ export const Group12Licenses: React.FC = () => {
                   <textarea
                     value={licenses.denial_explanation}
                     onChange={(e) => updateLicenseText('denial_explanation', e.target.value)}
-                    className="w-full rounded-md border border-slate-300 p-2 text-sm"
+                    className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
                     rows={2}
                   />
                 </div>
@@ -146,7 +142,7 @@ export const Group12Licenses: React.FC = () => {
                   <textarea
                     value={licenses.revocation_explanation}
                     onChange={(e) => updateLicenseText('revocation_explanation', e.target.value)}
-                    className="w-full rounded-md border border-slate-300 p-2 text-sm"
+                    className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
                     rows={2}
                   />
                 </div>
@@ -156,33 +152,29 @@ export const Group12Licenses: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Fidelity Bond</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Fidelity Bond</h3>
         <div className="space-y-4">
           <Label>Have you ever held a position covered by a fidelity bond?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={bond.has_issue?.value === 'Yes'}
                 onChange={() => updateBondRadio('Yes')}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={bond.has_issue?.value === 'No'}
                 onChange={() => updateBondRadio('No')}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
           
           {bond.has_issue?.value === 'Yes' && (
-            <div className="grid gap-4 rounded-md bg-slate-50 p-4">
+            <div className="grid gap-4 rounded-md bg-slate-700/50 p-4">
               <div className="space-y-2">
                 <Label>Position</Label>
                 <Input value={bond.position} onChange={(e) => updateBond('position', e.target.value)} />
@@ -202,7 +194,7 @@ export const Group12Licenses: React.FC = () => {
                 <textarea
                   value={bond.circumstances}
                   onChange={(e) => updateBond('circumstances', e.target.value)}
-                  className="w-full rounded-md border border-slate-300 p-2 text-sm"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
                   rows={2}
                 />
               </div>

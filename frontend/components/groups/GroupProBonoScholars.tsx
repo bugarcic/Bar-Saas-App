@@ -136,26 +136,26 @@ export const GroupProBonoScholars: React.FC = () => {
   return (
     <div className="space-y-8">
       {!isProBonoScholar && (
-        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
-          <h3 className="font-semibold text-yellow-800">Note: Pro Bono Scholars Program</h3>
-          <p className="mt-2 text-sm text-yellow-700">
+        <div className="rounded-lg border border-amber-700 bg-amber-900/30 p-4">
+          <h3 className="font-semibold text-amber-300">Note: Pro Bono Scholars Program</h3>
+          <p className="mt-2 text-sm text-amber-300">
             This form is only required if you participated in the Pro Bono Scholars Program. 
             If you indicated "No" to the Pro Bono Scholars question in Group 1, you may skip this section.
           </p>
-          <p className="mt-2 text-sm text-yellow-700">
+          <p className="mt-2 text-sm text-amber-300">
             If you did participate in PBSP, please update your answer in Group 1 · Start.
           </p>
         </div>
       )}
 
       {isProBonoScholar && (
-        <div className="rounded-lg border border-purple-200 bg-purple-50 p-4">
-          <h3 className="font-semibold text-purple-800">Pro Bono Scholars Program Completion (Form G)</h3>
-          <p className="mt-2 text-sm text-purple-700">
+        <div className="rounded-lg border border-purple-700 bg-purple-900/30 p-4">
+          <h3 className="font-semibold text-purple-300">Pro Bono Scholars Program Completion (Form G)</h3>
+          <p className="mt-2 text-sm text-purple-300">
             This form documents your completion of the Pro Bono Scholars Program. It requires certification 
             from both your <strong>placement supervisor</strong> and your <strong>law school faculty supervisor</strong>.
           </p>
-          <p className="mt-2 text-sm text-purple-700">
+          <p className="mt-2 text-sm text-purple-300">
             This form, along with Skills Competency Form H (Pathway 3), serves as your pro bono proof 
             and replaces the standard 50-hour pro bono affidavits for your PBSP work.
           </p>
@@ -163,20 +163,20 @@ export const GroupProBonoScholars: React.FC = () => {
       )}
 
       {message && (
-        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+        <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
           {message}
         </div>
       )}
 
       {/* Law School Info */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Law School Information</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+        <h3 className="mb-4 text-lg font-semibold text-white">Law School Information</h3>
         
         {lawSchools && lawSchools.length > 0 && (
-          <div className="mb-4 rounded-md bg-blue-50 p-4">
-            <Label className="text-blue-800">Pre-fill from Education History</Label>
+          <div className="mb-4 rounded-md bg-slate-700/50 p-4">
+            <Label className="text-slate-300">Pre-fill from Education History</Label>
             <select
-              className="mt-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+              className="mt-2 w-full rounded-md border border-slate-600 bg-slate-800 p-2 text-sm text-white"
               onChange={(e) => {
                 const idx = parseInt(e.target.value, 10);
                 if (!isNaN(idx)) prefillLawSchool(idx);
@@ -214,9 +214,9 @@ export const GroupProBonoScholars: React.FC = () => {
       </div>
 
       {/* Placement Info */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Pro Bono Placement Information</h3>
-        <p className="mb-4 text-sm text-slate-600">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+        <h3 className="mb-4 text-lg font-semibold text-white">Pro Bono Placement Information</h3>
+        <p className="mb-4 text-sm text-slate-300">
           Provide details about the organization where you completed your Pro Bono Scholars placement.
         </p>
         
@@ -265,8 +265,8 @@ export const GroupProBonoScholars: React.FC = () => {
       </div>
 
       {/* Service Details */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Service Details</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+        <h3 className="mb-4 text-lg font-semibold text-white">Service Details</h3>
         
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-3">
@@ -300,7 +300,7 @@ export const GroupProBonoScholars: React.FC = () => {
             <textarea
               value={data.description}
               onChange={(e) => updateField('description', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={5}
               placeholder="Describe the full-time pro bono work you performed under the Pro Bono Scholars Program, including the types of cases or matters handled, clients served, and skills developed..."
             />
@@ -309,9 +309,9 @@ export const GroupProBonoScholars: React.FC = () => {
       </div>
 
       {/* Placement Supervisor */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Placement Supervisor</h3>
-        <p className="mb-4 text-sm text-slate-600">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+        <h3 className="mb-4 text-lg font-semibold text-white">Placement Supervisor</h3>
+        <p className="mb-4 text-sm text-slate-300">
           Information about the supervisor at your placement organization who will certify your completion.
         </p>
         
@@ -349,9 +349,9 @@ export const GroupProBonoScholars: React.FC = () => {
       </div>
 
       {/* Faculty Supervisor */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Law School Faculty Supervisor</h3>
-        <p className="mb-4 text-sm text-slate-600">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+        <h3 className="mb-4 text-lg font-semibold text-white">Law School Faculty Supervisor</h3>
+        <p className="mb-4 text-sm text-slate-300">
           Information about the law school faculty member who supervised your Pro Bono Scholars participation.
         </p>
         
@@ -389,7 +389,7 @@ export const GroupProBonoScholars: React.FC = () => {
       </div>
 
       {/* Generate PDF Button */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
         <Button
           type="button"
           onClick={handleGeneratePdf}

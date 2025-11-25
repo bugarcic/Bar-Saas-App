@@ -130,20 +130,20 @@ export const GroupCharacterAffirmants: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-        <h3 className="font-semibold text-amber-800">About Character Affirmations</h3>
-        <p className="mt-2 text-sm text-amber-700">
-          You need <strong>two different people</strong> to complete character affirmations for you. 
+      <div className="rounded-lg border border-amber-700 bg-amber-900/30 p-4">
+        <h3 className="font-semibold text-amber-300">About Character Affirmations</h3>
+        <p className="mt-2 text-sm text-amber-300/80">
+          You need <strong className="text-amber-200">two different people</strong> to complete character affirmations for you. 
           Each affirmant must have known you for at least 2 years. They do not need to be attorneys, 
           but they should be able to speak to your honesty, reliability, and fitness to practice law.
         </p>
-        <p className="mt-2 text-sm text-amber-700">
-          <strong>Note:</strong> These should not be the same people who sign your employment affirmations.
+        <p className="mt-2 text-sm text-amber-300/80">
+          <strong className="text-amber-200">Note:</strong> These should not be the same people who sign your employment affirmations.
         </p>
       </div>
 
       {message && (
-        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+        <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
           {message}
         </div>
       )}
@@ -177,14 +177,14 @@ interface AffirmantFormProps {
 
 const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdate, onGeneratePdf, isGenerating }) => {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
       </div>
 
       {/* Basic Info */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-700 uppercase tracking-wide">Affirmant Information</h4>
+        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Affirmant Information</h4>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5 sm:col-span-2">
             <Label>Full Name *</Label>
@@ -199,7 +199,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
 
       {/* Home Address */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-700 uppercase tracking-wide">Home Address</h4>
+        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Home Address</h4>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5 sm:col-span-2">
             <Label>Street Address</Label>
@@ -237,7 +237,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
 
       {/* Business Address */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-700 uppercase tracking-wide">Business / Office Address</h4>
+        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Business / Office Address</h4>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5 sm:col-span-2">
             <Label>Street Address</Label>
@@ -275,35 +275,31 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
 
       {/* Attorney Status */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-700 uppercase tracking-wide">Attorney Status (Section 2 on Form)</h4>
+        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Attorney Status (Section 2 on Form)</h4>
         <div className="space-y-4">
           <div>
             <Label>Is this person an attorney?</Label>
             <div className="mt-2 flex gap-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.is_attorney === 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'Yes')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> Yes             </label>
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.is_attorney !== 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'No')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                No
-              </label>
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> No             </label>
             </div>
           </div>
 
           {affirmant.is_attorney === 'Yes' && (
-            <div className="rounded-md bg-slate-50 p-4">
-              <p className="mb-3 text-sm text-slate-600">
+            <div className="rounded-md bg-slate-700/50 p-4">
+              <p className="mb-3 text-sm text-slate-300">
                 Enter the jurisdiction(s) where this attorney is admitted and the year of admission.
                 The form has space for up to 2 jurisdictions.
               </p>
@@ -354,9 +350,9 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
 
       {/* Character Statement - Section 3 on the form */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-700 uppercase tracking-wide">Character Statement (Section 3 on Form)</h4>
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-          <p className="text-sm text-slate-600 mb-3">
+        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Character Statement (Section 3 on Form)</h4>
+        <div className="rounded-md border border-slate-700 bg-slate-700/50 p-4">
+          <p className="text-sm text-slate-300 mb-3">
             This is the main character statement section. The affirmant should provide: (1) length and nature of 
             acquaintance with you; (2) their opinion of your good moral character and fitness to practice law; 
             (3) the basis for their opinion; (4) any other relevant information; and (5) whether they recommend 
@@ -367,7 +363,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
             <textarea
               value={affirmant.character_statement}
               onChange={(e) => onUpdate('character_statement', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={5}
               placeholder="You can pre-fill this or leave notes for your affirmant. They will complete this section when signing the form."
             />

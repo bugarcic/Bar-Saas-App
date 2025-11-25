@@ -121,14 +121,14 @@ export default function ApplicationPage() {
   const CurrentStepComponent = STEPS[currentStep] || (() => <p>Step not found</p>);
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-950">
       <AppHeader userEmail={userEmail} />
       <WizardLayout title="New Application Wizard">
-        {sessionError && <p className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{sessionError}</p>}
+        {sessionError && <p className="mb-4 rounded-md bg-red-900/50 border border-red-800 p-3 text-sm text-red-300">{sessionError}</p>}
         {!userId || isDraftLoading ? (
-          <div className="flex min-h-[200px] items-center justify-center text-slate-600">
+          <div className="flex min-h-[200px] items-center justify-center text-slate-400">
             <div className="flex items-center gap-3">
-              <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600" />
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-700 border-t-white" />
               <span>{!userId ? 'Preparing your workspace...' : 'Loading your saved responses...'}</span>
             </div>
           </div>

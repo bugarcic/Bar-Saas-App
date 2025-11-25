@@ -93,8 +93,8 @@ export const Group3Contact: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Contact Information */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Contact Information</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Contact Information</h3>
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
@@ -118,8 +118,8 @@ export const Group3Contact: React.FC = () => {
       </div>
 
       {/* Current Residence */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Current Residence</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Current Residence</h3>
         <div className="grid gap-4">
           <div className="space-y-2">
             <Label>Street Address</Label>
@@ -162,8 +162,8 @@ export const Group3Contact: React.FC = () => {
       </div>
 
       {/* Prior Residence */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Previous Residence</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Previous Residence</h3>
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
@@ -224,8 +224,8 @@ export const Group3Contact: React.FC = () => {
       </div>
 
       {/* Office Address */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Current Office Address</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Current Office Address</h3>
         <div className="grid gap-4">
           <div className="space-y-2">
             <Label>Employer/Organization Name & Street</Label>

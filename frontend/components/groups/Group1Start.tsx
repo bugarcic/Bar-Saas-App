@@ -43,50 +43,46 @@ export const Group1Start: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Notice of Certification</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+        <h3 className="mb-4 text-base font-semibold text-white">Notice of Certification</h3>
         
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Have you passed the New York bar exam and received your "Notice of Certification"?</Label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300">
                 <input
                   type="radio"
                   name="has_notice"
                   value="Yes"
                   checked={section.has_notice === 'Yes'}
                   onChange={(e) => updateField('has_notice', e.target.value)}
-                  className="h-4 w-4 text-blue-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
+                  className="h-4 w-4 text-white accent-white"
+                /> Yes             </label>
+              <label className="flex items-center gap-2 text-slate-300">
                 <input
                   type="radio"
                   name="has_notice"
                   value="No"
                   checked={section.has_notice === 'No'}
                   onChange={(e) => updateField('has_notice', e.target.value)}
-                  className="h-4 w-4 text-blue-600"
-                />
-                No
-              </label>
+                  className="h-4 w-4 text-white accent-white"
+                /> No             </label>
             </div>
           </div>
 
           {section.has_notice === 'Yes' && (
-            <div className="rounded-md bg-slate-50 p-4">
-              <p className="mb-2 text-sm text-slate-600">
+            <div className="rounded-md bg-slate-700/50 p-4">
+              <p className="mb-2 text-sm text-slate-300">
                 Please upload your Notice of Certification (PDF).
               </p>
-              <input type="file" accept=".pdf" className="text-sm text-slate-600" />
+              <input type="file" accept=".pdf" className="text-sm text-slate-400" />
               {/* Placeholder for parsing logic */}
             </div>
           )}
 
           {section.has_notice === 'No' && (
-            <div className="rounded-md bg-yellow-50 p-4 text-sm text-yellow-800">
+            <div className="rounded-md bg-amber-900/30 border border-amber-800 p-4 text-sm text-amber-300">
               <p>
                 You can still answer the rest of these questions now, but you may need your Notice of Certification
                 before you can file (depending on your Department).
@@ -96,8 +92,8 @@ export const Group1Start: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Application Details</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+        <h3 className="mb-4 text-base font-semibold text-white">Application Details</h3>
         
         <div className="grid gap-6">
           <div className="space-y-2">
@@ -113,14 +109,14 @@ export const Group1Start: React.FC = () => {
             <Label>Which Appellate Division are you applying to?</Label>
             <div className="grid gap-2 sm:grid-cols-2">
               {['First Department', 'Second Department', 'Third Department', 'Fourth Department'].map((dept) => (
-                <label key={dept} className="flex items-center gap-2 rounded border border-slate-200 p-3 hover:bg-slate-50">
+                <label key={dept} className="flex items-center gap-2 rounded border border-slate-700 bg-slate-800/50 p-3 text-slate-300 hover:bg-slate-700/50 hover:text-white">
                   <input
                     type="radio"
                     name="department"
                     value={dept}
                     checked={section.department_selection === dept}
                     onChange={(e) => updateField('department_selection', e.target.value)}
-                    className="h-4 w-4 text-blue-600"
+                    className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
                   />
                   {dept}
                 </label>
@@ -131,25 +127,25 @@ export const Group1Start: React.FC = () => {
           <div className="space-y-2">
             <Label>How are you applying for admission?</Label>
             <div className="space-y-2">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300">
                 <input
                   type="radio"
                   name="admission_type"
                   value="Examination"
                   checked={section.admission_type === 'Examination'}
                   onChange={(e) => updateField('admission_type', e.target.value)}
-                  className="h-4 w-4 text-blue-600"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
                 />
                 Admission on examination
               </label>
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300">
                 <input
                   type="radio"
                   name="admission_type"
                   value="Motion"
                   checked={section.admission_type === 'Motion'}
                   onChange={(e) => updateField('admission_type', e.target.value)}
-                  className="h-4 w-4 text-blue-600"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
                 />
                 Admission on motion without examination
               </label>
@@ -159,28 +155,24 @@ export const Group1Start: React.FC = () => {
           <div className="space-y-2">
             <Label>Did you participate in the Pro Bono Scholars Program?</Label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300">
                 <input
                   type="radio"
                   name="pro_bono"
                   value="Yes"
                   checked={section.pro_bono_scholars === 'Yes'}
                   onChange={(e) => updateField('pro_bono_scholars', e.target.value)}
-                  className="h-4 w-4 text-blue-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> Yes             </label>
+              <label className="flex items-center gap-2 text-slate-300">
                 <input
                   type="radio"
                   name="pro_bono"
                   value="No"
                   checked={section.pro_bono_scholars === 'No'}
                   onChange={(e) => updateField('pro_bono_scholars', e.target.value)}
-                  className="h-4 w-4 text-blue-600"
-                />
-                No
-              </label>
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> No             </label>
             </div>
           </div>
         </div>

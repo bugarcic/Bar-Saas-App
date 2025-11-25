@@ -105,32 +105,28 @@ export const Group2Identity: React.FC = () => {
 
       <Section title="Other Names">
         <div className="flex gap-6">
-          <label className="flex items-center gap-2 text-sm text-slate-700">
+          <label className="flex items-center gap-2 text-sm text-slate-300">
             <input
               type="radio"
               name="other-names"
               checked={hasOtherNames}
               onChange={() => updateRadio('Yes')}
-              className="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500"
-            />
-            Yes
-          </label>
-          <label className="flex items-center gap-2 text-sm text-slate-700">
+              className="h-4 w-4 border-slate-700 text-white focus:ring-blue-500"
+            /> Yes             </label>
+          <label className="flex items-center gap-2 text-sm text-slate-300">
             <input
               type="radio"
               name="other-names"
               checked={!hasOtherNames}
               onChange={() => updateRadio('No')}
-              className="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500"
-            />
-            No
-          </label>
+              className="h-4 w-4 border-slate-700 text-white focus:ring-blue-500"
+            /> No             </label>
         </div>
 
         {hasOtherNames && (
           <div className="mt-4 space-y-4">
             {otherNames.map((entry, index) => (
-              <div key={index} className="rounded-md border border-slate-200 p-4">
+              <div key={index} className="rounded-md border border-slate-700 p-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Name">
                     <Input value={entry.name} onChange={(e) => updateOtherName(index, 'name', e.target.value)} />
@@ -163,8 +159,8 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ title, children }) => (
-  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-    <h3 className="mb-4 text-base font-semibold text-slate-900">{title}</h3>
+  <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+    <h3 className="mb-4 text-base font-semibold text-white">{title}</h3>
     <div className="grid gap-4 sm:grid-cols-2">{children}</div>
   </div>
 );

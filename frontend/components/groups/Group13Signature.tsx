@@ -59,9 +59,9 @@ export const Group13Signature: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Signature & Oath</h3>
-        <p className="mb-4 text-sm text-slate-600">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Signature & Oath</h3>
+        <p className="mb-4 text-sm text-slate-300">
           This section will be signed in front of a Notary Public. Please enter the location where you plan to sign.
         </p>
         <div className="grid gap-4">
@@ -90,9 +90,9 @@ export const Group13Signature: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Designation of Agent</h3>
-        <p className="mb-4 text-sm text-slate-600">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Designation of Agent</h3>
+        <p className="mb-4 text-sm text-slate-300">
           Required for non-residents / non-full-time NY employees.
         </p>
         <div className="grid gap-4">
@@ -105,7 +105,7 @@ export const Group13Signature: React.FC = () => {
             <Input value={agent.judicial_department} onChange={(e) => updateAgent('judicial_department', e.target.value)} />
           </div>
           
-          <h4 className="mt-2 font-medium text-slate-700">Notary Location</h4>
+          <h4 className="mt-2 font-medium text-slate-300">Notary Location</h4>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Notary State</Label>

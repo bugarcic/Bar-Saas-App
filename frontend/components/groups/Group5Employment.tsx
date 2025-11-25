@@ -92,21 +92,21 @@ export const Group5Employment: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-semibold text-slate-900">Employment History</h3>
-            <p className="text-sm text-slate-600">List every job since age 21 or in the last 10 years.</p>
+            <h3 className="text-base font-semibold text-white">Employment History</h3>
+            <p className="text-sm text-slate-300">List every job since age 21 or in the last 10 years.</p>
           </div>
           <Button onClick={addEmployment} variant="secondary">Add Job</Button>
         </div>
 
         <div className="space-y-6">
           {employment.map((entry, i) => (
-            <div key={i} className="rounded-md border border-slate-200 p-4">
+            <div key={i} className="rounded-md border border-slate-700 p-4">
               <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-2">
                 <h4 className="font-medium text-slate-800">Job #{i + 1}</h4>
-                <Button variant="outline" onClick={() => removeEmployment(i)} className="text-red-600 hover:bg-red-50">Remove</Button>
+                <Button variant="outline" onClick={() => removeEmployment(i)} className="text-red-600 hover:bg-red-900/30 border border-red-800">Remove</Button>
               </div>
               
               <div className="grid gap-4">
@@ -170,39 +170,35 @@ export const Group5Employment: React.FC = () => {
       </div>
 
       {/* Self Employment */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Self-Employment & Other Business</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Self-Employment & Other Business</h3>
         <div className="space-y-4">
           <Label>Have you ever been involved in any business, occupation, or profession on your own or with others (partnerships, etc.)?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={selfEmployment.has_issue?.value === 'Yes'}
                 onChange={() => updateSelfEmployment('has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={selfEmployment.has_issue?.value === 'No'}
                 onChange={() => updateSelfEmployment('has_issue', { type: 'radio', value: 'No' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
 
           {selfEmployment.has_issue?.value === 'Yes' && (
-            <div className="space-y-4 rounded-md bg-slate-50 p-4">
+            <div className="space-y-4 rounded-md bg-slate-700/50 p-4">
               <div className="space-y-2">
                 <Label>Details (Nature, Address, Dates, Your Role, Partners)</Label>
                 <textarea
                   value={selfEmployment.details}
                   onChange={(e) => updateSelfEmployment('details', e.target.value)}
-                  className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   rows={4}
                 />
               </div>
@@ -211,7 +207,7 @@ export const Group5Employment: React.FC = () => {
                 <textarea
                   value={selfEmployment.judgments}
                   onChange={(e) => updateSelfEmployment('judgments', e.target.value)}
-                  className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   rows={2}
                   placeholder="If yes, describe."
                 />
@@ -222,38 +218,34 @@ export const Group5Employment: React.FC = () => {
       </div>
 
       {/* Employment Discipline */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-4 text-base font-semibold text-slate-900">Employment Discipline</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
+        <h3 className="mb-4 text-base font-semibold text-white">Employment Discipline</h3>
         <div className="space-y-4">
           <Label>Have you ever been fired, discharged, or asked to resign from any job for cause?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={discipline.has_issue?.value === 'Yes'}
                 onChange={() => updateDiscipline('has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-2">
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> Yes             </label>
+            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={discipline.has_issue?.value === 'No'}
                 onChange={() => updateDiscipline('has_issue', { type: 'radio', value: 'No' })}
-                className="h-4 w-4 text-blue-600"
-              />
-              No
-            </label>
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              /> No             </label>
           </div>
 
           {discipline.has_issue?.value === 'Yes' && (
-            <div className="space-y-2 rounded-md bg-slate-50 p-4">
+            <div className="space-y-2 rounded-md bg-slate-700/50 p-4">
               <Label>Explanation (Job, Date, Reason)</Label>
               <textarea
                 value={discipline.details}
                 onChange={(e) => updateDiscipline('details', e.target.value)}
-                className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 rows={3}
               />
             </div>

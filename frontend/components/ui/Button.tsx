@@ -9,12 +9,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const baseClasses =
-  'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+  'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:opacity-50 disabled:pointer-events-none';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600',
-  secondary: 'bg-slate-800 text-white hover:bg-slate-900 focus-visible:ring-slate-800',
-  outline: 'border border-slate-300 text-slate-700 hover:bg-slate-100 focus-visible:ring-slate-400',
+  primary: 'bg-white text-slate-900 hover:bg-slate-200 focus-visible:ring-white',
+  secondary: 'bg-slate-700 text-white hover:bg-slate-600 focus-visible:ring-slate-700',
+  outline: 'border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:ring-slate-500',
 };
 
 const cn = (...classes: Array<string | undefined | false>) => classes.filter(Boolean).join(' ');

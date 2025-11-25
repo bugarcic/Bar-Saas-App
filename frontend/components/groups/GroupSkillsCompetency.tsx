@@ -159,34 +159,34 @@ export const GroupSkillsCompetency: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-        <h3 className="font-semibold text-amber-800">About Skills Competency (Form H)</h3>
-        <p className="mt-2 text-sm text-amber-700">
+      <div className="rounded-lg border border-amber-700 bg-amber-900/30 p-4">
+        <h3 className="font-semibold text-amber-300">About Skills Competency (Form H)</h3>
+        <p className="mt-2 text-sm text-amber-300/80">
           This form is required for exam-based applicants whose legal education falls under Rule 520.18 
           (JD programs starting after August 1, 2016, or LLM programs starting after August 1, 2018).
         </p>
-        <p className="mt-2 text-sm text-amber-700">
-          You must select <strong>one pathway</strong> and provide the required documentation for that pathway.
+        <p className="mt-2 text-sm text-amber-300/80">
+          You must select <strong className="text-amber-200">one pathway</strong> and provide the required documentation for that pathway.
         </p>
       </div>
 
       {message && (
-        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+        <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
           {message}
         </div>
       )}
 
       {/* Pathway Selection */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Select Your Pathway</h3>
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+        <h3 className="mb-4 text-lg font-semibold text-white">Select Your Pathway</h3>
         <div className="space-y-3">
           {PATHWAYS.map((pathway) => (
             <label
               key={pathway.value}
               className={`block cursor-pointer rounded-lg border p-4 transition-colors ${
                 data.pathway === pathway.value
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                  ? 'border-emerald-500 bg-emerald-900/30'
+                  : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
               }`}
             >
               <div className="flex items-start gap-3">
@@ -196,11 +196,10 @@ export const GroupSkillsCompetency: React.FC = () => {
                   value={pathway.value}
                   checked={data.pathway === pathway.value}
                   onChange={() => updateField('pathway', pathway.value)}
-                  className="mt-1 h-4 w-4 text-blue-600"
                 />
                 <div>
-                  <div className="font-medium text-slate-900">{pathway.label}</div>
-                  <div className="mt-1 text-sm text-slate-600">{pathway.description}</div>
+                  <div className="font-medium text-white">{pathway.label}</div>
+                  <div className="mt-1 text-sm text-slate-300">{pathway.description}</div>
                 </div>
               </div>
             </label>
@@ -210,18 +209,18 @@ export const GroupSkillsCompetency: React.FC = () => {
 
       {/* Pathway-specific fields */}
       {data.pathway === 'Pathway 1' && (
-        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 1 – Law School Certification</h3>
-          <p className="mb-4 text-sm text-slate-600">
+        <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+          <h3 className="mb-4 text-lg font-semibold text-white">Pathway 1 – Law School Certification</h3>
+          <p className="mb-4 text-sm text-slate-300">
             Your law school official will certify that the school has developed a plan and that you have 
             acquired sufficient competency in skills and professional values.
           </p>
           
           {lawSchools && lawSchools.length > 0 && (
-            <div className="mb-4 rounded-md bg-blue-50 p-4">
-              <Label className="text-blue-800">Pre-fill from Education History</Label>
+            <div className="mb-4 rounded-md bg-slate-700/50 p-4">
+              <Label className="text-slate-300">Pre-fill from Education History</Label>
               <select
-                className="mt-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+                className="mt-2 w-full rounded-md border border-slate-600 bg-slate-800 p-2 text-sm text-white"
                 onChange={(e) => {
                   const idx = parseInt(e.target.value, 10);
                   if (!isNaN(idx)) prefillLawSchool(idx);
@@ -271,18 +270,18 @@ export const GroupSkillsCompetency: React.FC = () => {
       )}
 
       {data.pathway === 'Pathway 2' && (
-        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 2 – 15 Credits Experiential Coursework</h3>
-          <p className="mb-4 text-sm text-slate-600">
+        <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+          <h3 className="mb-4 text-lg font-semibold text-white">Pathway 2 – 15 Credits Experiential Coursework</h3>
+          <p className="mb-4 text-sm text-slate-300">
             Your law school official will certify that you have completed at least 15 credit hours of 
             practice-based experiential coursework.
           </p>
           
           {lawSchools && lawSchools.length > 0 && (
-            <div className="mb-4 rounded-md bg-blue-50 p-4">
-              <Label className="text-blue-800">Pre-fill from Education History</Label>
+            <div className="mb-4 rounded-md bg-slate-700/50 p-4">
+              <Label className="text-slate-300">Pre-fill from Education History</Label>
               <select
-                className="mt-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+                className="mt-2 w-full rounded-md border border-slate-600 bg-slate-800 p-2 text-sm text-white"
                 onChange={(e) => {
                   const idx = parseInt(e.target.value, 10);
                   if (!isNaN(idx)) prefillLawSchool(idx);
@@ -330,18 +329,18 @@ export const GroupSkillsCompetency: React.FC = () => {
       )}
 
       {data.pathway === 'Pathway 3' && (
-        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 3 – Pro Bono Scholars Program</h3>
-          <div className="rounded-md bg-green-50 p-4">
-            <p className="text-sm text-green-800">
+        <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+          <h3 className="mb-4 text-lg font-semibold text-white">Pathway 3 – Pro Bono Scholars Program</h3>
+          <div className="rounded-md bg-emerald-900/30 border border-emerald-800 p-4">
+            <p className="text-sm text-emerald-300">
               <strong>Good news!</strong> If you completed the Pro Bono Scholars Program, this pathway is straightforward.
             </p>
-            <p className="mt-2 text-sm text-green-700">
+            <p className="mt-2 text-sm text-emerald-300">
               This form confirms that you successfully completed the Pro Bono Scholars Program as prescribed 
               in section 520.17 of the Rules of the Court of Appeals. Proof is provided in the Form Affidavit 
               of Applicant's Completion of the Pro Bono Scholars Program.
             </p>
-            <p className="mt-2 text-sm text-green-700">
+            <p className="mt-2 text-sm text-emerald-300">
               Your name will be pre-filled from your application. You will need to sign and date this form.
             </p>
           </div>
@@ -351,9 +350,9 @@ export const GroupSkillsCompetency: React.FC = () => {
       {data.pathway === 'Pathway 4' && (
         <div className="space-y-6">
           {/* Section A - Applicant Certification */}
-          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 4 – Section A: Applicant Certification</h3>
-            <p className="mb-4 text-sm text-slate-600">
+          <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+            <h3 className="mb-4 text-lg font-semibold text-white">Pathway 4 – Section A: Applicant Certification</h3>
+            <p className="mb-4 text-sm text-slate-300">
               Provide details about your six-month full-time apprenticeship.
             </p>
             
@@ -416,9 +415,9 @@ export const GroupSkillsCompetency: React.FC = () => {
           </div>
 
           {/* Section B - Supervising Attorney Certification */}
-          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 4 – Section B: Supervising Attorney Certification</h3>
-            <p className="mb-4 text-sm text-slate-600">
+          <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+            <h3 className="mb-4 text-lg font-semibold text-white">Pathway 4 – Section B: Supervising Attorney Certification</h3>
+            <p className="mb-4 text-sm text-slate-300">
               Information about the supervising attorney who will certify your apprenticeship.
             </p>
             
@@ -432,8 +431,8 @@ export const GroupSkillsCompetency: React.FC = () => {
                 />
               </div>
 
-              <div className="rounded-md bg-slate-50 p-4">
-                <p className="text-sm text-slate-700 font-medium mb-2">
+              <div className="rounded-md bg-slate-700/50 p-4">
+                <p className="text-sm text-slate-300 font-medium mb-2">
                   If the apprenticeship was NOT satisfactorily completed:
                 </p>
                 <div className="space-y-1.5">
@@ -441,7 +440,7 @@ export const GroupSkillsCompetency: React.FC = () => {
                   <textarea
                     value={data.p4_unsatisfactory_explanation}
                     onChange={(e) => updateField('p4_unsatisfactory_explanation', e.target.value)}
-                    className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     rows={3}
                     placeholder="Leave blank if satisfactory"
                   />
@@ -453,7 +452,7 @@ export const GroupSkillsCompetency: React.FC = () => {
                 <textarea
                   value={data.p4_additional_facts}
                   onChange={(e) => updateField('p4_additional_facts', e.target.value)}
-                  className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   rows={3}
                   placeholder="Any other facts bearing on applicant's qualifications, moral character, or fitness to practice law"
                 />
@@ -505,9 +504,9 @@ export const GroupSkillsCompetency: React.FC = () => {
       )}
 
       {data.pathway === 'Pathway 5' && (
-        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-slate-900">Pathway 5 – Practice in Another Jurisdiction</h3>
-          <p className="mb-4 text-sm text-slate-600">
+        <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
+          <h3 className="mb-4 text-lg font-semibold text-white">Pathway 5 – Practice in Another Jurisdiction</h3>
+          <p className="mb-4 text-sm text-slate-300">
             Provide details about your admission and practice in another jurisdiction.
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -549,7 +548,7 @@ export const GroupSkillsCompetency: React.FC = () => {
 
       {/* Generate PDF Button */}
       {data.pathway && (
-        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
           <Button
             type="button"
             onClick={handleGeneratePdf}

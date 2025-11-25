@@ -194,31 +194,31 @@ export const GroupEmploymentAffirmants: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-        <h3 className="font-semibold text-amber-800">About Employment Affirmations (Form D)</h3>
-        <p className="mt-2 text-sm text-amber-700">
-          For each <strong>law-related job</strong> listed in your employment history, you need a supervisor 
+      <div className="rounded-lg border border-amber-700 bg-amber-900/30 p-4">
+        <h3 className="font-semibold text-amber-300">About Employment Affirmations (Form D)</h3>
+        <p className="mt-2 text-sm text-amber-300/80">
+          For each <strong className="text-amber-200">law-related job</strong> listed in your employment history, you need a supervisor 
           or employer to complete an Employment Affirmation (Form D). This form attests to your work 
           performance and character during that employment.
         </p>
-        <p className="mt-2 text-sm text-amber-700">
-          <strong>Tip:</strong> You can pre-fill employment details from your employment history to save time.
+        <p className="mt-2 text-sm text-amber-300/80">
+          <strong className="text-amber-200">Tip:</strong> You can pre-fill employment details from your employment history to save time.
         </p>
       </div>
 
       {message && (
-        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+        <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
           {message}
         </div>
       )}
 
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900">Employment Affirmations</h3>
+        <h3 className="text-lg font-semibold text-white">Employment Affirmations</h3>
         <Button onClick={addAffirmant} variant="secondary">Add Affirmation</Button>
       </div>
 
       {affirmants.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-slate-300 p-8 text-center">
+        <div className="rounded-lg border border-dashed border-slate-700 p-8 text-center">
           <p className="text-slate-500">No employment affirmations added yet.</p>
           <p className="mt-2 text-sm text-slate-400">Click "Add Affirmation" for each law-related job that needs verification.</p>
         </div>
@@ -265,20 +265,20 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
   isGenerating,
 }) => {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
       <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 className="text-lg font-semibold text-slate-900">Employment Affirmation #{index + 1}</h3>
-        <Button variant="outline" onClick={onRemove} className="text-red-600 hover:bg-red-50">
+        <h3 className="text-lg font-semibold text-white">Employment Affirmation #{index + 1}</h3>
+        <Button variant="outline" onClick={onRemove} className="text-red-600 hover:bg-red-900/30 border border-red-800">
           Remove
         </Button>
       </div>
 
       {/* Pre-fill from Job */}
       {jobs.length > 0 && (
-        <div className="mb-6 rounded-md bg-blue-50 p-4">
-          <Label className="text-blue-800">Pre-fill from Employment History</Label>
+        <div className="mb-6 rounded-md bg-slate-700/50 p-4">
+          <Label className="text-slate-300">Pre-fill from Employment History</Label>
           <select
-            className="mt-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+            className="mt-2 w-full rounded-md border border-slate-600 bg-slate-800 p-2 text-sm text-white"
             value={affirmant.employment_index ?? ''}
             onChange={(e) => {
               const jobIndex = parseInt(e.target.value, 10);
@@ -299,7 +299,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
 
       {/* Section 1: Affirmant (Supervisor) Info */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Section 1: Supervisor / Affirmant Information
         </h4>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -363,37 +363,33 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
 
       {/* Section 2: Attorney Status */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Section 2: Attorney Status
         </h4>
         <div className="space-y-4">
           <div>
             <Label>Is this supervisor an attorney?</Label>
             <div className="mt-2 flex gap-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.is_attorney === 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'Yes')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> Yes             </label>
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.is_attorney !== 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'No')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                No
-              </label>
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> No             </label>
             </div>
           </div>
 
           {affirmant.is_attorney === 'Yes' && (
-            <div className="rounded-md bg-slate-50 p-4">
-              <p className="mb-3 text-sm text-slate-600">
+            <div className="rounded-md bg-slate-700/50 p-4">
+              <p className="mb-3 text-sm text-slate-300">
                 Enter the jurisdiction(s) where this attorney is admitted.
               </p>
               <div className="space-y-3">
@@ -439,7 +435,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
 
       {/* Section 3: Employment Details */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Section 3: Employment Details
         </h4>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -513,7 +509,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
           <div className="space-y-1.5">
             <Label>Full-time or Part-time</Label>
             <select
-              className="w-full rounded-md border border-slate-300 p-2 text-sm"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
               value={affirmant.full_or_part_time}
               onChange={(e) => onUpdate('full_or_part_time', e.target.value)}
             >
@@ -550,7 +546,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
 
       {/* Section 4: Work Description */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Section 4: Work Description & Performance
         </h4>
         <div className="space-y-4">
@@ -559,7 +555,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             <textarea
               value={affirmant.work_performed}
               onChange={(e) => onUpdate('work_performed', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={3}
               placeholder="Research, drafting, client interaction, court appearances, etc."
             />
@@ -569,7 +565,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             <textarea
               value={affirmant.supervision_explanation}
               onChange={(e) => onUpdate('supervision_explanation', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={2}
               placeholder="Explain how you monitored or supervised the applicant's work"
             />
@@ -577,24 +573,20 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
           <div>
             <Label>Was the applicant's work and conduct satisfactory?</Label>
             <div className="mt-2 flex gap-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.was_satisfactory === 'Yes'}
                   onChange={() => onUpdate('was_satisfactory', 'Yes')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> Yes             </label>
+              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.was_satisfactory === 'No'}
                   onChange={() => onUpdate('was_satisfactory', 'No')}
-                  className="h-4 w-4 text-blue-600"
-                />
-                No
-              </label>
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                /> No             </label>
             </div>
           </div>
           <div className="space-y-1.5">
@@ -602,7 +594,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             <textarea
               value={affirmant.additional_info}
               onChange={(e) => onUpdate('additional_info', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={2}
               placeholder="Any facts bearing on applicant's qualifications, moral character, or fitness"
             />

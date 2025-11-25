@@ -90,16 +90,16 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
   canRemove,
 }) => {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900">
+        <h3 className="text-lg font-semibold text-white">
           Pro Bono Placement #{index + 1}
         </h3>
         {canRemove && (
           <button
             type="button"
             onClick={onRemove}
-            className="text-sm text-red-600 hover:text-red-700"
+            className="text-sm text-red-600 hover:text-red-300"
           >
             Remove
           </button>
@@ -108,7 +108,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
 
       {/* Organization Info */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Organization / Placement Information
         </h4>
         <div className="grid gap-4">
@@ -160,7 +160,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
 
       {/* Placement Type */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Type of Placement
         </h4>
         <div className="space-y-2">
@@ -169,8 +169,8 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
               key={type.value}
               className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
                 entry.placement_type === type.value
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-slate-200 hover:border-slate-300'
+                  ? 'border-blue-500 bg-slate-700/50'
+                  : 'border-slate-200 hover:border-slate-700'
               }`}
             >
               <input
@@ -179,10 +179,10 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
                 value={type.value}
                 checked={entry.placement_type === type.value}
                 onChange={() => onUpdate('placement_type', type.value)}
-                className="mt-0.5 h-4 w-4 text-blue-600"
+                className="mt-0.5 h-4 w-4 text-white"
               />
               <div>
-                <div className="font-medium text-slate-900">{type.label}</div>
+                <div className="font-medium text-white">{type.label}</div>
                 <div className="text-xs text-slate-500">{type.description}</div>
               </div>
             </label>
@@ -192,7 +192,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
 
       {/* Service Details */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Service Details
         </h4>
         <div className="grid gap-4">
@@ -227,7 +227,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
             <textarea
               value={entry.description}
               onChange={(e) => onUpdate('description', e.target.value)}
-              className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               rows={4}
               placeholder="Describe the law-related work performed, how it served persons of limited means or the public interest, and how it was supervised..."
             />
@@ -237,7 +237,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
 
       {/* Supervisor Info */}
       <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-700">
+        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
           Supervising Attorney Information
         </h4>
         <p className="mb-3 text-xs text-slate-500">
@@ -399,33 +399,33 @@ export const GroupProBono: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-orange-200 bg-orange-50 p-4">
-        <h3 className="font-semibold text-orange-800">About Pro Bono Requirements (Form F)</h3>
-        <p className="mt-2 text-sm text-orange-700">
-          All exam-based applicants must complete at least <strong>50 hours</strong> of qualifying pro bono work. 
+      <div className="rounded-lg border border-orange-700 bg-orange-900/30 p-4">
+        <h3 className="font-semibold text-orange-300">About Pro Bono Requirements (Form F)</h3>
+        <p className="mt-2 text-sm text-orange-300/80">
+          All exam-based applicants must complete at least <strong className="text-orange-200">50 hours</strong> of qualifying pro bono work. 
           You may have multiple placements that together total 50+ hours.
         </p>
-        <p className="mt-2 text-sm text-orange-700">
+        <p className="mt-2 text-sm text-orange-300/80">
           Each placement requires a separate Form F with supervisor certification.
         </p>
-        <div className="mt-3 rounded-md bg-white p-3">
+        <div className="mt-3 rounded-md bg-slate-800/50 p-3">
           <div className="flex items-center justify-between">
-            <span className="font-medium text-slate-700">Total Hours Entered:</span>
-            <span className={`text-lg font-bold ${totalHours >= 50 ? 'text-green-600' : 'text-orange-600'}`}>
+            <span className="font-medium text-slate-300">Total Hours Entered:</span>
+            <span className={`text-lg font-bold ${totalHours >= 50 ? 'text-emerald-400' : 'text-orange-400'}`}>
               {totalHours} / 50 hours
             </span>
           </div>
           {totalHours >= 50 && (
-            <p className="mt-1 text-xs text-green-600">✓ You have met the 50-hour requirement!</p>
+            <p className="mt-1 text-xs text-emerald-400">✓ You have met the 50-hour requirement!</p>
           )}
           {totalHours < 50 && totalHours > 0 && (
-            <p className="mt-1 text-xs text-orange-600">You need {50 - totalHours} more hours to meet the requirement.</p>
+            <p className="mt-1 text-xs text-orange-400">You need {50 - totalHours} more hours to meet the requirement.</p>
           )}
         </div>
       </div>
 
       {message && (
-        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+        <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
           {message}
         </div>
       )}

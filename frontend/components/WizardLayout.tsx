@@ -369,37 +369,45 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   };
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-950">
       <div className="mx-auto max-w-6xl px-6 py-8">
         <header className="mb-6">
-          <div className="flex items-center justify-between text-sm text-slate-600">
+          <div className="flex items-center justify-between text-sm text-slate-400">
             <span>
               Step {currentStep + 1} of {totalSteps}
             </span>
             <span>{progress}% Complete</span>
           </div>
-          <div className="mt-2 h-2 rounded-full bg-slate-200">
-            <div className="h-full rounded-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
+          <div className="mt-2 h-2 rounded-full bg-slate-800">
+            <div className="h-full rounded-full bg-white transition-all" style={{ width: `${progress}%` }} />
           </div>
         </header>
 
         <div className="grid gap-6 md:grid-cols-[240px,1fr]">
           <aside className="space-y-4">
-            <div className="rounded-lg bg-white p-4 shadow-sm">
+            <div className="rounded-lg border border-slate-800 bg-slate-900 p-4">
               <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Checklist</h2>
               <nav className="space-y-1 text-sm">
                 {GROUPS.map((label, index) => {
                   const isActive = index === currentStep;
                   const isAffirmantSection = index >= 13; // Groups 1-13 are questionnaire, rest are affirmants
                   const isFirstAffirmant = index === 13;
+                  const isFirstGroup = index === 0;
                   
                   return (
                     <React.Fragment key={label}>
+                      {isFirstGroup && (
+                        <div className="mb-3 flex items-center gap-2">
+                          <div className="h-px flex-1 bg-slate-700" />
+                          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Main Form</span>
+                          <div className="h-px flex-1 bg-slate-700" />
+                        </div>
+                      )}
                       {isFirstAffirmant && (
                         <div className="my-3 flex items-center gap-2">
-                          <div className="h-px flex-1 bg-slate-200" />
-                          <span className="text-xs font-medium uppercase tracking-wide text-slate-400">Affirmations</span>
-                          <div className="h-px flex-1 bg-slate-200" />
+                          <div className="h-px flex-1 bg-slate-700" />
+                          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Affirmation Forms</span>
+                          <div className="h-px flex-1 bg-slate-700" />
                         </div>
                       )}
                       <button
@@ -408,9 +416,9 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                         className={`w-full rounded-md px-3 py-2 text-left transition-colors ${
                           isActive 
                             ? isAffirmantSection 
-                              ? 'bg-amber-50 text-amber-700 font-semibold' 
-                              : 'bg-blue-50 text-blue-700 font-semibold' 
-                            : 'text-slate-600 hover:bg-slate-100'
+                              ? 'bg-amber-900/50 text-amber-300 font-semibold border border-amber-800' 
+                              : 'bg-slate-800 text-white font-semibold border border-slate-700' 
+                            : 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'
                         }`}
                       >
                         {label}
@@ -422,18 +430,18 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
             </div>
 
             {/* Generate Forms Section */}
-            <div className="rounded-lg bg-white p-4 shadow-sm">
+            <div className="rounded-lg border border-slate-800 bg-slate-900 p-4">
               <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Generate Forms</h2>
               <div className="space-y-3 text-sm">
                 {/* Form B - Questionnaire */}
-                <div className="rounded-md border border-slate-200 p-3">
+                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-slate-700">Form B · Questionnaire</span>
+                    <span className="font-medium text-slate-300">Questionnaire</span>
                     <button
                       type="button"
                       onClick={handleGeneratePdf}
                       disabled={isGeneratingPdf || isSaving}
-                      className="rounded bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                      className="rounded bg-white px-2 py-1 text-xs font-medium text-slate-900 hover:bg-slate-200 disabled:opacity-50"
                     >
                       {isGeneratingPdf ? '...' : 'PDF'}
                     </button>
@@ -441,8 +449,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                 </div>
 
                 {/* Form C - Character Affirmations */}
-                <div className="rounded-md border border-slate-200 p-3">
-                  <div className="mb-2 font-medium text-slate-700">Form C · Character</div>
+                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
+                  <div className="mb-2 font-medium text-slate-300">Character</div>
                   {characterAffirmants.filter(a => a?.full_name).length === 0 ? (
                     <p className="text-xs text-slate-500">Add affirmants in Character Affirmants section</p>
                   ) : (
@@ -450,14 +458,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                       {characterAffirmants.map((affirmant, index) => (
                         affirmant?.full_name && (
                           <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-600" title={affirmant.full_name}>
+                            <span className="truncate text-xs text-slate-400" title={affirmant.full_name}>
                               #{index + 1}: {affirmant.full_name}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleGenerateFormC(index)}
                               disabled={isGeneratingFormC || isSaving}
-                              className="shrink-0 rounded bg-violet-600 px-2 py-1 text-xs font-medium text-white hover:bg-violet-700 disabled:opacity-50"
+                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
                             >
                               {isGeneratingFormC ? '...' : 'PDF'}
                             </button>
@@ -469,8 +477,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                 </div>
 
                 {/* Form D - Employment Affirmations */}
-                <div className="rounded-md border border-slate-200 p-3">
-                  <div className="mb-2 font-medium text-slate-700">Form D · Employment</div>
+                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
+                  <div className="mb-2 font-medium text-slate-300">Employment</div>
                   {employmentAffirmants.filter(a => a?.affirmant_name).length === 0 ? (
                     <p className="text-xs text-slate-500">Add affirmations in Employment Affirmants section</p>
                   ) : (
@@ -478,14 +486,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                       {employmentAffirmants.map((affirmant, index) => (
                         affirmant?.affirmant_name && (
                           <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-600" title={affirmant.employer_name || `Employment ${index + 1}`}>
+                            <span className="truncate text-xs text-slate-400" title={affirmant.employer_name || `Employment ${index + 1}`}>
                               {affirmant.employer_name || `Employment ${index + 1}`}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleGenerateFormD(index)}
                               disabled={isGeneratingFormD || isSaving}
-                              className="shrink-0 rounded bg-amber-600 px-2 py-1 text-xs font-medium text-white hover:bg-amber-700 disabled:opacity-50"
+                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
                             >
                               {isGeneratingFormD ? '...' : 'PDF'}
                             </button>
@@ -497,8 +505,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                 </div>
 
                 {/* Form E - Law School Certificates */}
-                <div className="rounded-md border border-slate-200 p-3">
-                  <div className="mb-2 font-medium text-slate-700">Form E · Law School Cert</div>
+                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
+                  <div className="mb-2 font-medium text-slate-300">Law School Cert</div>
                   {lawSchools.length === 0 ? (
                     <p className="text-xs text-slate-500">Add law schools in Group 4</p>
                   ) : (
@@ -506,14 +514,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                       {lawSchools.map((school, index) => (
                         school?.school_name && (
                           <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-600" title={school.school_name}>
+                            <span className="truncate text-xs text-slate-400" title={school.school_name}>
                               {school.school_name}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleGenerateFormE(index)}
                               disabled={isGeneratingFormE || isSaving}
-                              className="shrink-0 rounded bg-emerald-600 px-2 py-1 text-xs font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
+                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
                             >
                               {isGeneratingFormE ? '...' : 'PDF'}
                             </button>
@@ -525,14 +533,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                 </div>
 
                 {/* Form H - Skills Competency */}
-                <div className="rounded-md border border-slate-200 p-3">
+                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-slate-700">Form H · Skills</span>
+                    <span className="font-medium text-slate-300">Skills Competency</span>
                     <button
                       type="button"
                       onClick={handleGenerateFormH}
                       disabled={isGeneratingFormH || isSaving || !skillsCompetency.pathway}
-                      className="rounded bg-teal-600 px-2 py-1 text-xs font-medium text-white hover:bg-teal-700 disabled:opacity-50"
+                      className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
                     >
                       {isGeneratingFormH ? '...' : 'PDF'}
                     </button>
@@ -541,13 +549,13 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                     <p className="mt-1 text-xs text-slate-500">Select a pathway in Skills Competency section</p>
                   )}
                   {skillsCompetency.pathway && (
-                    <p className="mt-1 text-xs text-slate-600">{skillsCompetency.pathway}</p>
+                    <p className="mt-1 text-xs text-slate-400">{skillsCompetency.pathway}</p>
                   )}
                 </div>
 
                 {/* Form F - Pro Bono 50-Hour */}
-                <div className="rounded-md border border-slate-200 p-3">
-                  <div className="mb-2 font-medium text-slate-700">Form F · Pro Bono</div>
+                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
+                  <div className="mb-2 font-medium text-slate-300">Pro Bono</div>
                   {proBonoEntries.filter(e => e?.organization_name).length === 0 ? (
                     <p className="text-xs text-slate-500">Add placements in Pro Bono section</p>
                   ) : (
@@ -555,14 +563,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                       {proBonoEntries.map((entry, index) => (
                         entry?.organization_name && (
                           <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-600" title={`${entry.organization_name} (${entry.hours || '?'} hrs)`}>
+                            <span className="truncate text-xs text-slate-400" title={`${entry.organization_name} (${entry.hours || '?'} hrs)`}>
                               {entry.organization_name} ({entry.hours || '?'} hrs)
                             </span>
                             <button
                               type="button"
                               onClick={() => handleGenerateFormF(index)}
                               disabled={isGeneratingFormF || isSaving}
-                              className="shrink-0 rounded bg-orange-600 px-2 py-1 text-xs font-medium text-white hover:bg-orange-700 disabled:opacity-50"
+                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
                             >
                               {isGeneratingFormF ? '...' : 'PDF'}
                             </button>
@@ -575,14 +583,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
                 {/* Form G - Pro Bono Scholars (only show if applicable) */}
                 {isProBonoScholar && (
-                  <div className="rounded-md border border-slate-200 p-3">
+                  <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-slate-700">Form G · PBSP</span>
+                      <span className="font-medium text-slate-300">PBSP</span>
                       <button
                         type="button"
                         onClick={handleGenerateFormG}
                         disabled={isGeneratingFormG || isSaving || !proBonoScholars.placement_name}
-                        className="rounded bg-purple-600 px-2 py-1 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+                        className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
                       >
                         {isGeneratingFormG ? '...' : 'PDF'}
                       </button>
@@ -591,7 +599,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                       <p className="mt-1 text-xs text-slate-500">Complete Pro Bono Scholars section</p>
                     )}
                     {proBonoScholars.placement_name && (
-                      <p className="mt-1 truncate text-xs text-slate-600" title={proBonoScholars.placement_name}>
+                      <p className="mt-1 truncate text-xs text-slate-400" title={proBonoScholars.placement_name}>
                         {proBonoScholars.placement_name}
                       </p>
                     )}
@@ -601,15 +609,15 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
             </div>
           </aside>
 
-          <section className="rounded-lg bg-white p-6 shadow-sm">
-            <div className="border-b border-slate-200 pb-4">
-              <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
-              <p className="mt-1 text-sm text-slate-600">Complete each section carefully.</p>
+          <section className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+            <div className="border-b border-slate-700 pb-4">
+              <h1 className="text-xl font-semibold text-white">{title}</h1>
+              <p className="mt-1 text-sm text-slate-400">Complete each section carefully.</p>
             </div>
 
             <div className="mt-6">{children}</div>
 
-            <footer className="mt-8 border-t border-slate-200 pt-4">
+            <footer className="mt-8 border-t border-slate-700 pt-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-4">
                   <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving || isGeneratingPdf}>
@@ -618,7 +626,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                   <Button onClick={handleGeneratePdf} disabled={isSaving || isGeneratingPdf}>
                     {isGeneratingPdf ? 'Generating...' : 'Generate PDF'}
                   </Button>
-                  {saveMessage && <span className="text-sm text-slate-500">{saveMessage}</span>}
+                  {saveMessage && <span className="text-sm text-slate-400">{saveMessage}</span>}
                 </div>
                 <div className="flex gap-3">
                   <Button variant="secondary" onClick={handleBack} disabled={currentStep === 0}>
