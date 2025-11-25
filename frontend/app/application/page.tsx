@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../lib/supabaseClient';
 import WizardLayout from '../../components/WizardLayout';
+import AppHeader from '../../components/AppHeader';
 import { useApplicationStore } from '../../store/useApplicationStore';
 import { initSession, getDraft } from '../../lib/api';
 
@@ -57,6 +58,7 @@ export default function ApplicationPage() {
   const [sessionChecked, setSessionChecked] = useState(false);
   const [sessionError, setSessionError] = useState<string | null>(null);
   const [isDraftLoading, setIsDraftLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -71,6 +73,7 @@ export default function ApplicationPage() {
         }
         setSessionChecked(true);
         setSessionError(null);
+        setUserEmail(session.user.email ?? null);
         const supabaseUserId = session.user.id;
         setUserId(supabaseUserId);
         setIsDraftLoading(true);
@@ -103,8 +106,14 @@ export default function ApplicationPage() {
 
   if (!sessionChecked) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-100">
-        <p className="text-slate-600">Loading your application...</p>
+      <main className="flex min-h-screen flex-col bg-slate-950">
+        <AppHeader />
+        <div className="flex flex-1 items-center justify-center">
+          <div className="flex items-center gap-3 text-slate-400">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-700 border-t-white" />
+            <span>Loading your application...</span>
+          </div>
+        </div>
       </main>
     );
   }
@@ -112,18 +121,21 @@ export default function ApplicationPage() {
   const CurrentStepComponent = STEPS[currentStep] || (() => <p>Step not found</p>);
 
   return (
-    <WizardLayout title="New Application Wizard">
-      {sessionError && <p className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{sessionError}</p>}
-      {!userId || isDraftLoading ? (
-        <div className="flex min-h-[200px] items-center justify-center text-slate-600">
-          <div className="flex items-center gap-3">
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-blue-200 border-t-blue-600" />
-            <span>{!userId ? 'Preparing your workspace...' : 'Loading your saved responses...'}</span>
+    <div className="min-h-screen bg-slate-100">
+      <AppHeader userEmail={userEmail} />
+      <WizardLayout title="New Application Wizard">
+        {sessionError && <p className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{sessionError}</p>}
+        {!userId || isDraftLoading ? (
+          <div className="flex min-h-[200px] items-center justify-center text-slate-600">
+            <div className="flex items-center gap-3">
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600" />
+              <span>{!userId ? 'Preparing your workspace...' : 'Loading your saved responses...'}</span>
+            </div>
           </div>
-        </div>
-      ) : (
-        <CurrentStepComponent />
-      )}
-    </WizardLayout>
+        ) : (
+          <CurrentStepComponent />
+        )}
+      </WizardLayout>
+    </div>
   );
 }
