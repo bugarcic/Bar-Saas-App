@@ -6,7 +6,21 @@ import Input from '../ui/Input';
 import Label from '../ui/Label';
 import Button from '../ui/Button';
 
-type PersonalInfoData = NonNullable<ReturnType<typeof useApplicationStore>['data']['personal_info']>;
+interface PersonalInfoData {
+  first_name?: string;
+  middle_name?: string;
+  last_name?: string;
+  suffix?: string;
+  ssn?: string;
+  bole_id?: string;
+  dob?: string;
+  birth_city?: string;
+  birth_state?: string;
+  birth_country?: string;
+  has_other_names?: string;
+  other_names?: Array<{ name: string; reason: string }>;
+  [key: string]: unknown;
+}
 
 const SECTION_KEY = 'personal_info';
 
