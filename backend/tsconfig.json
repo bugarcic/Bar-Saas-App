@@ -4,8 +4,12 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "strict": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "resolveJsonModule": true
   },
-  "include": ["scripts/**/*.ts", "services/**/*.ts"]
+  "include": ["server.ts", "scripts/**/*.ts", "services/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
 

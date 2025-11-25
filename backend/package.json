@@ -1,8 +1,8 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "BarSaas Backend API",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:init": "node scripts/init-db.js",
@@ -12,7 +12,13 @@
     "pdf:test-fill-2": "node scripts/test-fill-page2.js",
     "pdf:test-fill-3": "node scripts/test-fill-page3.js",
     "types:generate": "ts-node scripts/generate-types.ts",
-    "start": "ts-node server.ts"
+    "dev": "ts-node server.ts",
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "node -e \"const fs=require('fs');const path=require('path');['templates','mappings'].forEach(dir=>{const src=path.join(__dirname,dir);const dest=path.join(__dirname,'dist',dir);if(!fs.existsSync(dest))fs.mkdirSync(dest,{recursive:true});fs.readdirSync(src).forEach(f=>fs.copyFileSync(path.join(src,f),path.join(dest,f)))});\"",
+    "start": "node dist/server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "keywords": [],
   "author": "",

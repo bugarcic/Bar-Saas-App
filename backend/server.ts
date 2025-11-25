@@ -9,8 +9,33 @@ import { generateFormE, generateAllFormE, generateFormC, generateAllFormC, gener
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+// CORS configuration for production and development
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.FRONTEND_URL,
+].filter(Boolean) as string[];
+
+app.use(cors({ 
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.some(allowed => origin.startsWith(allowed.replace(/\/$/, '')))) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 app.use(bodyParser.json());
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', service: 'BarSaas API' });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
