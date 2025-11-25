@@ -169,8 +169,8 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
               key={type.value}
               className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
                 entry.placement_type === type.value
-                  ? 'border-blue-500 bg-slate-700/50'
-                  : 'border-slate-200 hover:border-slate-700'
+                  ? 'border-emerald-500 bg-emerald-900/30'
+                  : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
               }`}
             >
               <input
@@ -179,11 +179,11 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
                 value={type.value}
                 checked={entry.placement_type === type.value}
                 onChange={() => onUpdate('placement_type', type.value)}
-                className="mt-0.5 h-4 w-4 text-white"
+                className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
               />
               <div>
                 <div className="font-medium text-white">{type.label}</div>
-                <div className="text-xs text-slate-500">{type.description}</div>
+                <div className="text-xs text-slate-400">{type.description}</div>
               </div>
             </label>
           ))}
@@ -306,7 +306,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
       </div>
 
       {/* Generate PDF Button */}
-      <div className="border-t border-slate-200 pt-4">
+      <div className="border-t border-slate-700 pt-4">
         <Button
           type="button"
           onClick={onGeneratePdf}
