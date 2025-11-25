@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SchemaValue = any;
@@ -17,16 +17,6 @@ interface ApplicationState {
   setData: (data: Partial<Record<SectionKey, SectionData>>) => void;
   reset: () => void;
 }
-
-const noopStorage: StateStorage = {
-  getItem: () => null,
-  setItem: () => {},
-  removeItem: () => {},
-};
-
-const storage = createJSONStorage<ApplicationState>(() =>
-  typeof window !== 'undefined' ? window.localStorage : noopStorage,
-);
 
 export const useApplicationStore = create<ApplicationState>()(
   persist(
@@ -61,7 +51,6 @@ export const useApplicationStore = create<ApplicationState>()(
     }),
     {
       name: 'application-store',
-      storage,
       partialize: (state) => ({
         data: state.data,
         currentStep: state.currentStep,
@@ -69,5 +58,3 @@ export const useApplicationStore = create<ApplicationState>()(
     },
   ),
 );
-
-
