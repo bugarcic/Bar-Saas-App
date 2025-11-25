@@ -679,13 +679,14 @@ export function extractFormHData(userData: AnyObject): FormHData {
   return {
     applicant_name: buildFullName(personalInfo),
     bole_id: header.bole_id || personalInfo.bole_id || '',
-    street: contactInfo.home_street || '',
-    city: contactInfo.home_city || '',
-    state: contactInfo.home_state || '',
-    zip: contactInfo.home_zip || '',
-    country: contactInfo.home_country || 'USA',
-    phone: contactInfo.home_phone || '',
-    email: contactInfo.home_email || '',
+    // contact_info stores fields as: street, city, state, zip, country, phone, email
+    street: contactInfo.street || '',
+    city: contactInfo.city || '',
+    state: contactInfo.state || '',
+    zip: contactInfo.zip || '',
+    country: contactInfo.country || 'USA',
+    phone: contactInfo.phone || '',
+    email: contactInfo.email || '',
     department: header.department_selection || 'First Department',
     skills,
   };
@@ -711,6 +712,18 @@ export async function generateFormH(userData: AnyObject): Promise<Uint8Array> {
   const skills = data.skills;
   
   console.log(`[ancillary-pdf] Generating Form H for pathway:`, skills.pathway || '(none selected)');
+  console.log(`[ancillary-pdf] Form H data:`, JSON.stringify({
+    applicant_name: data.applicant_name,
+    bole_id: data.bole_id,
+    street: data.street,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
+    country: data.country,
+    phone: data.phone,
+    email: data.email,
+    department: data.department,
+  }, null, 2));
 
   // Fill header section (applicant info)
   const headerMap = formHMap.header || {};
@@ -807,6 +820,316 @@ export async function generateFormH(userData: AnyObject): Promise<Uint8Array> {
     applyField(form, p5Map.practice_duration, skills.p5_practice_duration);
     applyField(form, p5Map.applicant_name, data.applicant_name);
   }
+
+  return pdfDoc.save();
+}
+
+// ============================================================================
+// FORM F - Pro Bono 50-Hour Compliance Affidavit
+// ============================================================================
+
+interface ProBonoEntry {
+  organization_name?: string;
+  org_street?: string;
+  org_city?: string;
+  org_state?: string;
+  org_zip?: string;
+  org_country?: string;
+  org_phone?: string;
+  org_email?: string;
+  placement_type?: string;
+  from_date?: string;
+  to_date?: string;
+  hours?: string;
+  description?: string;
+  supervisor_name?: string;
+  supervisor_title?: string;
+  supervisor_employer?: string;
+  supervisor_jurisdiction?: string;
+  supervisor_year_admitted?: string;
+  supervisor_phone?: string;
+  supervisor_email?: string;
+}
+
+interface FormFData {
+  applicant_name: string;
+  bole_id: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  department: string;
+  entry: ProBonoEntry;
+}
+
+/**
+ * Extract Form F data from the full user data object
+ */
+export function extractFormFData(userData: AnyObject, entryIndex: number = 0): FormFData {
+  const personalInfo = userData.personal_info || {};
+  const contactInfo = userData.contact_info || {};
+  const header = userData.header || {};
+  const entries = userData.pro_bono_entries || [];
+  const entry = entries[entryIndex] || {};
+
+  return {
+    applicant_name: buildFullName(personalInfo),
+    bole_id: header.bole_id || personalInfo.bole_id || '',
+    street: contactInfo.street || '',
+    city: contactInfo.city || '',
+    state: contactInfo.state || '',
+    zip: contactInfo.zip || '',
+    country: contactInfo.country || 'USA',
+    department: header.department_selection || 'First Department',
+    entry,
+  };
+}
+
+/**
+ * Generate a Pro Bono 50-Hour Compliance Affidavit PDF (Form F)
+ */
+export async function generateFormF(userData: AnyObject, entryIndex: number = 0): Promise<Uint8Array> {
+  const mappings = loadAncillaryMappings();
+  const formFMap = mappings.form_f_pro_bono;
+  
+  if (!formFMap) {
+    throw new Error('Form F mapping not found in ancillary-maps.json');
+  }
+
+  const templatePath = getTemplatePath('F');
+  const templateBytes = fs.readFileSync(templatePath);
+  const pdfDoc = await PDFDocument.load(templateBytes);
+  const form = pdfDoc.getForm();
+
+  const data = extractFormFData(userData, entryIndex);
+  const entry = data.entry;
+  
+  console.log(`[ancillary-pdf] Generating Form F for pro bono entry index ${entryIndex}:`, entry.organization_name || '(unnamed)');
+
+  // Fill header section (applicant info)
+  const headerMap = formFMap.header || {};
+  applyField(form, headerMap.applicant_name, data.applicant_name);
+  applyField(form, headerMap.bole_id, data.bole_id);
+  applyField(form, headerMap.street, data.street);
+  applyField(form, headerMap.city, data.city);
+  applyField(form, headerMap.state, data.state);
+  applyField(form, headerMap.zip, data.zip);
+  applyField(form, headerMap.country, data.country);
+
+  // Set the department radio button
+  const deptSelection = formFMap.department_selection;
+  if (deptSelection && deptSelection.options) {
+    const deptOption = deptSelection.options[data.department];
+    if (deptOption) {
+      setRadio(form, deptSelection.field, deptOption);
+    }
+  }
+
+  // Fill project/organization details
+  const projectMap = formFMap.project_details || {};
+  applyField(form, projectMap.organization_name, entry.organization_name);
+  applyField(form, projectMap.supervisor_name, entry.supervisor_name);
+  applyField(form, projectMap.org_street, entry.org_street);
+  applyField(form, projectMap.org_city, entry.org_city);
+  applyField(form, projectMap.org_state, entry.org_state);
+  applyField(form, projectMap.org_zip, entry.org_zip);
+  applyField(form, projectMap.org_country, entry.org_country);
+  applyField(form, projectMap.org_phone, entry.org_phone);
+  applyField(form, projectMap.org_email, entry.org_email);
+
+  // Fill service info
+  const serviceMap = formFMap.service_info || {};
+  applyField(form, serviceMap.from_date, entry.from_date);
+  applyField(form, serviceMap.to_date, entry.to_date);
+  applyField(form, serviceMap.hours, entry.hours);
+  applyField(form, serviceMap.description, entry.description);
+
+  // Set the placement type radio button
+  const placementType = formFMap.placement_type;
+  if (placementType && placementType.options && entry.placement_type) {
+    const typeOption = placementType.options[entry.placement_type];
+    if (typeOption) {
+      setRadio(form, placementType.field, typeOption);
+    }
+  }
+
+  // Fill notary section
+  const notaryMap = formFMap.notary_section || {};
+  applyField(form, notaryMap.applicant_name, data.applicant_name);
+
+  // Fill supervisor certification section
+  const supervisorMap = formFMap.supervisor_certification || {};
+  applyField(form, supervisorMap.supervisor_name, entry.supervisor_name);
+  applyField(form, supervisorMap.supervisor_title, entry.supervisor_title);
+  applyField(form, supervisorMap.supervisor_employer, entry.supervisor_employer);
+  applyField(form, supervisorMap.supervisor_jurisdiction, entry.supervisor_jurisdiction);
+  applyField(form, supervisorMap.supervisor_year_admitted, entry.supervisor_year_admitted);
+  applyField(form, supervisorMap.supervisor_phone, entry.supervisor_phone);
+  applyField(form, supervisorMap.supervisor_email, entry.supervisor_email);
+
+  return pdfDoc.save();
+}
+
+/**
+ * Generate all Pro Bono Affidavit PDFs (one per placement)
+ */
+export async function generateAllFormF(userData: AnyObject): Promise<{ orgName: string; pdf: Uint8Array }[]> {
+  const entries = userData.pro_bono_entries || [];
+  const results: { orgName: string; pdf: Uint8Array }[] = [];
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    if (entry?.organization_name) {
+      const pdf = await generateFormF(userData, i);
+      results.push({
+        orgName: entry.organization_name || `Placement ${i + 1}`,
+        pdf,
+      });
+    }
+  }
+
+  return results;
+}
+
+// ============================================================================
+// FORM G - Pro Bono Scholars Program Completion Affidavit
+// ============================================================================
+
+interface ProBonoScholarsData {
+  law_school_name?: string;
+  law_school_city?: string;
+  placement_name?: string;
+  placement_street?: string;
+  placement_city?: string;
+  placement_state?: string;
+  placement_zip?: string;
+  placement_country?: string;
+  placement_phone?: string;
+  from_date?: string;
+  to_date?: string;
+  hours?: string;
+  description?: string;
+  supervisor_name?: string;
+  supervisor_title?: string;
+  supervisor_phone?: string;
+  supervisor_email?: string;
+  faculty_name?: string;
+  faculty_title?: string;
+  faculty_phone?: string;
+  faculty_email?: string;
+}
+
+interface FormGData {
+  applicant_name: string;
+  bole_id: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  department: string;
+  pbsp: ProBonoScholarsData;
+}
+
+/**
+ * Extract Form G data from the full user data object
+ */
+export function extractFormGData(userData: AnyObject): FormGData {
+  const personalInfo = userData.personal_info || {};
+  const contactInfo = userData.contact_info || {};
+  const header = userData.header || {};
+  const pbsp = userData.pro_bono_scholars || {};
+
+  return {
+    applicant_name: buildFullName(personalInfo),
+    bole_id: header.bole_id || personalInfo.bole_id || '',
+    street: contactInfo.street || '',
+    city: contactInfo.city || '',
+    state: contactInfo.state || '',
+    zip: contactInfo.zip || '',
+    department: header.department_selection || 'First Department',
+    pbsp,
+  };
+}
+
+/**
+ * Generate a Pro Bono Scholars Program Completion Affidavit PDF (Form G)
+ */
+export async function generateFormG(userData: AnyObject): Promise<Uint8Array> {
+  const mappings = loadAncillaryMappings();
+  const formGMap = mappings.form_g_pbsp;
+  
+  if (!formGMap) {
+    throw new Error('Form G mapping not found in ancillary-maps.json');
+  }
+
+  const templatePath = getTemplatePath('G');
+  const templateBytes = fs.readFileSync(templatePath);
+  const pdfDoc = await PDFDocument.load(templateBytes);
+  const form = pdfDoc.getForm();
+
+  const data = extractFormGData(userData);
+  const pbsp = data.pbsp;
+  
+  console.log(`[ancillary-pdf] Generating Form G for Pro Bono Scholars:`, pbsp.placement_name || '(no placement)');
+
+  // Fill header section (applicant info)
+  const headerMap = formGMap.header || {};
+  applyField(form, headerMap.applicant_name, data.applicant_name);
+  applyField(form, headerMap.bole_id, data.bole_id);
+  applyField(form, headerMap.street, data.street);
+  applyField(form, headerMap.city, data.city);
+  applyField(form, headerMap.state, data.state);
+  applyField(form, headerMap.zip, data.zip);
+
+  // Set the department radio button
+  const deptSelection = formGMap.department_selection;
+  if (deptSelection && deptSelection.options) {
+    const deptOption = deptSelection.options[data.department];
+    if (deptOption) {
+      setRadio(form, deptSelection.field, deptOption);
+    }
+  }
+
+  // Fill law school info
+  const lawSchoolMap = formGMap.law_school_info || {};
+  applyField(form, lawSchoolMap.law_school_name, pbsp.law_school_name);
+  applyField(form, lawSchoolMap.law_school_city, pbsp.law_school_city);
+
+  // Fill placement info
+  const placementMap = formGMap.placement_info || {};
+  applyField(form, placementMap.placement_name, pbsp.placement_name);
+  applyField(form, placementMap.placement_street, pbsp.placement_street);
+  applyField(form, placementMap.placement_city, pbsp.placement_city);
+  applyField(form, placementMap.placement_state, pbsp.placement_state);
+  applyField(form, placementMap.placement_zip, pbsp.placement_zip);
+  applyField(form, placementMap.placement_country, pbsp.placement_country);
+  applyField(form, placementMap.placement_phone, pbsp.placement_phone);
+
+  // Fill service details
+  const serviceMap = formGMap.service_details || {};
+  applyField(form, serviceMap.from_date, pbsp.from_date);
+  applyField(form, serviceMap.to_date, pbsp.to_date);
+  applyField(form, serviceMap.hours, pbsp.hours);
+  applyField(form, serviceMap.description, pbsp.description);
+
+  // Fill notary section
+  const notaryMap = formGMap.notary_section || {};
+  applyField(form, notaryMap.applicant_name, data.applicant_name);
+
+  // Fill placement supervisor info
+  const supervisorMap = formGMap.placement_supervisor || {};
+  applyField(form, supervisorMap.supervisor_name, pbsp.supervisor_name);
+  applyField(form, supervisorMap.supervisor_title, pbsp.supervisor_title);
+  applyField(form, supervisorMap.supervisor_phone, pbsp.supervisor_phone);
+  applyField(form, supervisorMap.supervisor_email, pbsp.supervisor_email);
+
+  // Fill faculty supervisor info
+  const facultyMap = formGMap.faculty_supervisor || {};
+  applyField(form, facultyMap.faculty_name, pbsp.faculty_name);
+  applyField(form, facultyMap.faculty_title, pbsp.faculty_title);
+  applyField(form, facultyMap.faculty_phone, pbsp.faculty_phone);
+  applyField(form, facultyMap.faculty_email, pbsp.faculty_email);
 
   return pdfDoc.save();
 }

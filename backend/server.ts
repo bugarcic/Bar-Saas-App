@@ -4,7 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Pool } from 'pg';
 import { generateQuestionnairePdf } from './services/pdf-filler';
-import { generateFormE, generateAllFormE, generateFormC, generateAllFormC, generateFormD, generateAllFormD, generateFormH } from './services/ancillary-pdf-filler';
+import { generateFormE, generateAllFormE, generateFormC, generateAllFormC, generateFormD, generateAllFormD, generateFormH, generateFormF, generateAllFormF, generateFormG } from './services/ancillary-pdf-filler';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -243,6 +243,71 @@ app.post('/api/generate-form-h', async (req, res) => {
   } catch (error) {
     console.error('Error generating Form H:', error);
     res.status(500).json({ error: 'Failed to generate Skills Competency Affidavit' });
+  }
+});
+
+// Generate Form F (Pro Bono 50-Hour Affidavit) for a specific placement
+app.post('/api/generate-form-f', async (req, res) => {
+  try {
+    const { data, entryIndex = 0 } = req.body;
+    const pdfBytes = await generateFormF(data ?? {}, entryIndex);
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=pro-bono-affidavit-${entryIndex + 1}.pdf`);
+    res.send(Buffer.from(pdfBytes));
+  } catch (error) {
+    console.error('Error generating Form F:', error);
+    res.status(500).json({ error: 'Failed to generate Pro Bono Affidavit' });
+  }
+});
+
+// Generate all Form F PDFs (one per pro bono placement)
+app.post('/api/generate-all-form-f', async (req, res) => {
+  try {
+    const { data } = req.body;
+    const results = await generateAllFormF(data ?? {});
+    
+    if (results.length === 0) {
+      res.status(400).json({ error: 'No pro bono entries found' });
+      return;
+    }
+    
+    if (results.length === 1) {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=pro-bono-affidavit.pdf`);
+      res.send(Buffer.from(results[0].pdf));
+      return;
+    }
+    
+    const response = results.map((r, i) => ({
+      orgName: r.orgName,
+      index: i,
+      filename: `pro-bono-affidavit-${i + 1}-${r.orgName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
+    }));
+    
+    res.json({ 
+      count: results.length,
+      message: `Generated ${results.length} Pro Bono Affidavit(s)`,
+      forms: response,
+    });
+  } catch (error) {
+    console.error('Error generating Form F:', error);
+    res.status(500).json({ error: 'Failed to generate Pro Bono Affidavits' });
+  }
+});
+
+// Generate Form G (Pro Bono Scholars Program Completion)
+app.post('/api/generate-form-g', async (req, res) => {
+  try {
+    const { data } = req.body;
+    const pdfBytes = await generateFormG(data ?? {});
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=pro-bono-scholars-completion.pdf`);
+    res.send(Buffer.from(pdfBytes));
+  } catch (error) {
+    console.error('Error generating Form G:', error);
+    res.status(500).json({ error: 'Failed to generate Pro Bono Scholars Affidavit' });
   }
 });
 

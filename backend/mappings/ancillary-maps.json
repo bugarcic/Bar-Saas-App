@@ -159,6 +159,7 @@
     }
   },
   "form_f_pro_bono": {
+    "_note": "Pro Bono 50-Hour Compliance Affidavit. One per qualifying placement/project.",
     "header": {
       "applicant_name": "Pro Bono Requirements 1",
       "bole_id": "Pro Bono Requirements 2",
@@ -168,13 +169,24 @@
       "zip": "Pro Bono Requirements 6",
       "country": "Pro Bono Requirements 7"
     },
+    "department_selection": {
+      "field": "Pro Bono Requirements Radio Button 1",
+      "type": "radio",
+      "options": {
+        "First Department": "Choice1",
+        "Second Department": "Choice2",
+        "Third Department": "Choice3",
+        "Fourth Department": "Choice4"
+      }
+    },
     "project_details": {
       "organization_name": "Pro Bono Requirements 8",
       "supervisor_name": "Pro Bono Requirements 9",
       "org_street": "Pro Bono Requirements 10",
       "org_city": "Pro Bono Requirements 11",
       "org_state": "Pro Bono Requirements 12",
-      "org_zip": "Pro Bono Requirements 14",
+      "org_zip": "Pro Bono Requirements 13",
+      "org_country": "Pro Bono Requirements 14",
       "org_phone": "Pro Bono Requirements 15",
       "org_email": "Pro Bono Requirements 16"
     },
@@ -182,21 +194,39 @@
       "from_date": "Pro Bono Requirements 17",
       "to_date": "Pro Bono Requirements 18",
       "hours": "Pro Bono Requirements 19",
-      "description": "Pro Bono Requirements 20",
-      "category_legal_provider": { "field": "Check Box 1", "type": "checkbox" },
-      "category_govt": { "field": "Check Box 2", "type": "checkbox" },
-      "category_law_school": { "field": "Check Box 3", "type": "checkbox" },
-      "category_other": { "field": "Check Box 4", "type": "checkbox" }
+      "description": "Pro Bono Requirements 20"
     },
-    "signature_block": {
+    "placement_type": {
+      "field": "Pro Bono Requirements Radio Button 2",
+      "type": "radio",
+      "options": {
+        "Legal Services Provider": "Choice1",
+        "Government": "Choice2",
+        "Law School Clinic/Externship": "Choice3",
+        "Court-Based Program": "Choice4",
+        "Other": "Choice5"
+      }
+    },
+    "notary_section": {
       "state_country": "Pro Bono Requirements 21",
       "county": "Pro Bono Requirements 22",
       "city": "Pro Bono Requirements 23",
       "applicant_name": "Pro Bono Requirements 24",
       "date": "Requirements Dated 1"
+    },
+    "supervisor_certification": {
+      "_note": "Fields 25-31 are for the supervising attorney's certification",
+      "supervisor_name": "Pro Bono Requirements 25",
+      "supervisor_title": "Pro Bono Requirements 26",
+      "supervisor_employer": "Pro Bono Requirements 27",
+      "supervisor_jurisdiction": "Pro Bono Requirements 28",
+      "supervisor_year_admitted": "Pro Bono Requirements 29",
+      "supervisor_phone": "Pro Bono Requirements 30",
+      "supervisor_email": "Pro Bono Requirements 31"
     }
   },
   "form_g_pbsp": {
+    "_note": "Pro Bono Scholars Program Completion Affidavit. For applicants who completed PBSP.",
     "header": {
       "applicant_name": "PBSP 1",
       "bole_id": "PBSP 2",
@@ -205,28 +235,63 @@
       "state": "PBSP 5",
       "zip": "PBSP 6"
     },
-    "education_placement": {
+    "department_selection": {
+      "field": "PBSP Radio Button 1",
+      "type": "radio",
+      "options": {
+        "First Department": "Choice1",
+        "Second Department": "Choice2",
+        "Third Department": "Choice3",
+        "Fourth Department": "Choice4"
+      }
+    },
+    "law_school_info": {
       "law_school_name": "PBSP 7",
-      "placement_name": "PBSP 8",
-      "placement_street": "PBSC 9",
-      "placement_city": "PBSP 10",
-      "placement_state": "PBSP 11",
-      "placement_zip": "PBSP 12"
+      "law_school_city": "PBSP 8"
+    },
+    "placement_info": {
+      "placement_name": "PBSC 9",
+      "placement_street": "PBSP 10",
+      "placement_city": "PBSP 11",
+      "placement_state": "PBSP 12",
+      "placement_zip": "PBSP 13",
+      "placement_country": "PBSP 14",
+      "placement_phone": "PBSP 15"
     },
     "service_details": {
-      "from_date": "PBSP 13",
-      "to_date": "PBSP 14",
-      "hours_service": "PBSP 15",
-      "hours_academic": "PBSP 16",
-      "credits_earned": "PBSP 17",
-      "description": "PBSP 18"
+      "from_date": "PBSP 16",
+      "to_date": "PBSP 17",
+      "hours": "PBSP 18",
+      "description": "PBSP 19"
     },
-    "signature_block": {
-      "state_country": "PBSP 19",
-      "county": "PBSP 20",
-      "city": "PBSP 21",
-      "applicant_name": "PBSP 22",
+    "notary_section": {
+      "state_country": "PBSP 20",
+      "county": "PBSP 21",
+      "city": "PBSP 22",
+      "applicant_name": "PBSP 23",
       "date": "Scholars Dated 1"
+    },
+    "placement_supervisor": {
+      "_note": "Placement supervisor certification section",
+      "supervisor_name": "PBSP 24",
+      "supervisor_title": "PBSP 25",
+      "supervisor_phone": "PBSP 26",
+      "supervisor_email": "PBSP 27"
+    },
+    "faculty_supervisor": {
+      "_note": "Law school faculty supervisor certification section",
+      "faculty_name": "PBSC 28",
+      "faculty_title": "PBCP 29",
+      "faculty_phone": "PBSP 30",
+      "faculty_email": "PBSP 31"
+    },
+    "additional_fields": {
+      "_note": "Additional fields if present on form",
+      "field_32": "PBSP 32",
+      "field_33": "PBSP 33",
+      "field_34": "PBSP 34",
+      "field_35": "PBSP 35",
+      "field_36": "PBSP 36"
     }
   },
   "form_h_skills": {

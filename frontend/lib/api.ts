@@ -142,3 +142,39 @@ export async function generateFormH(payload: unknown): Promise<Blob> {
   
   return res.blob();
 }
+
+/**
+ * Generate Form F (Pro Bono 50-Hour Affidavit) for a specific placement
+ */
+export async function generateFormF(payload: unknown, entryIndex: number = 0): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-form-f`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload, entryIndex }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}
+
+/**
+ * Generate Form G (Pro Bono Scholars Program Completion)
+ */
+export async function generateFormG(payload: unknown): Promise<Blob> {
+  const res = await fetch(`${API_BASE}/api/generate-form-g`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: payload }),
+  });
+  
+  if (!res.ok) {
+    const message = await res.text();
+    throw new Error(message || `Request failed with status ${res.status}`);
+  }
+  
+  return res.blob();
+}

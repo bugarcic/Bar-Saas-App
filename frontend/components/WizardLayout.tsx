@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useApplicationStore } from '../store/useApplicationStore';
 import Button from './ui/Button';
-import { saveDraft, generatePdf, generateFormE, generateFormC, generateFormD, generateFormH } from '../lib/api';
+import { saveDraft, generatePdf, generateFormE, generateFormC, generateFormD, generateFormH, generateFormF, generateFormG } from '../lib/api';
 
 const GROUPS = [
   'Group 1 · Start',
@@ -22,6 +22,8 @@ const GROUPS = [
   'Character Affirmants',
   'Employment Affirmants',
   'Skills Competency',
+  'Pro Bono (50 Hours)',
+  'Pro Bono Scholars',
 ];
 
 interface WizardLayoutProps {
@@ -52,6 +54,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   const [isGeneratingFormC, setIsGeneratingFormC] = useState(false);
   const [isGeneratingFormD, setIsGeneratingFormD] = useState(false);
   const [isGeneratingFormH, setIsGeneratingFormH] = useState(false);
+  const [isGeneratingFormF, setIsGeneratingFormF] = useState(false);
+  const [isGeneratingFormG, setIsGeneratingFormG] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const lastSavedDataRef = React.useRef<string>('');
 
@@ -66,6 +70,13 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   
   // Get skills competency data for Form H generation
   const skillsCompetency = (data.skills_competency || {}) as { pathway?: string };
+  
+  // Get pro bono entries for Form F generation
+  const proBonoEntries = (Array.isArray(data.pro_bono_entries) ? data.pro_bono_entries : []) as Array<{ organization_name?: string; hours?: string }>;
+  
+  // Get pro bono scholars data for Form G generation
+  const proBonoScholars = (data.pro_bono_scholars || {}) as { placement_name?: string };
+  const isProBonoScholar = (data.header as any)?.pro_bono_scholar === 'Yes';
 
   const handleSaveDraft = async (silent = false) => {
     if (!userId) {
@@ -286,6 +297,77 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
     }
   };
 
+  const handleGenerateFormF = async (entryIndex: number) => {
+    if (!userId) {
+      setSaveMessage('Session not initialized yet.');
+      return;
+    }
+
+    try {
+      setIsGeneratingFormF(true);
+      setSaveMessage('Generating Pro Bono Affidavit...');
+      
+      // First save the latest data
+      await saveDraft(userId, data);
+      
+      // Then generate Form F
+      const blob = await generateFormF(data, entryIndex);
+      
+      // Create download link
+      const orgName = proBonoEntries[entryIndex]?.organization_name?.replace(/[^a-zA-Z0-9]/g, '_') || `placement-${entryIndex + 1}`;
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `pro-bono-affidavit-${orgName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      setSaveMessage('Pro Bono Affidavit downloaded!');
+    } catch (error) {
+      console.error('Error generating Form F:', error);
+      setSaveMessage('Failed to generate Pro Bono Affidavit.');
+    } finally {
+      setIsGeneratingFormF(false);
+    }
+  };
+
+  const handleGenerateFormG = async () => {
+    if (!userId) {
+      setSaveMessage('Session not initialized yet.');
+      return;
+    }
+
+    try {
+      setIsGeneratingFormG(true);
+      setSaveMessage('Generating Pro Bono Scholars Affidavit...');
+      
+      // First save the latest data
+      await saveDraft(userId, data);
+      
+      // Then generate Form G
+      const blob = await generateFormG(data);
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'pro-bono-scholars-completion.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      setSaveMessage('Pro Bono Scholars Affidavit downloaded!');
+    } catch (error) {
+      console.error('Error generating Form G:', error);
+      setSaveMessage('Failed to generate Pro Bono Scholars Affidavit.');
+    } finally {
+      setIsGeneratingFormG(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
       <div className="mx-auto max-w-6xl px-6 py-8">
@@ -462,6 +544,59 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                     <p className="mt-1 text-xs text-slate-600">{skillsCompetency.pathway}</p>
                   )}
                 </div>
+
+                {/* Form F - Pro Bono 50-Hour */}
+                <div className="rounded-md border border-slate-200 p-3">
+                  <div className="mb-2 font-medium text-slate-700">Form F · Pro Bono</div>
+                  {proBonoEntries.filter(e => e?.organization_name).length === 0 ? (
+                    <p className="text-xs text-slate-500">Add placements in Pro Bono section</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {proBonoEntries.map((entry, index) => (
+                        entry?.organization_name && (
+                          <div key={index} className="flex items-center justify-between gap-2">
+                            <span className="truncate text-xs text-slate-600" title={`${entry.organization_name} (${entry.hours || '?'} hrs)`}>
+                              {entry.organization_name} ({entry.hours || '?'} hrs)
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleGenerateFormF(index)}
+                              disabled={isGeneratingFormF || isSaving}
+                              className="shrink-0 rounded bg-orange-600 px-2 py-1 text-xs font-medium text-white hover:bg-orange-700 disabled:opacity-50"
+                            >
+                              {isGeneratingFormF ? '...' : 'PDF'}
+                            </button>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Form G - Pro Bono Scholars (only show if applicable) */}
+                {isProBonoScholar && (
+                  <div className="rounded-md border border-slate-200 p-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-slate-700">Form G · PBSP</span>
+                      <button
+                        type="button"
+                        onClick={handleGenerateFormG}
+                        disabled={isGeneratingFormG || isSaving || !proBonoScholars.placement_name}
+                        className="rounded bg-purple-600 px-2 py-1 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+                      >
+                        {isGeneratingFormG ? '...' : 'PDF'}
+                      </button>
+                    </div>
+                    {!proBonoScholars.placement_name && (
+                      <p className="mt-1 text-xs text-slate-500">Complete Pro Bono Scholars section</p>
+                    )}
+                    {proBonoScholars.placement_name && (
+                      <p className="mt-1 truncate text-xs text-slate-600" title={proBonoScholars.placement_name}>
+                        {proBonoScholars.placement_name}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </aside>

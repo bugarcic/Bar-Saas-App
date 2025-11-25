@@ -24,6 +24,8 @@ import Group13Signature from '../../components/groups/Group13Signature';
 import GroupCharacterAffirmants from '../../components/groups/GroupCharacterAffirmants';
 import GroupEmploymentAffirmants from '../../components/groups/GroupEmploymentAffirmants';
 import GroupSkillsCompetency from '../../components/groups/GroupSkillsCompetency';
+import GroupProBono from '../../components/groups/GroupProBono';
+import GroupProBonoScholars from '../../components/groups/GroupProBonoScholars';
 
 const STEPS = [
   Group1Start,
@@ -42,6 +44,8 @@ const STEPS = [
   GroupCharacterAffirmants,
   GroupEmploymentAffirmants,
   GroupSkillsCompetency,
+  GroupProBono,
+  GroupProBonoScholars,
 ];
 
 export default function ApplicationPage() {
