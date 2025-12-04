@@ -33,7 +33,9 @@ export const Group1Start: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   const updateField = (field: keyof HeaderData, value: string) => {
-    setField(SECTION_KEY, field, value);
+    // Explicitly cast field to string to satisfy the generic store signature
+    // while maintaining type safety within this component via the function signature
+    setField(SECTION_KEY, field as string, value);
     
     // Sync bole_id to personal_info as well
     if (field === 'bole_id') {

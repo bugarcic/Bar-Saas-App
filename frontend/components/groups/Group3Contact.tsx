@@ -54,15 +54,15 @@ export const Group3Contact: React.FC = () => {
   const office = useMemo(() => getOfficeData(officeData), [officeData]);
 
   const updateContact = (field: keyof ContactInfoData, value: string) => {
-    setField('contact_info', field, value);
+    setField('contact_info', field as string, value);
   };
 
   const updatePrior = (field: keyof PriorResidenceData, value: string) => {
-    setField('prior_residence', field, value);
+    setField('prior_residence', field as string, value);
   };
 
   const updateOffice = (field: keyof OfficeAddressData, value: string) => {
-    setField('office_address', field, value);
+    setField('office_address', field as string, value);
   };
 
   return (
