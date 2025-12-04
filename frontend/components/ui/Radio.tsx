@@ -15,6 +15,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
           type="radio"
           checked={checked}
           className="peer sr-only"
+          style={{ position: 'absolute', width: 0, height: 0, opacity: 0, margin: 0, padding: 0, pointerEvents: 'none', appearance: 'none' }}
           {...props}
         />
         <div className={`h-5 w-5 rounded-full border-2 transition-all ${
@@ -43,4 +44,3 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
 Radio.displayName = 'Radio';
 
 export default Radio;
-

@@ -4,32 +4,10 @@ import React, { useMemo } from 'react';
 import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
-
-interface ConditionData {
-  has_issue?: { value?: string };
-  entity_name?: string;
-  street?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  province?: string;
-  phone?: string;
-  nature_of_proceeding?: string;
-  relevant_dates?: string;
-  disposition?: string;
-  explanation?: string;
-}
-
-interface GeneralConduct {
-  has_issue?: { value?: string };
-  dates?: string;
-  explanation?: string;
-}
-
-interface IllegalDrugs {
-  has_issue?: { value?: string };
-}
+import Radio from '../ui/Radio';
+import Textarea from '../ui/Textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
+import { ConditionData, GeneralConductData, IllegalDrugsData } from '../../types/schema';
 
 const getConditionData = (data: any): ConditionData => ({
   has_issue: { value: '' },
@@ -48,14 +26,14 @@ const getConditionData = (data: any): ConditionData => ({
   ...(data ?? {}),
 });
 
-const getGeneralConduct = (data: any): GeneralConduct => ({
+const getGeneralConduct = (data: any): GeneralConductData => ({
   has_issue: { value: '' },
   dates: '',
   explanation: '',
   ...(data ?? {}),
 });
 
-const getIllegalDrugs = (data: any): IllegalDrugs => ({
+const getIllegalDrugs = (data: any): IllegalDrugsData => ({
   has_issue: { value: '' },
   ...(data ?? {}),
 });
@@ -66,62 +44,59 @@ const ConditionForm: React.FC<{
   data: ConditionData;
   updateFn: (f: string, v: any) => void;
 }> = ({ title, label, data, updateFn }) => (
-  <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-    <h3 className="mb-4 text-base font-semibold text-white">{title}</h3>
-    <div className="space-y-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>{title}</CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-4">
       <Label>{label}</Label>
       <div className="flex gap-4">
-        <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-          <input
-            type="radio"
-            checked={data.has_issue?.value === 'Yes'}
-            onChange={() => updateFn('has_issue', { type: 'radio', value: 'Yes' })}
-            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-          /> Yes             </label>
-        <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-          <input
-            type="radio"
-            checked={data.has_issue?.value === 'No'}
-            onChange={() => updateFn('has_issue', { type: 'radio', value: 'No' })}
-            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-          /> No             </label>
+        <Radio
+          label="Yes"
+          checked={data.has_issue?.value === 'Yes'}
+          onChange={() => updateFn('has_issue', { type: 'radio', value: 'Yes' })}
+        />
+        <Radio
+          label="No"
+          checked={data.has_issue?.value === 'No'}
+          onChange={() => updateFn('has_issue', { type: 'radio', value: 'No' })}
+        />
       </div>
 
       {data.has_issue?.value === 'Yes' && (
         <div className="space-y-4 rounded-md bg-slate-700/50 p-4">
           <div className="space-y-2">
             <Label>Entity Name (Court, Agency, etc.)</Label>
-            <Input value={data.entity_name} onChange={(e) => updateFn('entity_name', e.target.value)} />
+            <Input value={data.entity_name as string} onChange={(e) => updateFn('entity_name', e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label>Address (Street, City, State, Zip)</Label>
-            <Input value={data.street} onChange={(e) => updateFn('street', e.target.value)} placeholder="Street" />
+            <Input value={data.street as string} onChange={(e) => updateFn('street', e.target.value)} placeholder="Street" />
             <div className="grid grid-cols-2 gap-2 mt-2">
-              <Input value={data.city} onChange={(e) => updateFn('city', e.target.value)} placeholder="City" />
-              <Input value={data.state} onChange={(e) => updateFn('state', e.target.value)} placeholder="State" />
+              <Input value={data.city as string} onChange={(e) => updateFn('city', e.target.value)} placeholder="City" />
+              <Input value={data.state as string} onChange={(e) => updateFn('state', e.target.value)} placeholder="State" />
             </div>
             <div className="grid grid-cols-2 gap-2 mt-2">
-              <Input value={data.zip} onChange={(e) => updateFn('zip', e.target.value)} placeholder="Zip" />
-              <Input value={data.country} onChange={(e) => updateFn('country', e.target.value)} placeholder="Country" />
+              <Input value={data.zip as string} onChange={(e) => updateFn('zip', e.target.value)} placeholder="Zip" />
+              <Input value={data.country as string} onChange={(e) => updateFn('country', e.target.value)} placeholder="Country" />
             </div>
           </div>
           <div className="space-y-2">
             <Label>Dates</Label>
-            <Input value={data.relevant_dates} onChange={(e) => updateFn('relevant_dates', e.target.value)} />
+            <Input value={data.relevant_dates as string} onChange={(e) => updateFn('relevant_dates', e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label>Explanation / Disposition</Label>
-            <textarea
-              value={data.explanation}
+            <Textarea
+              value={data.explanation as string}
               onChange={(e) => updateFn('explanation', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
               rows={3}
             />
           </div>
         </div>
       )}
-    </div>
-  </div>
+    </CardContent>
+  </Card>
 );
 
 export const Group9Condition: React.FC = () => {
@@ -168,62 +143,57 @@ export const Group9Condition: React.FC = () => {
         updateFn={(f, v) => updateFitness('conduct_behavior', f, v)}
       />
 
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">General Fitness</h3>
-        <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>General Fitness</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <Label>Apart from above, have you engaged in any conduct that could call into question your ability to practice law?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-              <input
-                type="radio"
-                checked={general.has_issue?.value === 'Yes'}
-                onChange={() => updateGeneral('has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-              /> Yes             </label>
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-              <input
-                type="radio"
-                checked={general.has_issue?.value === 'No'}
-                onChange={() => updateGeneral('has_issue', { type: 'radio', value: 'No' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-              /> No             </label>
+            <Radio
+              label="Yes"
+              checked={general.has_issue?.value === 'Yes'}
+              onChange={() => updateGeneral('has_issue', { type: 'radio', value: 'Yes' })}
+            />
+            <Radio
+              label="No"
+              checked={general.has_issue?.value === 'No'}
+              onChange={() => updateGeneral('has_issue', { type: 'radio', value: 'No' })}
+            />
           </div>
           {general.has_issue?.value === 'Yes' && (
             <div className="space-y-2 rounded-md bg-slate-700/50 p-4">
               <Label>Explanation</Label>
-              <textarea
-                value={general.explanation}
+              <Textarea
+                value={general.explanation as string}
                 onChange={(e) => updateGeneral('explanation', e.target.value)}
-                className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500"
                 rows={3}
               />
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Illegal Drugs</h3>
-        <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Illegal Drugs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <Label>Are you currently using any illegal drugs?</Label>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-              <input
-                type="radio"
-                checked={drugs.has_issue?.value === 'Yes'}
-                onChange={() => updateDrugs('has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-              /> Yes             </label>
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-              <input
-                type="radio"
-                checked={drugs.has_issue?.value === 'No'}
-                onChange={() => updateDrugs('has_issue', { type: 'radio', value: 'No' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-              /> No             </label>
+            <Radio
+              label="Yes"
+              checked={drugs.has_issue?.value === 'Yes'}
+              onChange={() => updateDrugs('has_issue', { type: 'radio', value: 'Yes' })}
+            />
+            <Radio
+              label="No"
+              checked={drugs.has_issue?.value === 'No'}
+              onChange={() => updateDrugs('has_issue', { type: 'radio', value: 'No' })}
+            />
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApplicationStore } from '../store/useApplicationStore';
 import Button from './ui/Button';
-import { saveDraft, generatePdf, generateFormE, generateFormC, generateFormD, generateFormH, generateFormF, generateFormG } from '../lib/api';
+import { saveDraft } from '../lib/api';
 import { 
   HiOutlinePlay, 
   HiOutlineUser, 
@@ -17,11 +17,23 @@ import {
   HiOutlineUsers,
   HiOutlineCurrencyDollar,
   HiOutlineIdentification,
-  HiOutlinePencil
+  HiOutlinePencil,
+  HiOutlineCollection,
+  HiOutlineDownload,
+  HiOutlineInformationCircle
 } from 'react-icons/hi';
 
 // Step info with titles, descriptions, and icons
 const STEP_INFO = [
+  // --- Overview (0) ---
+  {
+    label: 'Overview',
+    title: 'Welcome & Overview',
+    description: 'Learn about the application process and how to use this tool.',
+    icon: HiOutlineInformationCircle
+  },
+
+  // --- Questionnaire (1-13) ---
   { 
     label: 'Start', 
     icon: HiOutlinePlay,
@@ -100,66 +112,78 @@ const STEP_INFO = [
     title: 'Signature & Certification',
     description: 'Review and sign your completed application.'
   },
-  // Affirmation Forms
+  
+  // --- Supporting Docs (14-18) ---
   { 
-    label: 'Character Affirmants',
+    label: 'Character Affirmations',
     title: 'Character & Fitness Affirmations',
-    description: 'Add references who can attest to your good moral character (2-4 required).'
+    description: 'Add references who can attest to your good moral character (2-4 required).',
+    icon: HiOutlineCollection
   },
   { 
-    label: 'Employment Affirmants',
+    label: 'Employment Affirmations',
     title: 'Employment Affirmations',
-    description: 'Request affirmations from legal employers you worked for after law school.'
+    description: 'Request affirmations from legal employers you worked for after law school.',
+    icon: HiOutlineCollection
   },
   { 
     label: 'Skills Competency',
     title: 'Skills Competency Affidavit',
-    description: 'Certify how you met New York\'s Skills Competency requirement.'
+    description: 'Certify how you met New York\'s Skills Competency requirement.',
+    icon: HiOutlineCollection
   },
   { 
     label: 'Pro Bono (50 Hours)',
     title: 'Pro Bono Service (50-Hour Requirement)',
-    description: 'Document your qualifying pro bono legal service placements.'
+    description: 'Document your qualifying pro bono legal service placements.',
+    icon: HiOutlineCollection
   },
   { 
     label: 'Pro Bono Scholars',
     title: 'Pro Bono Scholars Program',
-    description: 'Complete the PBSP affidavit for law school pro bono scholars.'
+    description: 'Complete the PBSP affidavit for law school pro bono scholars.',
+    icon: HiOutlineCollection
   },
+  
+  // --- Review & Export (19) ---
+  {
+    label: 'Download Forms',
+    title: 'Review & Download Forms',
+    description: 'Generate and download all your completed application forms.',
+    icon: HiOutlineDownload
+  }
 ];
 
-// Main form items with icons (for sidebar)
-const MAIN_FORM_ITEMS = STEP_INFO.slice(0, 13);
-
-// Affirmation form items (keep as simple strings for sidebar)
-const AFFIRMATION_ITEMS = STEP_INFO.slice(13).map(item => item.label);
-
-// Combined for total steps calculation
-const GROUPS = [
-  ...MAIN_FORM_ITEMS.map(item => item.label),
-  ...AFFIRMATION_ITEMS,
+// Define the Tabs
+const TABS = [
+  { id: 'overview', label: 'Overview', range: [0, 0] },
+  { id: 'questionnaire', label: 'Basic Information', range: [1, 13] },
+  { id: 'supporting', label: 'Supporting Docs', range: [14, 18] },
+  { id: 'export', label: 'Review & Export', range: [19, 19] }
 ];
 
 // Map step indices to data keys for completeness check
 const STEP_DATA_KEYS: Record<number, string[]> = {
-  0: ['header'], // Start - department, BOLE, etc.
-  1: ['personal_info'], // Identity
-  2: ['contact_info', 'prior_residence', 'office_address'], // Contact
-  3: ['education_undergrad', 'law_schools'], // Education
-  4: ['employment_history'], // Employment
-  5: ['other_ny_applications', 'other_bar_exams', 'other_admissions', 'unauthorized_practice_personal', 'unauthorized_practice_associated', 'unauthorized_practice_acting'], // Bar Admissions
-  6: ['military_us', 'military_foreign', 'military_discipline'], // Military
-  7: ['criminal_history', 'civil_matters'], // Legal Matters
-  8: ['fitness_conduct', 'general_conduct', 'illegal_drugs'], // Fitness
-  9: ['child_support'], // Child Support
-  10: ['financial_judgments', 'financial_defaults', 'past_due_debts', 'bankruptcy'], // Financials
-  11: ['licenses', 'fidelity_bond'], // Licenses
-  12: ['signature_block', 'designation_of_agent'], // Signature
-  13: ['character_affirmants'], // Character Affirmants
-  14: ['employment_affirmants'], // Employment Affirmants
-  15: ['skills_competency'], // Skills Competency
-  16: ['pro_bono_entries'], // Pro Bono
-  17: ['pro_bono_scholars'], // Pro Bono Scholars
+  0: [], // Overview - always complete
+  1: ['header'], // Start
+  2: ['personal_info'], // Identity
+  3: ['contact_info', 'prior_residence', 'office_address'], // Contact
+  4: ['education_undergrad', 'law_schools'], // Education
+  5: ['employment_history'], // Employment
+  6: ['other_ny_applications', 'other_bar_exams', 'other_admissions', 'unauthorized_practice_personal', 'unauthorized_practice_associated', 'unauthorized_practice_acting'], // Bar Admissions
+  7: ['military_us', 'military_foreign', 'military_discipline'], // Military
+  8: ['criminal_history', 'civil_matters'], // Legal Matters
+  9: ['fitness_conduct', 'general_conduct', 'illegal_drugs'], // Fitness
+  10: ['child_support'], // Child Support
+  11: ['financial_judgments', 'financial_defaults', 'past_due_debts', 'bankruptcy'], // Financials
+  12: ['licenses', 'fidelity_bond'], // Licenses
+  13: ['signature_block', 'designation_of_agent'], // Signature
+  14: ['character_affirmants'], // Character Affirmants
+  15: ['employment_affirmants'], // Employment Affirmants
+  16: ['skills_competency'], // Skills Competency
+  17: ['pro_bono_entries'], // Pro Bono
+  18: ['pro_bono_scholars'], // Pro Bono Scholars
+  19: [], // Export - always complete
 };
 
 interface WizardLayoutProps {
@@ -170,65 +194,45 @@ interface WizardLayoutProps {
 export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) => {
   const currentStep = useApplicationStore((state) => state.currentStep);
   const setCurrentStep = useApplicationStore((state) => state.setCurrentStep);
-
-  const totalSteps = GROUPS.length;
-  const progress = Math.round(((currentStep + 1) / totalSteps) * 100);
-
-  const goToStep = (step: number) => {
-    const next = Math.max(0, Math.min(step, totalSteps - 1));
-    setCurrentStep(next);
-    // Auto-scroll to top when changing steps
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleNext = () => goToStep(currentStep + 1);
-  const handleBack = () => goToStep(currentStep - 1);
   const data = useApplicationStore((state) => state.data);
   const userId = useApplicationStore((state) => state.userId);
 
   const [isSaving, setIsSaving] = useState(false);
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-  const [isGeneratingFormE, setIsGeneratingFormE] = useState(false);
-  const [isGeneratingFormC, setIsGeneratingFormC] = useState(false);
-  const [isGeneratingFormD, setIsGeneratingFormD] = useState(false);
-  const [isGeneratingFormH, setIsGeneratingFormH] = useState(false);
-  const [isGeneratingFormF, setIsGeneratingFormF] = useState(false);
-  const [isGeneratingFormG, setIsGeneratingFormG] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const lastSavedDataRef = React.useRef<string>('');
 
-  // Get law schools from data for Form E generation
-  const lawSchools = (Array.isArray(data.law_schools) ? data.law_schools : []) as Array<{ school_name?: string }>;
-  
-  // Get character affirmants from data for Form C generation
-  const characterAffirmants = (Array.isArray(data.character_affirmants) ? data.character_affirmants : []) as Array<{ full_name?: string }>;
-  
-  // Get employment affirmants from data for Form D generation
-  const employmentAffirmants = (Array.isArray(data.employment_affirmants) ? data.employment_affirmants : []) as Array<{ affirmant_name?: string; employer_name?: string }>;
-  
-  // Get skills competency data for Form H generation
-  const skillsCompetency = (data.skills_competency || {}) as { pathway?: string };
-  
-  // Get pro bono entries for Form F generation
-  const proBonoEntries = (Array.isArray(data.pro_bono_entries) ? data.pro_bono_entries : []) as Array<{ organization_name?: string; hours?: string }>;
-  
-  // Get pro bono scholars data for Form G generation
-  const proBonoScholars = (data.pro_bono_scholars || {}) as { placement_name?: string };
-  const isProBonoScholar = (data.header as any)?.pro_bono_scholar === 'Yes';
+  const totalSteps = STEP_INFO.length;
+
+  // Identify current tab
+  const currentTab = TABS.find(tab => currentStep >= tab.range[0] && currentStep <= tab.range[1]) || TABS[0];
+
+  const goToStep = (step: number) => {
+    const next = Math.max(0, Math.min(step, totalSteps - 1));
+    setCurrentStep(next);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleTabClick = (tabId: string) => {
+    const tab = TABS.find(t => t.id === tabId);
+    if (tab) {
+      goToStep(tab.range[0]);
+    }
+  };
+
+  const handleNext = () => goToStep(currentStep + 1);
+  const handleBack = () => goToStep(currentStep - 1);
 
   // Helper to recursively check for Yes/No answers in an object
   const hasYesNoAnswer = (obj: any): boolean => {
     if (!obj || typeof obj !== 'object') return false;
     
     for (const [key, value] of Object.entries(obj)) {
-      // Check for radio button values stored as { value: 'Yes' | 'No' } or { type: 'radio', value: 'Yes' | 'No' }
       if (value && typeof value === 'object' && 'value' in value) {
         const v = (value as any).value;
         if (v === 'Yes' || v === 'No') {
           return true;
         }
       }
-      // Recursively check nested objects (but not arrays)
       if (value && typeof value === 'object' && !Array.isArray(value)) {
         if (hasYesNoAnswer(value)) {
           return true;
@@ -238,17 +242,16 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
     return false;
   };
 
-  // Check if a step has any data entered (for incomplete indicator)
   const isStepComplete = (stepIndex: number): boolean => {
     const keys = STEP_DATA_KEYS[stepIndex];
-    if (!keys) return true; // Unknown step, assume complete
+    if (!keys || keys.length === 0) return true; // Assume complete if no keys (like Overview/Export)
     
     for (const key of keys) {
-      const stepData = data[key];
+      // Cast data to any to access generic keys, as ApplicationData keys are optional
+      // and we are iterating over a string array of keys.
+      const stepData = (data as any)[key];
       if (stepData) {
-        // Check if it's an array with items that have content
         if (Array.isArray(stepData) && stepData.length > 0) {
-          // Check if array items have actual data
           for (const item of stepData) {
             if (item && typeof item === 'object') {
               const values = Object.values(item);
@@ -258,12 +261,10 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
             }
           }
         }
-        // Check if it's an object with Yes/No answers (including nested)
         if (typeof stepData === 'object' && !Array.isArray(stepData)) {
           if (hasYesNoAnswer(stepData)) {
             return true;
           }
-          // Also check for any non-empty string values (like text inputs)
           const checkForContent = (obj: any): boolean => {
             for (const value of Object.values(obj)) {
               if (typeof value === 'string' && value.trim() !== '') {
@@ -281,10 +282,22 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
     return false;
   };
 
-  // Check if step has been visited (any step before current is "visited")
   const isStepVisited = (stepIndex: number): boolean => {
     return stepIndex < currentStep;
   };
+
+  // Calculate completion percentage
+  const completionPercentage = React.useMemo(() => {
+    let completedSteps = 0;
+    // Skip overview (index 0) in calculation to make it more meaningful, or keep it as "free point"
+    // Let's count all steps
+    for (let i = 0; i < totalSteps; i++) {
+      if (isStepComplete(i)) {
+        completedSteps++;
+      }
+    }
+    return Math.round((completedSteps / totalSteps) * 100);
+  }, [data, totalSteps]); // Recalculate when data changes
 
   const handleSaveDraft = async (silent = false) => {
     if (!userId) {
@@ -312,575 +325,147 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
     }
   };
 
-  // Auto-save every 30 seconds
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       if (userId) {
         handleSaveDraft(true);
       }
     }, 30000);
-
     return () => clearInterval(interval);
   }, [userId, data]);
 
-  const handleGeneratePdf = async () => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingPdf(true);
-      setSaveMessage('Generating PDF...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate the PDF
-      const blob = await generatePdf(data);
-      
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'bar-admission-questionnaire.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('PDF downloaded!');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      setSaveMessage('Failed to generate PDF.');
-    } finally {
-      setIsGeneratingPdf(false);
-    }
-  };
-
-  const handleGenerateFormE = async (lawSchoolIndex: number) => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingFormE(true);
-      setSaveMessage('Generating Law School Certificate...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate Form E
-      const blob = await generateFormE(data, lawSchoolIndex);
-      
-      // Create download link
-      const schoolName = lawSchools[lawSchoolIndex]?.school_name || `school-${lawSchoolIndex + 1}`;
-      const safeSchoolName = schoolName.replace(/[^a-zA-Z0-9]/g, '_');
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `law-school-certificate-${safeSchoolName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('Law School Certificate downloaded!');
-    } catch (error) {
-      console.error('Error generating Form E:', error);
-      setSaveMessage('Failed to generate Law School Certificate.');
-    } finally {
-      setIsGeneratingFormE(false);
-    }
-  };
-
-  const handleGenerateFormC = async (affirmantIndex: number) => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingFormC(true);
-      setSaveMessage('Generating Character Affirmation...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate Form C
-      const blob = await generateFormC(data, affirmantIndex);
-      
-      // Create download link
-      const affirmantName = characterAffirmants[affirmantIndex]?.full_name || `affirmant-${affirmantIndex + 1}`;
-      const safeAffirmantName = affirmantName.replace(/[^a-zA-Z0-9]/g, '_');
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `character-affirmation-${affirmantIndex + 1}-${safeAffirmantName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('Character Affirmation downloaded!');
-    } catch (error) {
-      console.error('Error generating Form C:', error);
-      setSaveMessage('Failed to generate Character Affirmation.');
-    } finally {
-      setIsGeneratingFormC(false);
-    }
-  };
-
-  const handleGenerateFormD = async (affirmantIndex: number) => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingFormD(true);
-      setSaveMessage('Generating Employment Affirmation...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate Form D
-      const blob = await generateFormD(data, affirmantIndex);
-      
-      // Create download link
-      const employerName = employmentAffirmants[affirmantIndex]?.employer_name || `employment-${affirmantIndex + 1}`;
-      const safeEmployerName = employerName.replace(/[^a-zA-Z0-9]/g, '_');
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `employment-affirmation-${affirmantIndex + 1}-${safeEmployerName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('Employment Affirmation downloaded!');
-    } catch (error) {
-      console.error('Error generating Form D:', error);
-      setSaveMessage('Failed to generate Employment Affirmation.');
-    } finally {
-      setIsGeneratingFormD(false);
-    }
-  };
-
-  const handleGenerateFormH = async () => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingFormH(true);
-      setSaveMessage('Generating Skills Competency Affidavit...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate Form H
-      const blob = await generateFormH(data);
-      
-      // Create download link
-      const pathway = skillsCompetency.pathway?.replace(/\s+/g, '-').toLowerCase() || 'form-h';
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `skills-competency-${pathway}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('Skills Competency Affidavit downloaded!');
-    } catch (error) {
-      console.error('Error generating Form H:', error);
-      setSaveMessage('Failed to generate Skills Competency Affidavit.');
-    } finally {
-      setIsGeneratingFormH(false);
-    }
-  };
-
-  const handleGenerateFormF = async (entryIndex: number) => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingFormF(true);
-      setSaveMessage('Generating Pro Bono Affidavit...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate Form F
-      const blob = await generateFormF(data, entryIndex);
-      
-      // Create download link
-      const orgName = proBonoEntries[entryIndex]?.organization_name?.replace(/[^a-zA-Z0-9]/g, '_') || `placement-${entryIndex + 1}`;
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `pro-bono-affidavit-${orgName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('Pro Bono Affidavit downloaded!');
-    } catch (error) {
-      console.error('Error generating Form F:', error);
-      setSaveMessage('Failed to generate Pro Bono Affidavit.');
-    } finally {
-      setIsGeneratingFormF(false);
-    }
-  };
-
-  const handleGenerateFormG = async () => {
-    if (!userId) {
-      setSaveMessage('Session not initialized yet.');
-      return;
-    }
-
-    try {
-      setIsGeneratingFormG(true);
-      setSaveMessage('Generating Pro Bono Scholars Affidavit...');
-      
-      // First save the latest data
-      await saveDraft(userId, data);
-      
-      // Then generate Form G
-      const blob = await generateFormG(data);
-      
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'pro-bono-scholars-completion.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSaveMessage('Pro Bono Scholars Affidavit downloaded!');
-    } catch (error) {
-      console.error('Error generating Form G:', error);
-      setSaveMessage('Failed to generate Pro Bono Scholars Affidavit.');
-    } finally {
-      setIsGeneratingFormG(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-950">
-      <div className="mx-auto max-w-6xl px-6 py-8">
-        <header className="mb-6">
-          <div className="flex items-center justify-between text-sm text-slate-400">
-            <span>
-              Step {currentStep + 1} of {totalSteps}
-            </span>
-            <span>{progress}% Complete</span>
-          </div>
-          <div className="mt-2 h-2 rounded-full bg-slate-800">
-            <div className="h-full rounded-full bg-white transition-all" style={{ width: `${progress}%` }} />
-          </div>
-        </header>
+      <div className="mx-auto max-w-7xl px-6 py-8">
+        
+        {/* Top Navigation Tabs & Progress */}
+        <div className="mb-8 flex items-end justify-between border-b border-slate-800">
+          <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+            {TABS.map((tab) => {
+              const isActive = tab.id === currentTab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium transition-colors
+                    ${isActive 
+                      ? 'border-blue-500 text-blue-500' 
+                      : 'border-transparent text-slate-400 hover:border-slate-700 hover:text-slate-300'
+                    }
+                  `}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </nav>
 
-        <div className="grid gap-6 md:grid-cols-[240px,1fr]">
-          <aside className="space-y-4">
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-4">
-              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Checklist</h2>
-              <nav className="space-y-1 text-sm">
-                {GROUPS.map((label, index) => {
+          {/* Total Progress Indicator */}
+          <div className="mb-4 flex items-center gap-3">
+            <span className="text-xs font-medium text-slate-400">
+              Completion: {completionPercentage}%
+            </span>
+            <div className="h-2 w-32 rounded-full bg-slate-800">
+              <div 
+                className="h-2 rounded-full bg-blue-600 transition-all duration-500" 
+                style={{ width: `${completionPercentage}%` }} 
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-[280px,1fr]">
+          
+          {/* Contextual Sidebar */}
+          <aside className="space-y-6">
+            <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+              <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                {currentTab.label} Sections
+              </h2>
+              <nav className="space-y-1">
+                {STEP_INFO.map((step, index) => {
+                  // Only show steps belonging to current tab
+                  if (index < currentTab.range[0] || index > currentTab.range[1]) return null;
+                  
                   const isActive = index === currentStep;
-                  const isMainFormItem = index < 13;
-                  const isAffirmantSection = index >= 13;
-                  const isFirstAffirmant = index === 13;
-                  const isFirstGroup = index === 0;
                   const visited = isStepVisited(index);
                   const complete = isStepComplete(index);
                   const isIncomplete = visited && !complete;
+                  const Icon = step.icon;
                   
-                  // Get icon for main form items
-                  const MainFormIcon = isMainFormItem ? MAIN_FORM_ITEMS[index]?.icon : null;
+                  let buttonClasses = 'group flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors ';
                   
-                  // Determine button styling
-                  let buttonClasses = 'w-full rounded-md px-3 py-2 text-left transition-colors ';
                   if (isActive) {
-                    buttonClasses += isAffirmantSection 
-                      ? 'bg-amber-900/50 text-amber-300 font-semibold border border-amber-800' 
-                      : 'bg-slate-800 text-white font-semibold border border-slate-700';
+                    buttonClasses += 'bg-slate-800 text-white shadow-sm ring-1 ring-slate-700';
                   } else if (isIncomplete) {
-                    // Yellow/amber styling for incomplete visited steps
-                    buttonClasses += 'bg-yellow-900/30 text-yellow-400 border border-yellow-800/50 hover:bg-yellow-900/40';
-                  } else if (complete && visited) {
-                    // Subtle green for completed steps
-                    buttonClasses += 'text-slate-400 hover:bg-slate-800 hover:text-slate-300 border-l-2 border-l-blue-500';
+                    buttonClasses += 'text-amber-400 hover:bg-slate-800/50';
+                  } else if (complete) {
+                    buttonClasses += 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-300';
                   } else {
-                    buttonClasses += 'text-slate-400 hover:bg-slate-800 hover:text-slate-300';
+                    buttonClasses += 'text-slate-500 hover:bg-slate-800/50 hover:text-slate-300';
                   }
-                  
+
                   return (
-                    <React.Fragment key={label}>
-                      {isFirstGroup && (
-                        <div className="mb-3 flex items-center gap-2">
-                          <div className="h-px flex-1 bg-slate-700" />
-                          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Main Form</span>
-                          <div className="h-px flex-1 bg-slate-700" />
-                        </div>
-                      )}
-                      {isFirstAffirmant && (
-                        <div className="my-3 flex items-center gap-2">
-                          <div className="h-px flex-1 bg-slate-700" />
-                          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Affirmation Forms</span>
-                          <div className="h-px flex-1 bg-slate-700" />
-                        </div>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => goToStep(index)}
-                        className={buttonClasses}
-                      >
-                        {isMainFormItem ? (
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              {isIncomplete && (
-                                <span className="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
-                              )}
-                              <span>{label}</span>
-                            </div>
-                            {MainFormIcon && <MainFormIcon className="h-4 w-4 opacity-60" />}
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            {isIncomplete && (
-                              <span className="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
-                            )}
-                            <span>{label}</span>
-                          </div>
-                        )}
-                      </button>
-                    </React.Fragment>
+                    <button
+                      key={step.label}
+                      onClick={() => goToStep(index)}
+                      className={buttonClasses}
+                    >
+                      <div className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded bg-slate-900 border border-slate-700">
+                        {Icon && <Icon className={`h-4 w-4 ${isActive ? 'text-blue-400' : isIncomplete ? 'text-amber-400' : complete ? 'text-green-500' : 'text-slate-500'}`} />}
+                      </div>
+                      <span className="truncate">{step.label}</span>
+                      {isIncomplete && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-amber-500" />}
+                      {complete && !isActive && <span className="ml-auto text-green-500 text-xs">✓</span>}
+                    </button>
                   );
                 })}
               </nav>
             </div>
-
-            {/* Generate Forms Section */}
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-4">
-              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Generate Forms</h2>
-              <div className="space-y-3 text-sm">
-                {/* Form B - Questionnaire */}
-                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-slate-300">Questionnaire</span>
-                    <button
-                      type="button"
-                      onClick={handleGeneratePdf}
-                      disabled={isGeneratingPdf || isSaving}
-                      className="rounded bg-white px-2 py-1 text-xs font-medium text-slate-900 hover:bg-slate-200 disabled:opacity-50"
-                    >
-                      {isGeneratingPdf ? '...' : 'PDF'}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Form C - Character Affirmations */}
-                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                  <div className="mb-2 font-medium text-slate-300">Character</div>
-                  {characterAffirmants.filter(a => a?.full_name).length === 0 ? (
-                    <p className="text-xs text-slate-500">Add affirmants in Character Affirmants section</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {characterAffirmants.map((affirmant, index) => (
-                        affirmant?.full_name && (
-                          <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-400" title={affirmant.full_name}>
-                              #{index + 1}: {affirmant.full_name}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => handleGenerateFormC(index)}
-                              disabled={isGeneratingFormC || isSaving}
-                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
-                            >
-                              {isGeneratingFormC ? '...' : 'PDF'}
-                            </button>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Form D - Employment Affirmations */}
-                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                  <div className="mb-2 font-medium text-slate-300">Employment</div>
-                  {employmentAffirmants.filter(a => a?.affirmant_name).length === 0 ? (
-                    <p className="text-xs text-slate-500">Add affirmations in Employment Affirmants section</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {employmentAffirmants.map((affirmant, index) => (
-                        affirmant?.affirmant_name && (
-                          <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-400" title={affirmant.employer_name || `Employment ${index + 1}`}>
-                              {affirmant.employer_name || `Employment ${index + 1}`}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => handleGenerateFormD(index)}
-                              disabled={isGeneratingFormD || isSaving}
-                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
-                            >
-                              {isGeneratingFormD ? '...' : 'PDF'}
-                            </button>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Form E - Law School Certificates */}
-                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                  <div className="mb-2 font-medium text-slate-300">Law School Cert</div>
-                  {lawSchools.length === 0 ? (
-                    <p className="text-xs text-slate-500">Add law schools in Group 4</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {lawSchools.map((school, index) => (
-                        school?.school_name && (
-                          <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-400" title={school.school_name}>
-                              {school.school_name}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => handleGenerateFormE(index)}
-                              disabled={isGeneratingFormE || isSaving}
-                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
-                            >
-                              {isGeneratingFormE ? '...' : 'PDF'}
-                            </button>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Form H - Skills Competency */}
-                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-slate-300">Skills Competency</span>
-                    <button
-                      type="button"
-                      onClick={handleGenerateFormH}
-                      disabled={isGeneratingFormH || isSaving || !skillsCompetency.pathway}
-                      className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
-                    >
-                      {isGeneratingFormH ? '...' : 'PDF'}
-                    </button>
-                  </div>
-                  {!skillsCompetency.pathway && (
-                    <p className="mt-1 text-xs text-slate-500">Select a pathway in Skills Competency section</p>
-                  )}
-                  {skillsCompetency.pathway && (
-                    <p className="mt-1 text-xs text-slate-400">{skillsCompetency.pathway}</p>
-                  )}
-                </div>
-
-                {/* Form F - Pro Bono 50-Hour */}
-                <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                  <div className="mb-2 font-medium text-slate-300">Pro Bono</div>
-                  {proBonoEntries.filter(e => e?.organization_name).length === 0 ? (
-                    <p className="text-xs text-slate-500">Add placements in Pro Bono section</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {proBonoEntries.map((entry, index) => (
-                        entry?.organization_name && (
-                          <div key={index} className="flex items-center justify-between gap-2">
-                            <span className="truncate text-xs text-slate-400" title={`${entry.organization_name} (${entry.hours || '?'} hrs)`}>
-                              {entry.organization_name} ({entry.hours || '?'} hrs)
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => handleGenerateFormF(index)}
-                              disabled={isGeneratingFormF || isSaving}
-                              className="shrink-0 rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
-                            >
-                              {isGeneratingFormF ? '...' : 'PDF'}
-                            </button>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Form G - Pro Bono Scholars (only show if applicable) */}
-                {isProBonoScholar && (
-                  <div className="rounded-md border border-slate-700 bg-slate-800/50 p-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-slate-300">PBSP</span>
-                      <button
-                        type="button"
-                        onClick={handleGenerateFormG}
-                        disabled={isGeneratingFormG || isSaving || !proBonoScholars.placement_name}
-                        className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500 disabled:opacity-50"
-                      >
-                        {isGeneratingFormG ? '...' : 'PDF'}
-                      </button>
-                    </div>
-                    {!proBonoScholars.placement_name && (
-                      <p className="mt-1 text-xs text-slate-500">Complete Pro Bono Scholars section</p>
-                    )}
-                    {proBonoScholars.placement_name && (
-                      <p className="mt-1 truncate text-xs text-slate-400" title={proBonoScholars.placement_name}>
-                        {proBonoScholars.placement_name}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
           </aside>
 
-          <section className="rounded-lg border border-slate-800 bg-slate-900 p-6">
-            <div className="border-b border-slate-700 pb-4">
-              <h1 className="text-xl font-semibold text-white">
-                {STEP_INFO[currentStep]?.title || title}
-              </h1>
-              <p className="mt-1 text-sm text-slate-400">
-                {STEP_INFO[currentStep]?.description || 'Complete each section carefully.'}
-              </p>
-            </div>
+          {/* Main Content */}
+          <section className="min-w-0">
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-sm sm:p-8">
+              <header className="mb-8 border-b border-slate-800 pb-6">
+                <h1 className="text-2xl font-semibold text-white">
+                  {STEP_INFO[currentStep]?.title}
+                </h1>
+                <p className="mt-2 text-slate-400">
+                  {STEP_INFO[currentStep]?.description}
+                </p>
+              </header>
 
-            <div className="mt-6">{children}</div>
+              <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                {children}
+              </div>
 
-            <footer className="mt-8 border-t border-slate-700 pt-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <footer className="mt-10 flex items-center justify-between border-t border-slate-800 pt-6">
                 <div className="flex items-center gap-4">
                   <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Draft'}
                   </Button>
-                  {saveMessage && <span className="text-sm text-slate-400">{saveMessage}</span>}
+                  {saveMessage && <span className="text-xs text-slate-500">{saveMessage}</span>}
                 </div>
-                <div className="flex gap-3">
+
+                <div className="flex items-center gap-3">
                   <Button variant="secondary" onClick={handleBack} disabled={currentStep === 0}>
                     Back
                   </Button>
-                  <Button onClick={handleNext} disabled={currentStep >= totalSteps - 1}>
-                    Next
-                  </Button>
+                  {currentStep < totalSteps - 1 ? (
+                    <Button onClick={handleNext}>
+                      Next Step
+                    </Button>
+                  ) : (
+                    <Button disabled className="opacity-50 cursor-not-allowed">
+                      Completed
+                    </Button>
+                  )}
                 </div>
-              </div>
-            </footer>
+              </footer>
+            </div>
           </section>
         </div>
       </div>

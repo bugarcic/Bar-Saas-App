@@ -5,37 +5,11 @@ import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
 import Button from '../ui/Button';
+import Radio from '../ui/Radio';
+import Textarea from '../ui/Textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { saveDraft, generateFormF } from '../../lib/api';
-
-export interface ProBonoEntry {
-  // Organization/Placement Info
-  organization_name?: string;
-  org_street?: string;
-  org_city?: string;
-  org_state?: string;
-  org_zip?: string;
-  org_country?: string;
-  org_phone?: string;
-  org_email?: string;
-  
-  // Placement Type
-  placement_type?: string; // 'Legal Services Provider' | 'Government' | 'Law School Clinic/Externship' | 'Court-Based Program' | 'Other'
-  
-  // Service Details
-  from_date?: string;
-  to_date?: string;
-  hours?: string;
-  description?: string;
-  
-  // Supervisor Info (for certification)
-  supervisor_name?: string;
-  supervisor_title?: string;
-  supervisor_employer?: string;
-  supervisor_jurisdiction?: string;
-  supervisor_year_admitted?: string;
-  supervisor_phone?: string;
-  supervisor_email?: string;
-}
+import { ProBonoEntry } from '../../types/schema';
 
 const SECTION_KEY = 'pro_bono_entries';
 
@@ -90,11 +64,11 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
   canRemove,
 }) => {
   return (
-    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white">
+    <Card>
+      <CardHeader className="flex-row items-center justify-between space-y-0 mb-4 border-b border-slate-700 pb-3">
+        <CardTitle>
           Pro Bono Placement #{index + 1}
-        </h3>
+        </CardTitle>
         {canRemove && (
           <button
             type="button"
@@ -104,230 +78,231 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
             Remove
           </button>
         )}
-      </div>
+      </CardHeader>
 
-      {/* Organization Info */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
-          Organization / Placement Information
-        </h4>
-        <div className="grid gap-4">
-          <div className="space-y-1.5">
-            <Label>Organization/Court Name *</Label>
-            <Input
-              value={entry.organization_name}
-              onChange={(e) => onUpdate('organization_name', e.target.value)}
-              placeholder="e.g., Legal Aid Society, Public Defender's Office"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Street Address</Label>
-            <Input
-              value={entry.org_street}
-              onChange={(e) => onUpdate('org_street', e.target.value)}
-            />
-          </div>
-          <div className="grid gap-4 sm:grid-cols-4">
+      <CardContent>
+        {/* Organization Info */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
+            Organization / Placement Information
+          </h4>
+          <div className="grid gap-4">
             <div className="space-y-1.5">
-              <Label>City</Label>
-              <Input value={entry.org_city} onChange={(e) => onUpdate('org_city', e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>State</Label>
-              <Input value={entry.org_state} onChange={(e) => onUpdate('org_state', e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>ZIP</Label>
-              <Input value={entry.org_zip} onChange={(e) => onUpdate('org_zip', e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Country</Label>
-              <Input value={entry.org_country} onChange={(e) => onUpdate('org_country', e.target.value)} placeholder="USA" />
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label>Organization Phone</Label>
-              <Input value={entry.org_phone} onChange={(e) => onUpdate('org_phone', e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Organization Email</Label>
-              <Input value={entry.org_email} onChange={(e) => onUpdate('org_email', e.target.value)} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Placement Type */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
-          Type of Placement
-        </h4>
-        <div className="space-y-2">
-          {PLACEMENT_TYPES.map((type) => (
-            <label
-              key={type.value}
-              className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
-                entry.placement_type === type.value
-                  ? 'border-blue-500 bg-blue-900/30'
-                  : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
-              }`}
-            >
-              <input
-                type="radio"
-                name={`placement_type_${index}`}
-                value={type.value}
-                checked={entry.placement_type === type.value}
-                onChange={() => onUpdate('placement_type', type.value)}
-                className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
+              <Label>Organization/Court Name *</Label>
+              <Input
+                value={entry.organization_name as string}
+                onChange={(e) => onUpdate('organization_name', e.target.value)}
+                placeholder="e.g., Legal Aid Society, Public Defender's Office"
               />
-              <div>
-                <div className="font-medium text-white">{type.label}</div>
-                <div className="text-xs text-slate-400">{type.description}</div>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Street Address</Label>
+              <Input
+                value={entry.org_street as string}
+                onChange={(e) => onUpdate('org_street', e.target.value)}
+              />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-4">
+              <div className="space-y-1.5">
+                <Label>City</Label>
+                <Input value={entry.org_city as string} onChange={(e) => onUpdate('org_city', e.target.value)} />
               </div>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Service Details */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
-          Service Details
-        </h4>
-        <div className="grid gap-4">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="space-y-1.5">
-              <Label>From Date:</Label>
-              <Input
-                value={entry.from_date}
-                onChange={(e) => onUpdate('from_date', e.target.value)}
-                placeholder="MM/DD/YYYY"
-              />
+              <div className="space-y-1.5">
+                <Label>State</Label>
+                <Input value={entry.org_state as string} onChange={(e) => onUpdate('org_state', e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>ZIP</Label>
+                <Input value={entry.org_zip as string} onChange={(e) => onUpdate('org_zip', e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Country</Label>
+                <Input value={entry.org_country as string} onChange={(e) => onUpdate('org_country', e.target.value)} placeholder="USA" />
+              </div>
             </div>
-            <div className="space-y-1.5">
-              <Label>To Date:</Label>
-              <Input
-                value={entry.to_date}
-                onChange={(e) => onUpdate('to_date', e.target.value)}
-                placeholder="MM/DD/YYYY"
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label>Organization Phone</Label>
+                <Input value={entry.org_phone as string} onChange={(e) => onUpdate('org_phone', e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Organization Email</Label>
+                <Input value={entry.org_email as string} onChange={(e) => onUpdate('org_email', e.target.value)} />
+              </div>
             </div>
-            <div className="space-y-1.5">
-              <Label>Total Hours *</Label>
-              <Input
-                value={entry.hours}
-                onChange={(e) => onUpdate('hours', e.target.value)}
-                placeholder="e.g., 50"
-              />
-            </div>
-          </div>
-          <div className="space-y-1.5">
-            <Label>Description of Work *</Label>
-            <textarea
-              value={entry.description}
-              onChange={(e) => onUpdate('description', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              rows={4}
-              placeholder="Describe the law-related work performed, how it served persons of limited means or the public interest, and how it was supervised..."
-            />
           </div>
         </div>
-      </div>
 
-      {/* Supervisor Info */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
-          Supervising Attorney Information
-        </h4>
-        <p className="mb-3 text-xs text-slate-500">
-          The supervising attorney will need to certify your pro bono work on this form.
-        </p>
-        <div className="grid gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label>Supervisor Name *</Label>
-              <Input
-                value={entry.supervisor_name}
-                onChange={(e) => onUpdate('supervisor_name', e.target.value)}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Title</Label>
-              <Input
-                value={entry.supervisor_title}
-                onChange={(e) => onUpdate('supervisor_title', e.target.value)}
-                placeholder="e.g., Staff Attorney, Partner"
-              />
-            </div>
+        {/* Placement Type */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
+            Type of Placement
+          </h4>
+          <div className="space-y-2">
+            {PLACEMENT_TYPES.map((type) => (
+              <label
+                key={type.value}
+                className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
+                  entry.placement_type === type.value
+                    ? 'border-blue-500 bg-blue-900/30'
+                    : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name={`placement_type_${index}`}
+                  value={type.value}
+                  checked={entry.placement_type === type.value}
+                  onChange={() => onUpdate('placement_type', type.value)}
+                  className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
+                />
+                <div>
+                  <div className="font-medium text-white">{type.label}</div>
+                  <div className="text-xs text-slate-400">{type.description}</div>
+                </div>
+              </label>
+            ))}
           </div>
-          <div className="space-y-1.5">
-            <Label>Employer</Label>
-            <Input
-              value={entry.supervisor_employer}
-              onChange={(e) => onUpdate('supervisor_employer', e.target.value)}
-            />
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label>Jurisdiction(s) Admitted</Label>
-              <Input
-                value={entry.supervisor_jurisdiction}
-                onChange={(e) => onUpdate('supervisor_jurisdiction', e.target.value)}
-                placeholder="e.g., New York"
-              />
+        </div>
+
+        {/* Service Details */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
+            Service Details
+          </h4>
+          <div className="grid gap-4">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-1.5">
+                <Label>From Date:</Label>
+                <Input
+                  value={entry.from_date as string}
+                  onChange={(e) => onUpdate('from_date', e.target.value)}
+                  placeholder="MM/DD/YYYY"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>To Date:</Label>
+                <Input
+                  value={entry.to_date as string}
+                  onChange={(e) => onUpdate('to_date', e.target.value)}
+                  placeholder="MM/DD/YYYY"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Total Hours *</Label>
+                <Input
+                  value={entry.hours as string}
+                  onChange={(e) => onUpdate('hours', e.target.value)}
+                  placeholder="e.g., 50"
+                />
+              </div>
             </div>
             <div className="space-y-1.5">
-              <Label>Year Admitted</Label>
-              <Input
-                value={entry.supervisor_year_admitted}
-                onChange={(e) => onUpdate('supervisor_year_admitted', e.target.value)}
-                placeholder="e.g., 2015"
-              />
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label>Supervisor Phone</Label>
-              <Input
-                value={entry.supervisor_phone}
-                onChange={(e) => onUpdate('supervisor_phone', e.target.value)}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Supervisor Email</Label>
-              <Input
-                value={entry.supervisor_email}
-                onChange={(e) => onUpdate('supervisor_email', e.target.value)}
+              <Label>Description of Work *</Label>
+              <Textarea
+                value={entry.description as string}
+                onChange={(e) => onUpdate('description', e.target.value)}
+                rows={4}
+                placeholder="Describe the law-related work performed, how it served persons of limited means or the public interest, and how it was supervised..."
               />
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Generate PDF Button */}
-      <div className="border-t border-slate-700 pt-4">
-        <Button
-          type="button"
-          onClick={onGeneratePdf}
-          disabled={isGenerating || !entry.organization_name || !entry.hours}
-          className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300"
-        >
-          {isGenerating ? 'Generating...' : `Generate Form F PDF for ${entry.organization_name || 'this placement'}`}
-        </Button>
-        {(!entry.organization_name || !entry.hours) && (
-          <p className="mt-2 text-center text-xs text-slate-500">
-            Enter organization name and hours to enable PDF generation
+        {/* Supervisor Info */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-300">
+            Supervising Attorney Information
+          </h4>
+          <p className="mb-3 text-xs text-slate-500">
+            The supervising attorney will need to certify your pro bono work on this form.
           </p>
-        )}
-      </div>
-    </div>
+          <div className="grid gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label>Supervisor Name *</Label>
+                <Input
+                  value={entry.supervisor_name as string}
+                  onChange={(e) => onUpdate('supervisor_name', e.target.value)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Title</Label>
+                <Input
+                  value={entry.supervisor_title as string}
+                  onChange={(e) => onUpdate('supervisor_title', e.target.value)}
+                  placeholder="e.g., Staff Attorney, Partner"
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Employer</Label>
+              <Input
+                value={entry.supervisor_employer as string}
+                onChange={(e) => onUpdate('supervisor_employer', e.target.value)}
+              />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label>Jurisdiction(s) Admitted</Label>
+                <Input
+                  value={entry.supervisor_jurisdiction as string}
+                  onChange={(e) => onUpdate('supervisor_jurisdiction', e.target.value)}
+                  placeholder="e.g., New York"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Year Admitted</Label>
+                <Input
+                  value={entry.supervisor_year_admitted as string}
+                  onChange={(e) => onUpdate('supervisor_year_admitted', e.target.value)}
+                  placeholder="e.g., 2015"
+                />
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label>Supervisor Phone</Label>
+                <Input
+                  value={entry.supervisor_phone as string}
+                  onChange={(e) => onUpdate('supervisor_phone', e.target.value)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Supervisor Email</Label>
+                <Input
+                  value={entry.supervisor_email as string}
+                  onChange={(e) => onUpdate('supervisor_email', e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Generate PDF Button */}
+        <div className="border-t border-slate-700 pt-4">
+          <Button
+            type="button"
+            onClick={onGeneratePdf}
+            disabled={isGenerating || !entry.organization_name || !entry.hours}
+            className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300"
+          >
+            {isGenerating ? 'Generating...' : `Generate Form F PDF for ${entry.organization_name || 'this placement'}`}
+          </Button>
+          {(!entry.organization_name || !entry.hours) && (
+            <p className="mt-2 text-center text-xs text-slate-500">
+              Enter organization name and hours to enable PDF generation
+            </p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
 export const GroupProBono: React.FC = () => {
   const rawData = useApplicationStore((state) => state.data[SECTION_KEY]);
-  const headerData = useApplicationStore((state) => state.data['header']) as { pro_bono_scholars?: string } | undefined;
+  const headerData = useApplicationStore((state) => state.data['header']);
   const allData = useApplicationStore((state) => state.data);
   const userId = useApplicationStore((state) => state.userId);
   const setSection = useApplicationStore((state) => state.setSection);
@@ -497,4 +472,3 @@ export const GroupProBono: React.FC = () => {
 };
 
 export default GroupProBono;
-

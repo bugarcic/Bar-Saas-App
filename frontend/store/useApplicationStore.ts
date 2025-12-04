@@ -1,20 +1,22 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { ApplicationData } from '../types/schema';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type SchemaValue = any;
-type SectionKey = string;
-type SectionData = Record<string, SchemaValue>;
+// Helper type to allow partial updates to specific sections
+// e.g., setField('header', 'bole_id', '123')
+type SectionKey = keyof ApplicationData;
 
 interface ApplicationState {
-  data: Partial<Record<SectionKey, SectionData>>;
+  data: ApplicationData;
   currentStep: number;
   userId?: string;
-  setField: (section: SectionKey, field: string, value: SchemaValue) => void;
-  setSection: (section: SectionKey, value: SectionData) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setField: (section: SectionKey, field: string, value: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setSection: (section: SectionKey, value: any) => void;
   setCurrentStep: (step: number) => void;
   setUserId: (id: string) => void;
-  setData: (data: Partial<Record<SectionKey, SectionData>>) => void;
+  setData: (data: Partial<ApplicationData>) => void;
   reset: () => void;
 }
 
@@ -26,7 +28,19 @@ export const useApplicationStore = create<ApplicationState>()(
       userId: undefined,
       setField: (section, field, value) =>
         set((state) => {
-          const sectionData = state.data[section] ?? {};
+          // We need to cast to any here because TypeScript can't know 
+          // which specific section structure we are accessing dynamically
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const sectionData: any = state.data[section] ?? {};
+          
+          // Handle array updates or object updates
+          if (Array.isArray(sectionData)) {
+             // This helper function might be too simple for array updates by field
+             // Arrays usually need setSection. 
+             // For now we assume setField is used for object properties.
+             return { data: state.data }; 
+          }
+
           return {
             data: {
               ...state.data,

@@ -5,37 +5,15 @@ import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
 import Button from '../ui/Button';
+import Radio from '../ui/Radio';
+import Textarea from '../ui/Textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { saveDraft, generateFormC } from '../../lib/api';
-
-export interface CharacterAffirmant {
-  full_name?: string;
-  home_street?: string;
-  home_city?: string;
-  home_state?: string;
-  home_zip?: string;
-  home_country?: string;
-  home_phone?: string;
-  home_email?: string;
-  business_street?: string;
-  business_city?: string;
-  business_state?: string;
-  business_zip?: string;
-  business_country?: string;
-  business_phone?: string;
-  business_email?: string;
-  is_attorney?: string; // 'Yes' | 'No'
-  // Attorney admissions - 2 rows on the form
-  attorney_jurisdiction_1?: string;
-  attorney_year_1?: string;
-  attorney_jurisdiction_2?: string;
-  attorney_year_2?: string;
-  // Character statement (large text field)
-  character_statement?: string;
-}
+import { AffirmantData } from '../../types/schema';
 
 const SECTION_KEY = 'character_affirmants';
 
-const getDefaultAffirmant = (): CharacterAffirmant => ({
+const getDefaultAffirmant = (): AffirmantData => ({
   full_name: '',
   home_street: '',
   home_city: '',
@@ -59,7 +37,7 @@ const getDefaultAffirmant = (): CharacterAffirmant => ({
   character_statement: '',
 });
 
-const getAffirmants = (data: any): [CharacterAffirmant, CharacterAffirmant] => {
+const getAffirmants = (data: any): [AffirmantData, AffirmantData] => {
   if (Array.isArray(data) && data.length >= 2) {
     return [
       { ...getDefaultAffirmant(), ...data[0] },
@@ -71,8 +49,9 @@ const getAffirmants = (data: any): [CharacterAffirmant, CharacterAffirmant] => {
 
 export const GroupCharacterAffirmants: React.FC = () => {
   const data = useApplicationStore((state) => state.data[SECTION_KEY]);
-  const personalInfo = useApplicationStore((state) => state.data['personal_info']) as any | undefined;
-  const headerData = useApplicationStore((state) => state.data['header']) as any | undefined;
+  // Use specific accessors for prefill data to avoid `any` if possible, but data structure is dynamic
+  const personalInfo = useApplicationStore((state) => state.data['personal_info']);
+  const headerData = useApplicationStore((state) => state.data['header']);
   const allData = useApplicationStore((state) => state.data);
   const userId = useApplicationStore((state) => state.userId);
   const setSection = useApplicationStore((state) => state.setSection);
@@ -91,8 +70,8 @@ export const GroupCharacterAffirmants: React.FC = () => {
 
   const hasPrefilledData = applicantName || headerData?.bole_id || headerData?.department_selection;
 
-  const updateAffirmant = (index: 0 | 1, field: keyof CharacterAffirmant, value: string) => {
-    const updated = [...affirmants] as [CharacterAffirmant, CharacterAffirmant];
+  const updateAffirmant = (index: 0 | 1, field: keyof AffirmantData, value: string) => {
+    const updated = [...affirmants] as [AffirmantData, AffirmantData];
     updated[index] = { ...updated[index], [field]: value };
     setSection(SECTION_KEY, updated as any);
   };
@@ -213,225 +192,220 @@ export const GroupCharacterAffirmants: React.FC = () => {
 
 interface AffirmantFormProps {
   title: string;
-  affirmant: CharacterAffirmant;
-  onUpdate: (field: keyof CharacterAffirmant, value: string) => void;
+  affirmant: AffirmantData;
+  onUpdate: (field: keyof AffirmantData, value: string) => void;
   onGeneratePdf: () => void;
   isGenerating: boolean;
 }
 
 const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdate, onGeneratePdf, isGenerating }) => {
   return (
-    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
-      </div>
-
-      {/* Basic Info */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Affirmant Information</h4>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-1.5 sm:col-span-2">
-            <Label>Full Name *</Label>
-            <Input
-              value={affirmant.full_name}
-              onChange={(e) => onUpdate('full_name', e.target.value)}
-              placeholder="First Middle Last"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Home Address */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Home Address</h4>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-1.5 sm:col-span-2">
-            <Label>Street Address</Label>
-            <Input
-              value={affirmant.home_street}
-              onChange={(e) => onUpdate('home_street', e.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label>City</Label>
-            <Input value={affirmant.home_city} onChange={(e) => onUpdate('home_city', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>State</Label>
-            <Input value={affirmant.home_state} onChange={(e) => onUpdate('home_state', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>ZIP Code</Label>
-            <Input value={affirmant.home_zip} onChange={(e) => onUpdate('home_zip', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Country</Label>
-            <Input value={affirmant.home_country} onChange={(e) => onUpdate('home_country', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Phone</Label>
-            <Input value={affirmant.home_phone} onChange={(e) => onUpdate('home_phone', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Email</Label>
-            <Input value={affirmant.home_email} onChange={(e) => onUpdate('home_email', e.target.value)} />
-          </div>
-        </div>
-      </div>
-
-      {/* Business Address */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Business / Office Address</h4>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-1.5 sm:col-span-2">
-            <Label>Street Address</Label>
-            <Input
-              value={affirmant.business_street}
-              onChange={(e) => onUpdate('business_street', e.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label>City</Label>
-            <Input value={affirmant.business_city} onChange={(e) => onUpdate('business_city', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>State</Label>
-            <Input value={affirmant.business_state} onChange={(e) => onUpdate('business_state', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>ZIP Code</Label>
-            <Input value={affirmant.business_zip} onChange={(e) => onUpdate('business_zip', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Country</Label>
-            <Input value={affirmant.business_country} onChange={(e) => onUpdate('business_country', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Phone</Label>
-            <Input value={affirmant.business_phone} onChange={(e) => onUpdate('business_phone', e.target.value)} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Email</Label>
-            <Input value={affirmant.business_email} onChange={(e) => onUpdate('business_email', e.target.value)} />
-          </div>
-        </div>
-      </div>
-
-      {/* Attorney Status */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Attorney Status (Section 2 on Form)</h4>
-        <div className="space-y-4">
-          <div>
-            <Label>Is this person an attorney?</Label>
-            <div className="mt-2 flex gap-4">
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-                <input
-                  type="radio"
-                  checked={affirmant.is_attorney === 'Yes'}
-                  onChange={() => onUpdate('is_attorney', 'Yes')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-                /> Yes             </label>
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-                <input
-                  type="radio"
-                  checked={affirmant.is_attorney !== 'Yes'}
-                  onChange={() => onUpdate('is_attorney', 'No')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-                /> No             </label>
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {/* Basic Info */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Affirmant Information</h4>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label>Full Name *</Label>
+              <Input
+                value={affirmant.full_name as string}
+                onChange={(e) => onUpdate('full_name', e.target.value)}
+                placeholder="First Middle Last"
+              />
             </div>
           </div>
+        </div>
 
-          {affirmant.is_attorney === 'Yes' && (
-            <div className="rounded-md bg-slate-700/50 p-4">
-              <p className="mb-3 text-sm text-slate-300">
-                Enter the jurisdiction(s) where this attorney is admitted and the year of admission.
-                The form has space for up to 2 jurisdictions.
-              </p>
-              <div className="space-y-3">
-                {/* Row 1 */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <Label>Jurisdiction #1</Label>
-                    <Input
-                      value={affirmant.attorney_jurisdiction_1}
-                      onChange={(e) => onUpdate('attorney_jurisdiction_1', e.target.value)}
-                      placeholder="e.g., New York"
-                    />
+        {/* Home Address */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Home Address</h4>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label>Street Address</Label>
+              <Input
+                value={affirmant.home_street as string}
+                onChange={(e) => onUpdate('home_street', e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>City</Label>
+              <Input value={affirmant.home_city as string} onChange={(e) => onUpdate('home_city', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>State</Label>
+              <Input value={affirmant.home_state as string} onChange={(e) => onUpdate('home_state', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>ZIP Code</Label>
+              <Input value={affirmant.home_zip as string} onChange={(e) => onUpdate('home_zip', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Country</Label>
+              <Input value={affirmant.home_country as string} onChange={(e) => onUpdate('home_country', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Phone</Label>
+              <Input value={affirmant.home_phone as string} onChange={(e) => onUpdate('home_phone', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Email</Label>
+              <Input value={affirmant.home_email as string} onChange={(e) => onUpdate('home_email', e.target.value)} />
+            </div>
+          </div>
+        </div>
+
+        {/* Business Address */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Business / Office Address</h4>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label>Street Address</Label>
+              <Input
+                value={affirmant.business_street as string}
+                onChange={(e) => onUpdate('business_street', e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>City</Label>
+              <Input value={affirmant.business_city as string} onChange={(e) => onUpdate('business_city', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>State</Label>
+              <Input value={affirmant.business_state as string} onChange={(e) => onUpdate('business_state', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>ZIP Code</Label>
+              <Input value={affirmant.business_zip as string} onChange={(e) => onUpdate('business_zip', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Country</Label>
+              <Input value={affirmant.business_country as string} onChange={(e) => onUpdate('business_country', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Phone</Label>
+              <Input value={affirmant.business_phone as string} onChange={(e) => onUpdate('business_phone', e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Email</Label>
+              <Input value={affirmant.business_email as string} onChange={(e) => onUpdate('business_email', e.target.value)} />
+            </div>
+          </div>
+        </div>
+
+        {/* Attorney Status */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Attorney Status (Section 2 on Form)</h4>
+          <div className="space-y-4">
+            <div>
+              <Label>Is this person an attorney?</Label>
+              <div className="mt-2 flex gap-4">
+                <Radio
+                  label="Yes"
+                  checked={affirmant.is_attorney === 'Yes'}
+                  onChange={() => onUpdate('is_attorney', 'Yes')}
+                />
+                <Radio
+                  label="No"
+                  checked={affirmant.is_attorney !== 'Yes'}
+                  onChange={() => onUpdate('is_attorney', 'No')}
+                />
+              </div>
+            </div>
+
+            {affirmant.is_attorney === 'Yes' && (
+              <div className="rounded-md bg-slate-700/50 p-4">
+                <p className="mb-3 text-sm text-slate-300">
+                  Enter the jurisdiction(s) where this attorney is admitted and the year of admission.
+                  The form has space for up to 2 jurisdictions.
+                </p>
+                <div className="space-y-3">
+                  {/* Row 1 */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-1.5">
+                      <Label>Jurisdiction #1</Label>
+                      <Input
+                        value={affirmant.attorney_jurisdiction_1 as string}
+                        onChange={(e) => onUpdate('attorney_jurisdiction_1', e.target.value)}
+                        placeholder="e.g., New York"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label>Year Admitted #1</Label>
+                      <Input
+                        value={affirmant.attorney_year_1 as string}
+                        onChange={(e) => onUpdate('attorney_year_1', e.target.value)}
+                        placeholder="e.g., 2015"
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label>Year Admitted #1</Label>
-                    <Input
-                      value={affirmant.attorney_year_1}
-                      onChange={(e) => onUpdate('attorney_year_1', e.target.value)}
-                      placeholder="e.g., 2015"
-                    />
-                  </div>
-                </div>
-                {/* Row 2 */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <Label>Jurisdiction #2 (optional)</Label>
-                    <Input
-                      value={affirmant.attorney_jurisdiction_2}
-                      onChange={(e) => onUpdate('attorney_jurisdiction_2', e.target.value)}
-                      placeholder="e.g., New Jersey"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label>Year Admitted #2</Label>
-                    <Input
-                      value={affirmant.attorney_year_2}
-                      onChange={(e) => onUpdate('attorney_year_2', e.target.value)}
-                      placeholder="e.g., 2016"
-                    />
+                  {/* Row 2 */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-1.5">
+                      <Label>Jurisdiction #2 (optional)</Label>
+                      <Input
+                        value={affirmant.attorney_jurisdiction_2 as string}
+                        onChange={(e) => onUpdate('attorney_jurisdiction_2', e.target.value)}
+                        placeholder="e.g., New Jersey"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label>Year Admitted #2</Label>
+                      <Input
+                        value={affirmant.attorney_year_2 as string}
+                        onChange={(e) => onUpdate('attorney_year_2', e.target.value)}
+                        placeholder="e.g., 2016"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Character Statement - Section 3 on the form */}
-      <div className="mb-6">
-        <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Character Statement (Section 3 on Form)</h4>
-        <div className="rounded-md border border-slate-700 bg-slate-700/50 p-4">
-          <p className="text-sm text-slate-300 mb-3">
-            This is the main character statement section. The affirmant should provide: (1) length and nature of 
-            acquaintance with you; (2) their opinion of your good moral character and fitness to practice law; 
-            (3) the basis for their opinion; (4) any other relevant information; and (5) whether they recommend 
-            you for admission to the NY State Bar.
-          </p>
-          <div className="space-y-1.5">
-            <Label>Character Statement (optional pre-fill or notes)</Label>
-            <textarea
-              value={affirmant.character_statement}
-              onChange={(e) => onUpdate('character_statement', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              rows={5}
-              placeholder="You can pre-fill this or leave notes for your affirmant. They will complete this section when signing the form."
-            />
+            )}
           </div>
         </div>
-      </div>
 
-      {/* Generate PDF Button */}
-      <div className="border-t border-slate-200 pt-4">
-        <Button
-          type="button"
-          onClick={onGeneratePdf}
-          disabled={isGenerating || !affirmant.full_name}
-          className="w-full bg-violet-600 hover:bg-violet-700 disabled:bg-slate-300"
-        >
-          {isGenerating ? 'Generating...' : `Generate Form C PDF for ${affirmant.full_name || 'this affirmant'}`}
-        </Button>
-        {!affirmant.full_name && (
-          <p className="mt-2 text-xs text-slate-500 text-center">Enter a name to enable PDF generation</p>
-        )}
-      </div>
-    </div>
+        {/* Character Statement - Section 3 on the form */}
+        <div className="mb-6">
+          <h4 className="mb-3 text-sm font-medium text-slate-300 uppercase tracking-wide">Character Statement (Section 3 on Form)</h4>
+          <div className="rounded-md border border-slate-700 bg-slate-700/50 p-4">
+            <p className="text-sm text-slate-300 mb-3">
+              This is the main character statement section. The affirmant should provide: (1) length and nature of 
+              acquaintance with you; (2) their opinion of your good moral character and fitness to practice law; 
+              (3) the basis for their opinion; (4) any other relevant information; and (5) whether they recommend 
+              you for admission to the NY State Bar.
+            </p>
+            <div className="space-y-1.5">
+              <Label>Character Statement (optional pre-fill or notes)</Label>
+              <Textarea
+                value={affirmant.character_statement as string}
+                onChange={(e) => onUpdate('character_statement', e.target.value)}
+                rows={5}
+                placeholder="You can pre-fill this or leave notes for your affirmant. They will complete this section when signing the form."
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Generate PDF Button */}
+        <div className="border-t border-slate-200 pt-4">
+          <Button
+            type="button"
+            onClick={onGeneratePdf}
+            disabled={isGenerating || !affirmant.full_name}
+            className="w-full bg-violet-600 hover:bg-violet-700 disabled:bg-slate-300"
+          >
+            {isGenerating ? 'Generating...' : `Generate Form C PDF for ${affirmant.full_name || 'this affirmant'}`}
+          </Button>
+          {!affirmant.full_name && (
+            <p className="mt-2 text-xs text-slate-500 text-center">Enter a name to enable PDF generation</p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
 export default GroupCharacterAffirmants;
-

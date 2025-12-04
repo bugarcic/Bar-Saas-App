@@ -27,8 +27,11 @@ import GroupEmploymentAffirmants from '../../components/groups/GroupEmploymentAf
 import GroupSkillsCompetency from '../../components/groups/GroupSkillsCompetency';
 import GroupProBono from '../../components/groups/GroupProBono';
 import GroupProBonoScholars from '../../components/groups/GroupProBonoScholars';
+import GroupReviewExport from '../../components/groups/GroupReviewExport';
+import Group0Overview from '../../components/groups/Group0Overview';
 
 const STEPS = [
+  Group0Overview,
   Group1Start,
   Group2Identity,
   Group3Contact,
@@ -47,6 +50,7 @@ const STEPS = [
   GroupSkillsCompetency,
   GroupProBono,
   GroupProBonoScholars,
+  GroupReviewExport,
 ];
 
 export default function ApplicationPage() {

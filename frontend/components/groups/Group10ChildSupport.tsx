@@ -2,17 +2,11 @@
 
 import React, { useMemo } from 'react';
 import { useApplicationStore } from '../../store/useApplicationStore';
-import Input from '../ui/Input';
 import Label from '../ui/Label';
-
-interface ChildSupportData {
-  has_obligation?: { value?: string };
-  arrears_4_months?: { value?: string };
-  income_execution?: { value?: string };
-  pending_proceeding?: { value?: string };
-  public_assistance?: { value?: string };
-  explanation?: string;
-}
+import Radio from '../ui/Radio';
+import Textarea from '../ui/Textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
+import { ChildSupportData } from '../../types/schema';
 
 const getChildSupportData = (data: any): ChildSupportData => ({
   has_obligation: { value: '' },
@@ -40,27 +34,25 @@ export const Group10ChildSupport: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Child Support</h3>
+      <Card>
+        <CardHeader>
+          <CardTitle>Child Support</CardTitle>
+        </CardHeader>
         
-        <div className="space-y-6">
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label>Are you currently under a legal obligation to pay child support?</Label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-                <input
-                  type="radio"
-                  checked={section.has_obligation?.value === 'Yes'}
-                  onChange={() => updateRadio('has_obligation', 'Yes')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-                /> Yes             </label>
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-                <input
-                  type="radio"
-                  checked={section.has_obligation?.value === 'No'}
-                  onChange={() => updateRadio('has_obligation', 'No')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-                /> No             </label>
+              <Radio
+                label="Yes"
+                checked={section.has_obligation?.value === 'Yes'}
+                onChange={() => updateRadio('has_obligation', 'Yes')}
+              />
+              <Radio
+                label="No"
+                checked={section.has_obligation?.value === 'No'}
+                onChange={() => updateRadio('has_obligation', 'No')}
+              />
             </div>
           </div>
 
@@ -89,17 +81,16 @@ export const Group10ChildSupport: React.FC = () => {
               
               <div className="space-y-2 pt-2">
                 <Label>Explanation (if needed)</Label>
-                <textarea
-                  value={section.explanation}
+                <Textarea
+                  value={section.explanation as string}
                   onChange={(e) => updateField('explanation', e.target.value)}
-                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   rows={3}
                 />
               </div>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
@@ -108,22 +99,16 @@ const YesNoQuestion: React.FC<{ label: string; yes: boolean; onChange: (val: str
   <div className="space-y-1">
     <p className="text-sm text-slate-300">{label}</p>
     <div className="flex gap-4">
-      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
-        <input
-          type="radio"
-          checked={yes}
-          onChange={() => onChange('Yes')}
-        />
-        Yes
-      </label>
-      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
-        <input
-          type="radio"
-          checked={!yes}
-          onChange={() => onChange('No')}
-        />
-        No
-      </label>
+      <Radio
+        label="Yes"
+        checked={yes}
+        onChange={() => onChange('Yes')}
+      />
+      <Radio
+        label="No"
+        checked={!yes}
+        onChange={() => onChange('No')}
+      />
     </div>
   </div>
 );

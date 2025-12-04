@@ -2,15 +2,13 @@
 
 import React, { useMemo } from 'react';
 import { useApplicationStore } from '../../store/useApplicationStore';
-import Input from '../ui/Input';
 import Label from '../ui/Label';
+import Radio from '../ui/Radio';
+import Textarea from '../ui/Textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
+import { DisciplineData } from '../../types/schema';
 
-interface IssueData {
-  has_issue?: { value?: string };
-  details?: string;
-}
-
-const getIssueData = (data: any): IssueData => ({
+const getIssueData = (data: any): DisciplineData => ({
   has_issue: { value: '' },
   details: '',
   ...(data ?? {}),
@@ -33,51 +31,52 @@ export const Group6BarAdmissions: React.FC = () => {
   const uAssociated = useMemo(() => getIssueData(unauthorizedAssociated), [unauthorizedAssociated]);
   const uActing = useMemo(() => getIssueData(unauthorizedActing), [unauthorizedActing]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateIssue = (sectionKey: string, field: string, value: any) => {
-    setField(sectionKey, field, value);
+    // We are casting sectionKey to any to avoid strict ApplicationData key checks in this helper
+    // In a real app, we might want a helper that accepts "keyof ApplicationData"
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setField(sectionKey as any, field, value);
   };
 
   const renderSection = (
     title: string,
     label: string,
     sectionKey: string,
-    data: IssueData
+    data: DisciplineData
   ) => (
-    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-      <h3 className="mb-4 text-base font-semibold text-white">{title}</h3>
-      <div className="space-y-4">
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
         <Label>{label}</Label>
         <div className="flex gap-4">
-          <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-            <input
-              type="radio"
-              checked={data.has_issue?.value === 'Yes'}
-              onChange={() => updateIssue(sectionKey, 'has_issue', { type: 'radio', value: 'Yes' })}
-              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-            /> Yes             </label>
-          <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-            <input
-              type="radio"
-              checked={data.has_issue?.value === 'No'}
-              onChange={() => updateIssue(sectionKey, 'has_issue', { type: 'radio', value: 'No' })}
-              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-            /> No             </label>
+          <Radio
+            label="Yes"
+            checked={data.has_issue?.value === 'Yes'}
+            onChange={() => updateIssue(sectionKey, 'has_issue', { type: 'radio', value: 'Yes' })}
+          />
+          <Radio
+            label="No"
+            checked={data.has_issue?.value === 'No'}
+            onChange={() => updateIssue(sectionKey, 'has_issue', { type: 'radio', value: 'No' })}
+          />
         </div>
 
         {data.has_issue?.value === 'Yes' && (
           <div className="space-y-2 rounded-md bg-slate-700/50 p-4">
             <Label>Explanation / Details</Label>
-            <textarea
-              value={data.details}
+            <Textarea
+              value={data.details as string}
               onChange={(e) => updateIssue(sectionKey, 'details', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={3}
               placeholder="Provide full details (Dates, Courts, Outcomes, etc.)"
             />
           </div>
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 
   return (

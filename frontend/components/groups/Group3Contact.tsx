@@ -6,37 +6,9 @@ import Input from '../ui/Input';
 import Label from '../ui/Label';
 import Select from '../ui/Select';
 import DatePicker from '../ui/DatePicker';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { US_STATES, formatPhone } from '../../lib/constants';
-
-interface ContactInfoData {
-  street?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  phone?: string;
-  email?: string;
-}
-
-interface PriorResidenceData {
-  from_date?: string;
-  to_date?: string;
-  street?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-}
-
-interface OfficeAddressData {
-  name_and_street?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  phone?: string;
-  email?: string;
-}
+import { ContactInfoData, PriorResidenceData, OfficeAddressData } from '../../types/schema';
 
 const getContactData = (data: any): ContactInfoData => ({
   street: '',
@@ -96,14 +68,16 @@ export const Group3Contact: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Contact Information */}
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Contact Information</h3>
-        <div className="grid gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Contact Information</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Primary Email Address</Label>
               <Input
-                value={contact.email ?? ''}
+                value={contact.email as string}
                 onChange={(e) => updateContact('email', e.target.value)}
                 placeholder="name@example.com"
               />
@@ -111,24 +85,26 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>Main Telephone Number</Label>
               <Input
-                value={contact.phone ?? ''}
+                value={contact.phone as string}
                 onChange={(e) => updateContact('phone', formatPhone(e.target.value))}
                 placeholder="(555) 555-5555"
                 maxLength={14}
               />
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Current Residence */}
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Current Residence</h3>
-        <div className="grid gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Current Residence</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
           <div className="space-y-2">
             <Label>Street Address</Label>
             <Input
-              value={contact.street ?? ''}
+              value={contact.street as string}
               onChange={(e) => updateContact('street', e.target.value)}
             />
           </div>
@@ -136,7 +112,7 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>City</Label>
               <Input
-                value={contact.city ?? ''}
+                value={contact.city as string}
                 onChange={(e) => updateContact('city', e.target.value)}
               />
             </div>
@@ -144,7 +120,7 @@ export const Group3Contact: React.FC = () => {
               <Label>State</Label>
               <Select
                 options={US_STATES}
-                value={contact.state ?? ''}
+                value={contact.state as string}
                 onChange={(value) => updateContact('state', value)}
                 placeholder="Select state..."
               />
@@ -152,30 +128,32 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>ZIP Code</Label>
               <Input
-                value={contact.zip ?? ''}
+                value={contact.zip as string}
                 onChange={(e) => updateContact('zip', e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label>Country</Label>
               <Input
-                value={contact.country ?? ''}
+                value={contact.country as string}
                 onChange={(e) => updateContact('country', e.target.value)}
               />
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Prior Residence */}
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Previous Residence</h3>
-        <div className="grid gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Previous Residence</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label className="mb-3 block">From:</Label>
               <DatePicker
-                selected={prior.from_date ? new Date(prior.from_date + '-01') : null}
+                selected={prior.from_date ? new Date(prior.from_date as string + '-01') : null}
                 onChange={(date) => updatePrior('from_date', date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}` : '')}
                 showMonthYearPicker
                 dateFormat="MM/yyyy"
@@ -185,7 +163,7 @@ export const Group3Contact: React.FC = () => {
             <div>
               <Label className="mb-3 block">To:</Label>
               <DatePicker
-                selected={prior.to_date ? new Date(prior.to_date + '-01') : null}
+                selected={prior.to_date ? new Date(prior.to_date as string + '-01') : null}
                 onChange={(date) => updatePrior('to_date', date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}` : '')}
                 showMonthYearPicker
                 dateFormat="MM/yyyy"
@@ -196,7 +174,7 @@ export const Group3Contact: React.FC = () => {
           <div className="space-y-2">
             <Label>Street Address</Label>
             <Input
-              value={prior.street ?? ''}
+              value={prior.street as string}
               onChange={(e) => updatePrior('street', e.target.value)}
             />
           </div>
@@ -204,7 +182,7 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>City</Label>
               <Input
-                value={prior.city ?? ''}
+                value={prior.city as string}
                 onChange={(e) => updatePrior('city', e.target.value)}
               />
             </div>
@@ -212,7 +190,7 @@ export const Group3Contact: React.FC = () => {
               <Label>State</Label>
               <Select
                 options={US_STATES}
-                value={prior.state ?? ''}
+                value={prior.state as string}
                 onChange={(value) => updatePrior('state', value)}
                 placeholder="Select state..."
               />
@@ -220,32 +198,32 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>ZIP Code</Label>
               <Input
-                value={prior.zip ?? ''}
+                value={prior.zip as string}
                 onChange={(e) => updatePrior('zip', e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label>Country</Label>
               <Input
-                value={prior.country ?? ''}
+                value={prior.country as string}
                 onChange={(e) => updatePrior('country', e.target.value)}
               />
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Office Address */}
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <div className="mb-4 flex items-center gap-2">
-          <h3 className="text-base font-semibold text-white">Current Office Address</h3>
+      <Card>
+        <CardHeader className="flex-row items-center justify-between space-y-0">
+          <CardTitle>Current Office Address</CardTitle>
           <span className="rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-400">Optional</span>
-        </div>
-        <div className="grid gap-4">
+        </CardHeader>
+        <CardContent className="grid gap-4">
           <div className="space-y-2">
             <Label>Employer/Organization Name & Street</Label>
             <Input
-              value={office.name_and_street ?? ''}
+              value={office.name_and_street as string}
               onChange={(e) => updateOffice('name_and_street', e.target.value)}
               placeholder="e.g. Law Firm LLP, 123 Main St"
             />
@@ -254,7 +232,7 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>City</Label>
               <Input
-                value={office.city ?? ''}
+                value={office.city as string}
                 onChange={(e) => updateOffice('city', e.target.value)}
               />
             </div>
@@ -262,7 +240,7 @@ export const Group3Contact: React.FC = () => {
               <Label>State</Label>
               <Select
                 options={US_STATES}
-                value={office.state ?? ''}
+                value={office.state as string}
                 onChange={(value) => updateOffice('state', value)}
                 placeholder="Select state..."
               />
@@ -270,21 +248,21 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>ZIP Code</Label>
               <Input
-                value={office.zip ?? ''}
+                value={office.zip as string}
                 onChange={(e) => updateOffice('zip', e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label>Country</Label>
               <Input
-                value={office.country ?? ''}
+                value={office.country as string}
                 onChange={(e) => updateOffice('country', e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label>Office Phone</Label>
               <Input
-                value={office.phone ?? ''}
+                value={office.phone as string}
                 onChange={(e) => updateOffice('phone', formatPhone(e.target.value))}
                 placeholder="(555) 555-5555"
                 maxLength={14}
@@ -293,13 +271,13 @@ export const Group3Contact: React.FC = () => {
             <div className="space-y-2">
               <Label>Office Email</Label>
               <Input
-                value={office.email ?? ''}
+                value={office.email as string}
                 onChange={(e) => updateOffice('email', e.target.value)}
               />
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

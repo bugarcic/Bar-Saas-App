@@ -5,25 +5,12 @@ import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
 import Button from '../ui/Button';
+import Radio from '../ui/Radio';
+import Textarea from '../ui/Textarea';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/Card';
+import { CriminalIncident, CivilMatterData, CriminalHistoryData } from '../../types/schema';
 
-interface CriminalIncident {
-  court?: string;
-  charge?: string;
-  disposition_and_facts?: string;
-}
-
-interface TicketDetail {
-  description?: string;
-  amount_date?: string;
-}
-
-interface CivilMatterData {
-  has_issue?: { value?: string };
-  details?: string | TicketDetail[];
-  general_explanation_27_to_32?: string;
-}
-
-const getCriminalData = (data: any): { has_issue: { value: string }, incidents: CriminalIncident[] } => {
+const getCriminalData = (data: any): CriminalHistoryData => {
   const base = data ?? {};
   return {
     has_issue: base.has_issue ?? { value: '' },
@@ -47,18 +34,17 @@ const IncidentBlock: React.FC<{
     <div className="grid gap-4">
       <div className="space-y-2">
         <Label>Court & Location</Label>
-        <Input value={incident.court} onChange={(e) => updateFn(index, 'court', e.target.value)} />
+        <Input value={incident.court as string} onChange={(e) => updateFn(index, 'court', e.target.value)} />
       </div>
       <div className="space-y-2">
         <Label>Charges</Label>
-        <Input value={incident.charge} onChange={(e) => updateFn(index, 'charge', e.target.value)} />
+        <Input value={incident.charge as string} onChange={(e) => updateFn(index, 'charge', e.target.value)} />
       </div>
       <div className="space-y-2">
         <Label>Disposition / Facts</Label>
-        <textarea
-          value={incident.disposition_and_facts}
+        <Textarea
+          value={incident.disposition_and_facts as string}
           onChange={(e) => updateFn(index, 'disposition_and_facts', e.target.value)}
-          className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           rows={3}
         />
       </div>
@@ -70,7 +56,6 @@ export const Group8LegalMatters: React.FC = () => {
   const criminalHistory = useApplicationStore((state) => state.data['criminal_history']);
   const civilMatters = useApplicationStore((state) => state.data['civil_matters']);
   const setSection = useApplicationStore((state) => state.setSection);
-  const setField = useApplicationStore((state) => state.setField);
 
   const criminal = useMemo(() => getCriminalData(criminalHistory), [criminalHistory]);
   
@@ -87,21 +72,21 @@ export const Group8LegalMatters: React.FC = () => {
 
   const updateCriminalRadio = (value: string) => {
     const updated = { ...criminal, has_issue: { type: 'radio', value } };
-    if (value === 'Yes' && updated.incidents.length === 0) {
+    if (value === 'Yes' && (!updated.incidents || updated.incidents.length === 0)) {
       updated.incidents = [{ court: '', charge: '', disposition_and_facts: '' }];
     }
     setSection('criminal_history', updated as any);
   };
 
   const updateIncident = (index: number, field: keyof CriminalIncident, value: string) => {
-    const updatedIncidents = [...criminal.incidents];
+    const updatedIncidents = [...(criminal.incidents || [])];
     updatedIncidents[index] = { ...updatedIncidents[index], [field]: value };
-    setSection('criminal_history', { ...criminal, incidents: updatedIncidents });
+    setSection('criminal_history', { ...criminal, incidents: updatedIncidents } as any);
   };
 
   const addIncident = () => {
-    const updatedIncidents = [...criminal.incidents, { court: '', charge: '', disposition_and_facts: '' }];
-    setSection('criminal_history', { ...criminal, incidents: updatedIncidents });
+    const updatedIncidents = [...(criminal.incidents || []), { court: '', charge: '', disposition_and_facts: '' }];
+    setSection('criminal_history', { ...criminal, incidents: updatedIncidents } as any);
   };
 
   const updateCivil = (key: string, field: string, value: any) => {
@@ -119,29 +104,27 @@ export const Group8LegalMatters: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Criminal History */}
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Criminal History</h3>
-        <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Criminal History</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <Label>Have you ever been arrested, charged, indicted, convicted, or pled guilty to any crime/offense (including DWI/DWAI)?</Label>
           <p className="text-xs text-slate-500">Include all matters, even if dismissed or sealed, unless strictly excepted by the instructions.</p>
           <div className="flex gap-4">
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-              <input
-                type="radio"
-                checked={criminal.has_issue?.value === 'Yes'}
-                onChange={() => updateCriminalRadio('Yes')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-              /> Yes             </label>
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
-              <input
-                type="radio"
-                checked={criminal.has_issue?.value === 'No'}
-                onChange={() => updateCriminalRadio('No')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
-              /> No             </label>
+            <Radio
+              label="Yes"
+              checked={criminal.has_issue?.value === 'Yes'}
+              onChange={() => updateCriminalRadio('Yes')}
+            />
+            <Radio
+              label="No"
+              checked={criminal.has_issue?.value === 'No'}
+              onChange={() => updateCriminalRadio('No')}
+            />
           </div>
 
-          {criminal.has_issue?.value === 'Yes' && (
+          {criminal.has_issue?.value === 'Yes' && criminal.incidents && (
             <div className="space-y-6 rounded-md bg-slate-700/50 p-4">
               {criminal.incidents.map((incident, i) => (
                 <IncidentBlock
@@ -154,14 +137,16 @@ export const Group8LegalMatters: React.FC = () => {
               <Button type="button" onClick={addIncident} variant="secondary">Add Incident</Button>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Civil Matters */}
-      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Civil & Administrative Matters</h3>
+      <Card>
+        <CardHeader>
+          <CardTitle>Civil & Administrative Matters</CardTitle>
+        </CardHeader>
         
-        <div className="space-y-6">
+        <CardContent className="space-y-6">
           <IssueBlock
             label="Testimony/Immunity: Have you ever testified or refused to testify in a legal proceeding?"
             data={testimony}
@@ -197,16 +182,15 @@ export const Group8LegalMatters: React.FC = () => {
 
           <div className="space-y-2">
             <Label>General Explanation for any "Yes" answers above</Label>
-            <textarea
+            <Textarea
               value={generalExplanation}
               onChange={(e) => updateGeneralExplanation(e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={4}
               placeholder="Provide details for checked items..."
             />
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
@@ -215,22 +199,16 @@ const IssueBlock: React.FC<{ label: string; data: CivilMatterData; updateFn: (va
   <div className="space-y-2">
     <p className="text-sm font-medium text-slate-300">{label}</p>
     <div className="flex gap-4">
-      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
-        <input
-          type="radio"
-          checked={data.has_issue?.value === 'Yes'}
-          onChange={() => updateFn({ type: 'radio', value: 'Yes' })}
-        />
-        Yes
-      </label>
-      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
-        <input
-          type="radio"
-          checked={data.has_issue?.value === 'No'}
-          onChange={() => updateFn({ type: 'radio', value: 'No' })}
-        />
-        No
-      </label>
+      <Radio
+        label="Yes"
+        checked={data.has_issue?.value === 'Yes'}
+        onChange={() => updateFn({ type: 'radio', value: 'Yes' })}
+      />
+      <Radio
+        label="No"
+        checked={data.has_issue?.value === 'No'}
+        onChange={() => updateFn({ type: 'radio', value: 'No' })}
+      />
     </div>
   </div>
 );
