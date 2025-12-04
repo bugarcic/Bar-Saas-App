@@ -108,16 +108,18 @@ export const Group4Education: React.FC = () => {
     <div className="space-y-8">
       {/* Undergraduate & Graduate Schools - NOT Law School */}
       <Card>
-        <CardHeader className="flex-row items-start justify-between space-y-0">
-          <div>
-            <CardTitle>Undergraduate & Graduate Schools</CardTitle>
-            <CardDescription className="mt-1">
-              List all colleges, universities, and professional schools attended.
-            </CardDescription>
+        <CardHeader>
+          <div className="flex w-full flex-row items-start justify-between">
+            <div>
+              <CardTitle>Undergraduate & Graduate Schools</CardTitle>
+              <CardDescription className="mt-1">
+                List all colleges, universities, and professional schools attended.
+              </CardDescription>
+            </div>
+            <span className="rounded-full bg-blue-900/50 px-2 py-1 text-xs font-medium text-blue-300 whitespace-nowrap ml-4">
+              Not Law School
+            </span>
           </div>
-          <span className="rounded-full bg-blue-900/50 px-2 py-1 text-xs font-medium text-blue-300">
-            Not Law School
-          </span>
         </CardHeader>
         <CardContent>
           <div className="mb-4 rounded-md border border-blue-800/50 bg-blue-900/20 p-3 text-sm text-blue-300">

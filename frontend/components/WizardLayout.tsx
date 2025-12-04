@@ -11,17 +11,33 @@ import {
   HiOutlineAcademicCap, 
   HiOutlineBriefcase, 
   HiOutlineScale, 
-  HiOutlineShieldCheck,
-  HiOutlineDocumentText,
-  HiOutlineHeart,
-  HiOutlineUsers,
-  HiOutlineCurrencyDollar,
-  HiOutlineIdentification,
-  HiOutlinePencil,
-  HiOutlineCollection,
+  HiOutlineShieldCheck, 
+  HiOutlineDocumentText, 
+  HiOutlineHeart, 
+  HiOutlineUsers, 
+  HiOutlineCurrencyDollar, 
+  HiOutlineIdentification, 
+  HiOutlinePencil, 
+  HiOutlineCollection, 
   HiOutlineDownload,
   HiOutlineInformationCircle
 } from 'react-icons/hi';
+import { 
+  HeaderSchema, 
+  PersonalInfoSchema, 
+  ContactInfoSchema, 
+  EducationEntrySchema, 
+  EmploymentEntrySchema,
+  GenericIssueSchema,
+  SignatureSchema,
+  AffirmantSchema,
+  EmploymentAffirmantSchema,
+  SkillsCompetencySchema,
+  ProBonoEntrySchema,
+  ProBonoScholarsSchema,
+  DisciplineSchema
+} from '../lib/validation';
+import { z } from 'zod';
 
 // Step info with titles, descriptions, and icons
 const STEP_INFO = [
@@ -163,6 +179,7 @@ const TABS = [
 ];
 
 // Map step indices to data keys for completeness check
+// We'll reuse this for validation logic where generic checks apply
 const STEP_DATA_KEYS: Record<number, string[]> = {
   0: [], // Overview - always complete
   1: ['header'], // Start
@@ -222,82 +239,158 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   const handleNext = () => goToStep(currentStep + 1);
   const handleBack = () => goToStep(currentStep - 1);
 
-  // Helper to recursively check for Yes/No answers in an object
-  const hasYesNoAnswer = (obj: any): boolean => {
-    if (!obj || typeof obj !== 'object') return false;
-    
-    for (const [key, value] of Object.entries(obj)) {
-      if (value && typeof value === 'object' && 'value' in value) {
-        const v = (value as any).value;
-        if (v === 'Yes' || v === 'No') {
-          return true;
-        }
-      }
-      if (value && typeof value === 'object' && !Array.isArray(value)) {
-        if (hasYesNoAnswer(value)) {
-          return true;
-        }
-      }
+  // --- Validation Logic ---
+  
+  const validateStep = (stepIndex: number): boolean => {
+    // Overview and Export are always valid
+    if (stepIndex === 0 || stepIndex === 19) return true;
+
+    // 1. Header / Start
+    if (stepIndex === 1) {
+      return HeaderSchema.safeParse(data.header).success;
     }
-    return false;
+
+    // 2. Identity
+    if (stepIndex === 2) {
+      return PersonalInfoSchema.safeParse(data.personal_info).success;
+    }
+
+    // 3. Contact
+    if (stepIndex === 3) {
+      return ContactInfoSchema.safeParse(data.contact_info).success;
+    }
+
+    // 4. Education
+    if (stepIndex === 4) {
+      const undergrad = z.array(EducationEntrySchema).safeParse(data.education_undergrad);
+      const law = z.array(EducationEntrySchema).safeParse(data.law_schools);
+      const hasUndergrad = (data.education_undergrad?.length || 0) > 0;
+      const hasLaw = (data.law_schools?.length || 0) > 0;
+      return undergrad.success && law.success && hasUndergrad && hasLaw;
+    }
+
+    // 5. Employment
+    if (stepIndex === 5) {
+      if (!data.employment_history || data.employment_history.length === 0) return false; 
+      return z.array(EmploymentEntrySchema).safeParse(data.employment_history).success;
+    }
+
+    // 6. Bar Admissions
+    if (stepIndex === 6) {
+      const keys = STEP_DATA_KEYS[6];
+      for (const key of keys) {
+        const sectionData = (data as any)[key];
+        if (!DisciplineSchema.safeParse(sectionData).success && !GenericIssueSchema.safeParse(sectionData).success) {
+           return false;
+        }
+      }
+      return true;
+    }
+
+    // 7. Military
+    if (stepIndex === 7) {
+      const keys = STEP_DATA_KEYS[7];
+      for (const key of keys) {
+         if (!DisciplineSchema.safeParse((data as any)[key]).success) {
+            const val = (data as any)[key];
+            if (val?.has_service?.value === 'Yes') {
+               if (!val.branch || !val.from_date) return false;
+            }
+            if (val?.has_issue?.value === 'Yes') {
+               if (!val.details) return false;
+            }
+         }
+      }
+      return true;
+    }
+
+    // 8. Legal Matters
+    if (stepIndex === 8) {
+      const crim = data.criminal_history as any;
+      if (crim?.has_issue?.value === 'Yes') {
+        if (!crim.incidents || crim.incidents.length === 0) return false;
+        for (const inc of crim.incidents) {
+          if (!inc.court || !inc.charge) return false;
+        }
+      }
+      return true;
+    }
+
+    // 9-12: Generic Issue Sections
+    if (stepIndex >= 9 && stepIndex <= 12) {
+      const keys = STEP_DATA_KEYS[stepIndex];
+      for (const key of keys) {
+        if (!GenericIssueSchema.safeParse((data as any)[key]).success) return false;
+      }
+      return true;
+    }
+
+    // 13. Signature
+    if (stepIndex === 13) {
+      return SignatureSchema.safeParse(data.signature_block).success;
+    }
+
+    // 14. Character Affirmants
+    if (stepIndex === 14) {
+      if (!data.character_affirmants || data.character_affirmants.length < 2) return false;
+      return z.array(AffirmantSchema).safeParse(data.character_affirmants).success;
+    }
+
+    // 15. Employment Affirmants
+    if (stepIndex === 15) {
+      if (data.employment_affirmants && data.employment_affirmants.length > 0) {
+        return z.array(EmploymentAffirmantSchema).safeParse(data.employment_affirmants).success;
+      }
+      return true; 
+    }
+
+    // 16. Skills
+    if (stepIndex === 16) {
+      return SkillsCompetencySchema.safeParse(data.skills_competency).success;
+    }
+
+    // 17. Pro Bono
+    if (stepIndex === 17) {
+      const isScholar = (data.header as any)?.pro_bono_scholars === 'Yes';
+      if (isScholar) return true; 
+      
+      if (!data.pro_bono_entries || data.pro_bono_entries.length === 0) return false;
+      return z.array(ProBonoEntrySchema).safeParse(data.pro_bono_entries).success;
+    }
+
+    // 18. Pro Bono Scholars
+    if (stepIndex === 18) {
+      const isScholar = (data.header as any)?.pro_bono_scholars === 'Yes';
+      if (!isScholar) return true; 
+      
+      return ProBonoScholarsSchema.safeParse(data.pro_bono_scholars).success;
+    }
+
+    return true;
   };
 
   const isStepComplete = (stepIndex: number): boolean => {
-    const keys = STEP_DATA_KEYS[stepIndex];
-    if (!keys || keys.length === 0) return true; // Assume complete if no keys (like Overview/Export)
-    
-    for (const key of keys) {
-      // Cast data to any to access generic keys, as ApplicationData keys are optional
-      // and we are iterating over a string array of keys.
-      const stepData = (data as any)[key];
-      if (stepData) {
-        if (Array.isArray(stepData) && stepData.length > 0) {
-          for (const item of stepData) {
-            if (item && typeof item === 'object') {
-              const values = Object.values(item);
-              if (values.some(v => v !== '' && v !== null && v !== undefined)) {
-                return true;
-              }
-            }
-          }
-        }
-        if (typeof stepData === 'object' && !Array.isArray(stepData)) {
-          if (hasYesNoAnswer(stepData)) {
-            return true;
-          }
-          const checkForContent = (obj: any): boolean => {
-            for (const value of Object.values(obj)) {
-              if (typeof value === 'string' && value.trim() !== '') {
-                return true;
-              }
-            }
-            return false;
-          };
-          if (checkForContent(stepData)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
+    return validateStep(stepIndex);
   };
 
   const isStepVisited = (stepIndex: number): boolean => {
     return stepIndex < currentStep;
   };
 
-  // Calculate completion percentage
   const completionPercentage = React.useMemo(() => {
     let completedSteps = 0;
-    // Skip overview (index 0) in calculation to make it more meaningful, or keep it as "free point"
-    // Let's count all steps
-    for (let i = 0; i < totalSteps; i++) {
+    let scorableSteps = 0;
+    
+    for (let i = 1; i < totalSteps - 1; i++) {
+      scorableSteps++;
       if (isStepComplete(i)) {
         completedSteps++;
       }
     }
-    return Math.round((completedSteps / totalSteps) * 100);
-  }, [data, totalSteps]); // Recalculate when data changes
+    
+    if (scorableSteps === 0) return 0;
+    return Math.round((completedSteps / scorableSteps) * 100);
+  }, [data, totalSteps]);
 
   const handleSaveDraft = async (silent = false) => {
     if (!userId) {
@@ -365,11 +458,11 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
           {/* Total Progress Indicator */}
           <div className="mb-4 flex items-center gap-3">
             <span className="text-xs font-medium text-slate-400">
-              Completion: {completionPercentage}%
+              Valid Completion: {completionPercentage}%
             </span>
             <div className="h-2 w-32 rounded-full bg-slate-800">
               <div 
-                className="h-2 rounded-full bg-blue-600 transition-all duration-500" 
+                className={`h-2 rounded-full transition-all duration-500 ${completionPercentage === 100 ? 'bg-green-500' : 'bg-blue-600'}`}
                 style={{ width: `${completionPercentage}%` }} 
               />
             </div>
@@ -399,27 +492,27 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                   
                   if (isActive) {
                     buttonClasses += 'bg-slate-800 text-white shadow-sm ring-1 ring-slate-700';
-                  } else if (isIncomplete) {
-                    buttonClasses += 'text-amber-400 hover:bg-slate-800/50';
                   } else if (complete) {
                     buttonClasses += 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-300';
-                  } else {
+                  } else if (isIncomplete) { // Incomplete but visited
+                    buttonClasses += 'text-amber-400 hover:bg-slate-800/50'; 
+                  } else { // Not visited
                     buttonClasses += 'text-slate-500 hover:bg-slate-800/50 hover:text-slate-300';
                   }
-
+                  
                   return (
-                    <button
+                      <button
                       key={step.label}
-                      onClick={() => goToStep(index)}
-                      className={buttonClasses}
-                    >
+                        onClick={() => goToStep(index)}
+                        className={buttonClasses}
+                      >
                       <div className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded bg-slate-900 border border-slate-700">
-                        {Icon && <Icon className={`h-4 w-4 ${isActive ? 'text-blue-400' : isIncomplete ? 'text-amber-400' : complete ? 'text-green-500' : 'text-slate-500'}`} />}
-                      </div>
+                        {Icon && <Icon className={`h-4 w-4 ${isActive ? 'text-blue-400' : complete ? 'text-green-500' : isIncomplete ? 'text-amber-400' : 'text-slate-500'}`} />}
+                            </div>
                       <span className="truncate">{step.label}</span>
-                      {isIncomplete && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-amber-500" />}
                       {complete && !isActive && <span className="ml-auto text-green-500 text-xs">✓</span>}
-                    </button>
+                      {isIncomplete && !complete && !isActive && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-amber-500" />}
+                      </button>
                   );
                 })}
               </nav>

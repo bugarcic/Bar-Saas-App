@@ -13,6 +13,7 @@ import Textarea from '../ui/Textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { US_STATES } from '../../lib/constants';
 import { EmploymentEntry, SelfEmploymentData, EmploymentDisciplineData } from '../../types/schema';
+import { HiOutlinePlusCircle } from 'react-icons/hi';
 
 // Simple US phone formatter: (123) 456-7890 as user types
 const formatPhone = (value: string): string => {
@@ -90,12 +91,17 @@ export const Group5Employment: React.FC = () => {
   return (
     <div className="space-y-8">
       <Card>
-        <CardHeader className="flex-row items-center justify-between space-y-0">
-          <div>
-            <CardTitle>Employment History</CardTitle>
-            <p className="text-sm text-slate-300 mt-1">List every job since age 21 or in the last 10 years.</p>
+        <CardHeader>
+          <div className="flex w-full flex-row items-center justify-between">
+            <div>
+              <CardTitle>Employment History</CardTitle>
+              <p className="text-sm text-slate-300 mt-1">List every job since age 21 or in the last 10 years.</p>
+            </div>
+            <Button onClick={addEmployment} variant="secondary" className="gap-2">
+              <HiOutlinePlusCircle className="h-5 w-5" />
+              Add Job
+            </Button>
           </div>
-          <Button onClick={addEmployment} variant="secondary">Add Job</Button>
         </CardHeader>
 
         <CardContent className="space-y-6">

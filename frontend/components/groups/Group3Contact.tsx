@@ -215,9 +215,11 @@ export const Group3Contact: React.FC = () => {
 
       {/* Office Address */}
       <Card>
-        <CardHeader className="flex-row items-center justify-between space-y-0">
-          <CardTitle>Current Office Address</CardTitle>
-          <span className="rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-400">Optional</span>
+        <CardHeader>
+          <div className="flex w-full flex-row items-center justify-between">
+            <CardTitle>Current Office Address</CardTitle>
+            <span className="rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-400">Optional</span>
+          </div>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="space-y-2">

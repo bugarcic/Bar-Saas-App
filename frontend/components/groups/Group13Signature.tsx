@@ -71,7 +71,7 @@ export const Group13Signature: React.FC = () => {
               <Input value={signature.city as string} onChange={(e) => updateSig('city', e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label>Date of Signing</Label>
+              <Label className="block">Date of Signing</Label>
               <DatePicker
                 selected={signature.date ? new Date(signature.date as string) : null}
                 onChange={(date) => updateSig('date', date ? date.toISOString().split('T')[0] : '')}
@@ -114,7 +114,7 @@ export const Group13Signature: React.FC = () => {
               <Input value={agent.notary_city as string} onChange={(e) => updateAgent('notary_city', e.target.value)} />
             </div>
              <div className="space-y-2">
-              <Label>Date</Label>
+              <Label className="block">Date</Label>
               <DatePicker
                 selected={agent.date ? new Date(agent.date as string) : null}
                 onChange={(date) => updateAgent('date', date ? date.toISOString().split('T')[0] : '')}
