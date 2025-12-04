@@ -11,12 +11,12 @@ import {
   HiOutlineAcademicCap, 
   HiOutlineBriefcase, 
   HiOutlineScale, 
-  HiOutlineShieldCheck, 
-  HiOutlineDocumentText, 
-  HiOutlineHeart, 
-  HiOutlineUsers, 
-  HiOutlineCurrencyDollar, 
-  HiOutlineIdentification, 
+  HiOutlineShieldCheck,
+  HiOutlineDocumentText,
+  HiOutlineHeart,
+  HiOutlineUsers,
+  HiOutlineCurrencyDollar,
+  HiOutlineIdentification,
   HiOutlinePencil, 
   HiOutlineCollection, 
   HiOutlineDownload,
@@ -280,6 +280,9 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
       const keys = STEP_DATA_KEYS[6];
       for (const key of keys) {
         const sectionData = (data as any)[key];
+        // Check if radio is selected (must be 'Yes' or 'No', not empty)
+        if (!sectionData?.has_issue?.value || sectionData.has_issue.value === '') return false;
+        
         if (!DisciplineSchema.safeParse(sectionData).success && !GenericIssueSchema.safeParse(sectionData).success) {
            return false;
         }
@@ -289,41 +292,71 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
     // 7. Military
     if (stepIndex === 7) {
-      const keys = STEP_DATA_KEYS[7];
-      for (const key of keys) {
-         if (!DisciplineSchema.safeParse((data as any)[key]).success) {
-            const val = (data as any)[key];
-            if (val?.has_service?.value === 'Yes') {
-               if (!val.branch || !val.from_date) return false;
-            }
-            if (val?.has_issue?.value === 'Yes') {
-               if (!val.details) return false;
-            }
-         }
-      }
-      return true;
-    }
+      // Check U.S. Service
+      const us = data.military_us as any;
+      if (!us?.has_service?.value || us.has_service.value === '') return false;
+      if (us.has_service.value === 'Yes' && (!us.branch || !us.from_date)) return false;
+
+      // Check Foreign Service
+      const foreign = data.military_foreign as any;
+      if (!foreign?.has_service?.value || foreign.has_service.value === '') return false;
+      if (foreign.has_service.value === 'Yes' && (!foreign.branch || !foreign.from_date)) return false;
+
+      // Check Discipline
+      const disc = data.military_discipline as any;
+      if (!disc?.has_issue?.value || disc.has_issue.value === '') return false;
+      if (disc.has_issue.value === 'Yes' && !disc.details) return false;
+
+                return true;
+              }
 
     // 8. Legal Matters
     if (stepIndex === 8) {
+      // Criminal
       const crim = data.criminal_history as any;
-      if (crim?.has_issue?.value === 'Yes') {
+      if (!crim?.has_issue?.value || crim.has_issue.value === '') return false;
+      
+      if (crim.has_issue.value === 'Yes') {
         if (!crim.incidents || crim.incidents.length === 0) return false;
         for (const inc of crim.incidents) {
           if (!inc.court || !inc.charge) return false;
         }
       }
-      return true;
-    }
+
+      // Civil Sub-Sections
+      const civil = data.civil_matters as any || {};
+      const civilKeys = [
+        'testimony_immunity', 
+        'failed_to_answer_ticket', 
+        'warrants_issued', 
+        'unpaid_tickets', 
+        'fraud_charges', 
+        'other_civil_criminal_involvement'
+      ];
+
+      for (const key of civilKeys) {
+        const item = civil[key];
+        if (!item?.has_issue?.value || item.has_issue.value === '') return false;
+        // Note: Not enforcing details on civil matters 'Yes' for now as UI only has general explanation
+      }
+
+            return true;
+          }
 
     // 9-12: Generic Issue Sections
     if (stepIndex >= 9 && stepIndex <= 12) {
       const keys = STEP_DATA_KEYS[stepIndex];
       for (const key of keys) {
-        if (!GenericIssueSchema.safeParse((data as any)[key]).success) return false;
+        const sectionData = (data as any)[key];
+        
+        // Check if radio is selected (must be 'Yes' or 'No', not empty)
+        const hasIssueVal = sectionData?.has_issue?.value || sectionData?.has_obligation?.value;
+        if (!hasIssueVal || hasIssueVal === '') return false;
+
+        if (!GenericIssueSchema.safeParse(sectionData).success) return false;
       }
-      return true;
-    }
+                return true;
+              }
 
     // 13. Signature
     if (stepIndex === 13) {
@@ -341,8 +374,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
       if (data.employment_affirmants && data.employment_affirmants.length > 0) {
         return z.array(EmploymentAffirmantSchema).safeParse(data.employment_affirmants).success;
       }
-      return true; 
-    }
+            return true;
+          }
 
     // 16. Skills
     if (stepIndex === 16) {
@@ -467,7 +500,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
               />
             </div>
           </div>
-        </div>
+          </div>
 
         <div className="grid gap-8 md:grid-cols-[280px,1fr]">
           
@@ -525,15 +558,15 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
               <header className="mb-8 border-b border-slate-800 pb-6">
                 <h1 className="text-2xl font-semibold text-white">
                   {STEP_INFO[currentStep]?.title}
-                </h1>
+              </h1>
                 <p className="mt-2 text-slate-400">
                   {STEP_INFO[currentStep]?.description}
-                </p>
+              </p>
               </header>
 
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                 {children}
-              </div>
+            </div>
 
               <footer className="mt-10 flex items-center justify-between border-t border-slate-800 pt-6">
                 <div className="flex items-center gap-4">
@@ -554,11 +587,11 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                   ) : (
                     <Button disabled className="opacity-50 cursor-not-allowed">
                       Completed
-                    </Button>
+                  </Button>
                   )}
                 </div>
               </footer>
-            </div>
+              </div>
           </section>
         </div>
       </div>
