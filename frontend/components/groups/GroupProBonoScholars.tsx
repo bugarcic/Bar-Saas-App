@@ -133,34 +133,44 @@ export const GroupProBonoScholars: React.FC = () => {
   // Check if user indicated they are a Pro Bono Scholar
   const isProBonoScholar = headerData?.pro_bono_scholar === 'Yes';
 
+  // If not a Pro Bono Scholar, show redirect message
+  if (!isProBonoScholar) {
+    return (
+      <div className="space-y-8">
+        <div className="rounded-lg border border-orange-700 bg-orange-900/30 p-6">
+          <h3 className="text-lg font-semibold text-orange-300">50-Hour Pro Bono Requirement Selected</h3>
+          <p className="mt-3 text-sm text-orange-300/90">
+            You indicated in the <strong>Start</strong> section that you are completing the standard <strong>50-hour pro bono requirement</strong>.
+          </p>
+          <p className="mt-2 text-sm text-orange-300/90">
+            This section (Form G) is only for Pro Bono Scholars Program participants.
+          </p>
+          <div className="mt-4 rounded-md bg-slate-800/50 p-4">
+            <p className="text-sm text-slate-300">
+              <strong>Next Step:</strong> Go to the "Pro Bono (50 Hours)" section to complete Form F for each of your placements.
+            </p>
+          </div>
+          <p className="mt-4 text-xs text-orange-400">
+            If you DID participate in PBSP, go back to the Start section and change your selection.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      {!isProBonoScholar && (
-        <div className="rounded-lg border border-amber-700 bg-amber-900/30 p-4">
-          <h3 className="font-semibold text-amber-300">Note: Pro Bono Scholars Program</h3>
-          <p className="mt-2 text-sm text-amber-300">
-            This form is only required if you participated in the Pro Bono Scholars Program. 
-            If you indicated "No" to the Pro Bono Scholars question in Group 1, you may skip this section.
-          </p>
-          <p className="mt-2 text-sm text-amber-300">
-            If you did participate in PBSP, please update your answer in Group 1 · Start.
-          </p>
-        </div>
-      )}
-
-      {isProBonoScholar && (
-        <div className="rounded-lg border border-purple-700 bg-purple-900/30 p-4">
-          <h3 className="font-semibold text-purple-300">Pro Bono Scholars Program Completion (Form G)</h3>
-          <p className="mt-2 text-sm text-purple-300">
-            This form documents your completion of the Pro Bono Scholars Program. It requires certification 
-            from both your <strong>placement supervisor</strong> and your <strong>law school faculty supervisor</strong>.
-          </p>
-          <p className="mt-2 text-sm text-purple-300">
-            This form, along with Skills Competency Form H (Pathway 3), serves as your pro bono proof 
-            and replaces the standard 50-hour pro bono affidavits for your PBSP work.
-          </p>
-        </div>
-      )}
+      <div className="rounded-lg border border-purple-700 bg-purple-900/30 p-4">
+        <h3 className="font-semibold text-purple-300">Pro Bono Scholars Program Completion (Form G)</h3>
+        <p className="mt-2 text-sm text-purple-300">
+          This form documents your completion of the Pro Bono Scholars Program. It requires certification 
+          from both your <strong>placement supervisor</strong> and your <strong>law school faculty supervisor</strong>.
+        </p>
+        <p className="mt-2 text-sm text-purple-300">
+          This form, along with Skills Competency Form H (Pathway 3), serves as your pro bono proof 
+          and replaces the standard 50-hour pro bono affidavits.
+        </p>
+      </div>
 
       {message && (
         <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
@@ -271,7 +281,7 @@ export const GroupProBonoScholars: React.FC = () => {
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-1.5">
-              <Label>From Date *</Label>
+              <Label>From Date: *</Label>
               <Input
                 value={data.from_date}
                 onChange={(e) => updateField('from_date', e.target.value)}
@@ -279,7 +289,7 @@ export const GroupProBonoScholars: React.FC = () => {
               />
             </div>
             <div className="space-y-1.5">
-              <Label>To Date *</Label>
+              <Label>To Date: *</Label>
               <Input
                 value={data.to_date}
                 onChange={(e) => updateField('to_date', e.target.value)}
@@ -300,7 +310,7 @@ export const GroupProBonoScholars: React.FC = () => {
             <textarea
               value={data.description}
               onChange={(e) => updateField('description', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={5}
               placeholder="Describe the full-time pro bono work you performed under the Pro Bono Scholars Program, including the types of cases or matters handled, clients served, and skills developed..."
             />

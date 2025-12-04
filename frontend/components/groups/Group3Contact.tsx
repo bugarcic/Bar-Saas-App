@@ -4,6 +4,9 @@ import React, { useMemo } from 'react';
 import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
+import Select from '../ui/Select';
+import DatePicker from '../ui/DatePicker';
+import { US_STATES, formatPhone } from '../../lib/constants';
 
 interface ContactInfoData {
   street?: string;
@@ -109,8 +112,9 @@ export const Group3Contact: React.FC = () => {
               <Label>Main Telephone Number</Label>
               <Input
                 value={contact.phone ?? ''}
-                onChange={(e) => updateContact('phone', e.target.value)}
+                onChange={(e) => updateContact('phone', formatPhone(e.target.value))}
                 placeholder="(555) 555-5555"
+                maxLength={14}
               />
             </div>
           </div>
@@ -138,9 +142,11 @@ export const Group3Contact: React.FC = () => {
             </div>
             <div className="space-y-2">
               <Label>State</Label>
-              <Input
+              <Select
+                options={US_STATES}
                 value={contact.state ?? ''}
-                onChange={(e) => updateContact('state', e.target.value)}
+                onChange={(value) => updateContact('state', value)}
+                placeholder="Select state..."
               />
             </div>
             <div className="space-y-2">
@@ -166,20 +172,24 @@ export const Group3Contact: React.FC = () => {
         <h3 className="mb-4 text-base font-semibold text-white">Previous Residence</h3>
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label>From (Month/Year)</Label>
-              <Input
-                value={prior.from_date ?? ''}
-                onChange={(e) => updatePrior('from_date', e.target.value)}
-                placeholder="MM/YYYY"
+            <div>
+              <Label className="mb-3 block">From:</Label>
+              <DatePicker
+                selected={prior.from_date ? new Date(prior.from_date + '-01') : null}
+                onChange={(date) => updatePrior('from_date', date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}` : '')}
+                showMonthYearPicker
+                dateFormat="MM/yyyy"
+                placeholder="Select month/year..."
               />
             </div>
-            <div className="space-y-2">
-              <Label>To (Month/Year)</Label>
-              <Input
-                value={prior.to_date ?? ''}
-                onChange={(e) => updatePrior('to_date', e.target.value)}
-                placeholder="MM/YYYY"
+            <div>
+              <Label className="mb-3 block">To:</Label>
+              <DatePicker
+                selected={prior.to_date ? new Date(prior.to_date + '-01') : null}
+                onChange={(date) => updatePrior('to_date', date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}` : '')}
+                showMonthYearPicker
+                dateFormat="MM/yyyy"
+                placeholder="Select month/year..."
               />
             </div>
           </div>
@@ -200,9 +210,11 @@ export const Group3Contact: React.FC = () => {
             </div>
             <div className="space-y-2">
               <Label>State</Label>
-              <Input
+              <Select
+                options={US_STATES}
                 value={prior.state ?? ''}
-                onChange={(e) => updatePrior('state', e.target.value)}
+                onChange={(value) => updatePrior('state', value)}
+                placeholder="Select state..."
               />
             </div>
             <div className="space-y-2">
@@ -225,7 +237,10 @@ export const Group3Contact: React.FC = () => {
 
       {/* Office Address */}
       <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4 ">
-        <h3 className="mb-4 text-base font-semibold text-white">Current Office Address</h3>
+        <div className="mb-4 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-white">Current Office Address</h3>
+          <span className="rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-400">Optional</span>
+        </div>
         <div className="grid gap-4">
           <div className="space-y-2">
             <Label>Employer/Organization Name & Street</Label>
@@ -245,9 +260,11 @@ export const Group3Contact: React.FC = () => {
             </div>
             <div className="space-y-2">
               <Label>State</Label>
-              <Input
+              <Select
+                options={US_STATES}
                 value={office.state ?? ''}
-                onChange={(e) => updateOffice('state', e.target.value)}
+                onChange={(value) => updateOffice('state', value)}
+                placeholder="Select state..."
               />
             </div>
             <div className="space-y-2">
@@ -268,7 +285,9 @@ export const Group3Contact: React.FC = () => {
               <Label>Office Phone</Label>
               <Input
                 value={office.phone ?? ''}
-                onChange={(e) => updateOffice('phone', e.target.value)}
+                onChange={(e) => updateOffice('phone', formatPhone(e.target.value))}
+                placeholder="(555) 555-5555"
+                maxLength={14}
               />
             </div>
             <div className="space-y-2">

@@ -19,7 +19,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         />
         <div className={`h-5 w-5 rounded-full border-2 transition-all ${
           checked 
-            ? 'border-emerald-500 bg-emerald-500' 
+            ? 'border-blue-500 bg-blue-500' 
             : 'border-slate-500 bg-slate-800 peer-hover:border-slate-400'
         }`}>
           {checked && (

@@ -52,7 +52,22 @@ export const AuthPanel: React.FC = () => {
 
       const { error } = await handler;
       if (error) {
-        setAuthMessage(error.message);
+        // Handle specific error messages with user-friendly alternatives
+        let friendlyMessage = error.message;
+        
+        // Duplicate account error
+        if (error.message.includes('User already registered') || 
+            error.message.includes('already been registered') ||
+            error.message.includes('already exists')) {
+          friendlyMessage = 'An account with this email already exists. Please sign in instead.';
+        }
+        
+        // Invalid credentials
+        if (error.message.includes('Invalid login credentials')) {
+          friendlyMessage = 'Invalid email or password. Please try again.';
+        }
+        
+        setAuthMessage(friendlyMessage);
         setMessageType('error');
       } else {
         setAuthMessage(mode === 'signin' ? 'Signed in successfully.' : 'Check your email to confirm sign up.');

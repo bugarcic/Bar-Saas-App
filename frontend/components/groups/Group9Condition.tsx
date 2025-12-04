@@ -32,7 +32,7 @@ interface IllegalDrugs {
 }
 
 const getConditionData = (data: any): ConditionData => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   entity_name: '',
   street: '',
   city: '',
@@ -49,14 +49,14 @@ const getConditionData = (data: any): ConditionData => ({
 });
 
 const getGeneralConduct = (data: any): GeneralConduct => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   dates: '',
   explanation: '',
   ...(data ?? {}),
 });
 
 const getIllegalDrugs = (data: any): IllegalDrugs => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   ...(data ?? {}),
 });
 
@@ -76,14 +76,14 @@ const ConditionForm: React.FC<{
             type="radio"
             checked={data.has_issue?.value === 'Yes'}
             onChange={() => updateFn('has_issue', { type: 'radio', value: 'Yes' })}
-            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
           /> Yes             </label>
         <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
           <input
             type="radio"
             checked={data.has_issue?.value === 'No'}
             onChange={() => updateFn('has_issue', { type: 'radio', value: 'No' })}
-            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+            className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
           /> No             </label>
       </div>
 
@@ -178,14 +178,14 @@ export const Group9Condition: React.FC = () => {
                 type="radio"
                 checked={general.has_issue?.value === 'Yes'}
                 onChange={() => updateGeneral('has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> Yes             </label>
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={general.has_issue?.value === 'No'}
                 onChange={() => updateGeneral('has_issue', { type: 'radio', value: 'No' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> No             </label>
           </div>
           {general.has_issue?.value === 'Yes' && (
@@ -212,14 +212,14 @@ export const Group9Condition: React.FC = () => {
                 type="radio"
                 checked={drugs.has_issue?.value === 'Yes'}
                 onChange={() => updateDrugs('has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> Yes             </label>
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={drugs.has_issue?.value === 'No'}
                 onChange={() => updateDrugs('has_issue', { type: 'radio', value: 'No' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> No             </label>
           </div>
         </div>

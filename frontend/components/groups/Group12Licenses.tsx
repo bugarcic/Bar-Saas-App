@@ -27,7 +27,7 @@ interface FidelityBond {
 }
 
 const getLicenseData = (data: any): LicensesData => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   details: Array.isArray(data?.details) ? data.details : [],
   denial_explanation: '',
   revocation_explanation: '',
@@ -35,7 +35,7 @@ const getLicenseData = (data: any): LicensesData => ({
 });
 
 const getBondData = (data: any): FidelityBond => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   position: '',
   from_date: '',
   to_date: '',
@@ -93,14 +93,14 @@ export const Group12Licenses: React.FC = () => {
                 type="radio"
                 checked={licenses.has_issue?.value === 'Yes'}
                 onChange={() => updateLicenseRadio('Yes')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> Yes             </label>
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={licenses.has_issue?.value === 'No'}
                 onChange={() => updateLicenseRadio('No')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> No             </label>
           </div>
 
@@ -162,14 +162,14 @@ export const Group12Licenses: React.FC = () => {
                 type="radio"
                 checked={bond.has_issue?.value === 'Yes'}
                 onChange={() => updateBondRadio('Yes')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> Yes             </label>
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={bond.has_issue?.value === 'No'}
                 onChange={() => updateBondRadio('No')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> No             </label>
           </div>
           
@@ -181,11 +181,11 @@ export const Group12Licenses: React.FC = () => {
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>From</Label>
+                  <Label>From:</Label>
                   <Input value={bond.from_date} onChange={(e) => updateBond('from_date', e.target.value)} />
                 </div>
                 <div className="space-y-2">
-                  <Label>To</Label>
+                  <Label>To:</Label>
                   <Input value={bond.to_date} onChange={(e) => updateBond('to_date', e.target.value)} />
                 </div>
               </div>

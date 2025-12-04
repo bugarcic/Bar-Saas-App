@@ -5,6 +5,9 @@ import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
 import Button from '../ui/Button';
+import DatePicker from '../ui/DatePicker';
+import Select from '../ui/Select';
+import { US_STATES, formatSSN } from '../../lib/constants';
 
 interface PersonalInfoData {
   first_name?: string;
@@ -95,13 +98,25 @@ export const Group2Identity: React.FC = () => {
 
       <Section title="Identification">
         <Field label="Social Security Number">
-          <Input value={section.ssn as string} onChange={(e) => updateField('ssn', e.target.value)} />
+          <Input 
+            value={section.ssn as string} 
+            onChange={(e) => updateField('ssn', formatSSN(e.target.value))} 
+            placeholder="###-##-####"
+            maxLength={11}
+          />
+          <p className="mt-1 text-xs text-slate-500">Format: ###-##-####</p>
         </Field>
         <Field label="BOLE ID">
           <Input value={section.bole_id as string} onChange={(e) => updateField('bole_id', e.target.value)} />
         </Field>
         <Field label="Date of Birth">
-          <Input value={section.dob as string} onChange={(e) => updateField('dob', e.target.value)} placeholder="YYYY-MM-DD" />
+          <DatePicker
+            selected={section.dob ? new Date(section.dob) : null}
+            onChange={(date) => updateField('dob', date ? date.toISOString().split('T')[0] : '')}
+            placeholder="Select date..."
+            maxDate={new Date()}
+            dateFormat="MM/dd/yyyy"
+          />
         </Field>
       </Section>
 
@@ -110,59 +125,93 @@ export const Group2Identity: React.FC = () => {
           <Input value={section.birth_city as string} onChange={(e) => updateField('birth_city', e.target.value)} />
         </Field>
         <Field label="State/Province">
-          <Input value={section.birth_state as string} onChange={(e) => updateField('birth_state', e.target.value)} />
+          <Select
+            options={US_STATES}
+            value={section.birth_state as string}
+            onChange={(value) => updateField('birth_state', value)}
+            placeholder="Select state..."
+          />
+          <p className="mt-1 text-xs text-slate-500">Select "Other" for non-US locations</p>
         </Field>
         <Field label="Country">
-          <Input value={section.birth_country as string} onChange={(e) => updateField('birth_country', e.target.value)} />
+          <Input 
+            value={section.birth_country as string} 
+            onChange={(e) => updateField('birth_country', e.target.value)} 
+            placeholder="e.g., United States"
+          />
         </Field>
       </Section>
 
-      <Section title="Other Names">
+      <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+        <h3 className="mb-2 text-base font-semibold text-white">Other Names Used</h3>
+        <p className="mb-4 text-sm text-slate-400">
+          Have you ever used any other names? This includes maiden names, nicknames used professionally, 
+          names used before legal changes, or any aliases.
+        </p>
+        
         <div className="flex gap-6">
-          <label className="flex items-center gap-2 text-sm text-slate-300">
+          <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-300">
             <input
               type="radio"
               name="other-names"
               checked={hasOtherNames}
               onChange={() => updateRadio('Yes')}
-              className="h-4 w-4 border-slate-700 text-white focus:ring-blue-500"
-            /> Yes             </label>
-          <label className="flex items-center gap-2 text-sm text-slate-300">
+              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
+            /> 
+            <span>Yes, I have used other names</span>
+          </label>
+          <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-300">
             <input
               type="radio"
               name="other-names"
               checked={!hasOtherNames}
               onChange={() => updateRadio('No')}
-              className="h-4 w-4 border-slate-700 text-white focus:ring-blue-500"
-            /> No             </label>
+              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
+            /> 
+            <span>No</span>
+          </label>
         </div>
 
         {hasOtherNames && (
           <div className="mt-4 space-y-4">
+            {otherNames.length === 0 && (
+              <p className="text-sm text-slate-500 italic">Click "Add Name" below to add a name you've used.</p>
+            )}
             {otherNames.map((entry, index) => (
-              <div key={index} className="rounded-md border border-slate-700 p-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Name">
-                    <Input value={entry.name} onChange={(e) => updateOtherName(index, 'name', e.target.value)} />
-                  </Field>
-                  <Field label="Reason">
-                    <Input value={entry.reason} onChange={(e) => updateOtherName(index, 'reason', e.target.value)} />
-                  </Field>
-                </div>
-                <div className="mt-3 text-right">
-                  <Button variant="outline" onClick={() => removeOtherName(index)}>
+              <div key={index} className="rounded-md border border-slate-600 bg-slate-700/30 p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-300">Name #{index + 1}</span>
+                  <Button variant="outline" onClick={() => removeOtherName(index)} className="text-xs">
                     Remove
                   </Button>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label>Full Name Used</Label>
+                    <Input 
+                      value={entry.name} 
+                      onChange={(e) => updateOtherName(index, 'name', e.target.value)} 
+                      placeholder="e.g., Jane Smith"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Reason for Name</Label>
+                    <Input 
+                      value={entry.reason} 
+                      onChange={(e) => updateOtherName(index, 'reason', e.target.value)} 
+                      placeholder="e.g., Maiden name, Legal name change"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
 
             <Button type="button" onClick={addOtherName}>
-              Add Name
+              + Add Another Name
             </Button>
           </div>
         )}
-      </Section>
+      </div>
     </div>
   );
 };

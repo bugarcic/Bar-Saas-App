@@ -169,7 +169,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
               key={type.value}
               className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
                 entry.placement_type === type.value
-                  ? 'border-emerald-500 bg-emerald-900/30'
+                  ? 'border-blue-500 bg-blue-900/30'
                   : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
               }`}
             >
@@ -179,7 +179,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
                 value={type.value}
                 checked={entry.placement_type === type.value}
                 onChange={() => onUpdate('placement_type', type.value)}
-                className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               />
               <div>
                 <div className="font-medium text-white">{type.label}</div>
@@ -198,7 +198,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-1.5">
-              <Label>From Date</Label>
+              <Label>From Date:</Label>
               <Input
                 value={entry.from_date}
                 onChange={(e) => onUpdate('from_date', e.target.value)}
@@ -206,7 +206,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
               />
             </div>
             <div className="space-y-1.5">
-              <Label>To Date</Label>
+              <Label>To Date:</Label>
               <Input
                 value={entry.to_date}
                 onChange={(e) => onUpdate('to_date', e.target.value)}
@@ -227,7 +227,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
             <textarea
               value={entry.description}
               onChange={(e) => onUpdate('description', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={4}
               placeholder="Describe the law-related work performed, how it served persons of limited means or the public interest, and how it was supervised..."
             />
@@ -327,6 +327,7 @@ const ProBonoEntryForm: React.FC<ProBonoEntryFormProps> = ({
 
 export const GroupProBono: React.FC = () => {
   const rawData = useApplicationStore((state) => state.data[SECTION_KEY]);
+  const headerData = useApplicationStore((state) => state.data['header']) as { pro_bono_scholars?: string } | undefined;
   const allData = useApplicationStore((state) => state.data);
   const userId = useApplicationStore((state) => state.userId);
   const setSection = useApplicationStore((state) => state.setSection);
@@ -334,6 +335,9 @@ export const GroupProBono: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatingIndex, setGeneratingIndex] = useState<number | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Check if user is a Pro Bono Scholar (they use Form G instead)
+  const isProBonoScholar = headerData?.pro_bono_scholars === 'Yes';
 
   const entries = useMemo(() => {
     const arr = Array.isArray(rawData) ? rawData : [];
@@ -397,12 +401,40 @@ export const GroupProBono: React.FC = () => {
     return sum + (isNaN(hours) ? 0 : hours);
   }, 0);
 
+  // Validation: check for hours below 50 total
+  const hasValidationError = totalHours > 0 && totalHours < 50;
+
+  // If user is a Pro Bono Scholar, show different message
+  if (isProBonoScholar) {
+    return (
+      <div className="space-y-8">
+        <div className="rounded-lg border border-purple-700 bg-purple-900/30 p-6">
+          <h3 className="text-lg font-semibold text-purple-300">Pro Bono Scholars Program Selected</h3>
+          <p className="mt-3 text-sm text-purple-300/90">
+            You indicated in the <strong>Start</strong> section that you participated in the <strong>Pro Bono Scholars Program</strong>.
+          </p>
+          <p className="mt-2 text-sm text-purple-300/90">
+            PBSP participants fulfill their pro bono requirement through the program and should complete <strong>Form G</strong> instead of the 50-hour Form F.
+          </p>
+          <div className="mt-4 rounded-md bg-slate-800/50 p-4">
+            <p className="text-sm text-slate-300">
+              <strong>Next Step:</strong> Go to the "Pro Bono Scholars" section to complete Form G.
+            </p>
+          </div>
+          <p className="mt-4 text-xs text-purple-400">
+            If you did NOT participate in PBSP and need to complete 50 hours instead, go back to the Start section and change your selection.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div className="rounded-lg border border-orange-700 bg-orange-900/30 p-4">
         <h3 className="font-semibold text-orange-300">About Pro Bono Requirements (Form F)</h3>
         <p className="mt-2 text-sm text-orange-300/80">
-          All exam-based applicants must complete at least <strong className="text-orange-200">50 hours</strong> of qualifying pro bono work. 
+          You must complete at least <strong className="text-orange-200">50 hours</strong> of qualifying pro bono work. 
           You may have multiple placements that together total 50+ hours.
         </p>
         <p className="mt-2 text-sm text-orange-300/80">
@@ -411,15 +443,23 @@ export const GroupProBono: React.FC = () => {
         <div className="mt-3 rounded-md bg-slate-800/50 p-3">
           <div className="flex items-center justify-between">
             <span className="font-medium text-slate-300">Total Hours Entered:</span>
-            <span className={`text-lg font-bold ${totalHours >= 50 ? 'text-emerald-400' : 'text-orange-400'}`}>
+            <span className={`text-lg font-bold ${totalHours >= 50 ? 'text-blue-400' : 'text-orange-400'}`}>
               {totalHours} / 50 hours
             </span>
           </div>
           {totalHours >= 50 && (
-            <p className="mt-1 text-xs text-emerald-400">✓ You have met the 50-hour requirement!</p>
+            <p className="mt-1 text-xs text-blue-400">✓ You have met the 50-hour requirement!</p>
           )}
-          {totalHours < 50 && totalHours > 0 && (
-            <p className="mt-1 text-xs text-orange-400">You need {50 - totalHours} more hours to meet the requirement.</p>
+          {hasValidationError && (
+            <div className="mt-2 rounded-md bg-red-900/30 border border-red-700 p-2">
+              <p className="text-xs text-red-400">
+                ⚠️ You need at least 50 hours total. Currently: {totalHours} hours. 
+                Add {50 - totalHours} more hours to meet the requirement.
+              </p>
+            </div>
+          )}
+          {totalHours === 0 && (
+            <p className="mt-1 text-xs text-slate-500">Enter hours for your placements below.</p>
           )}
         </div>
       </div>

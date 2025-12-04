@@ -20,37 +20,147 @@ import {
   HiOutlinePencil
 } from 'react-icons/hi';
 
-// Main form items with icons
-const MAIN_FORM_ITEMS = [
-  { label: 'Start', icon: HiOutlinePlay },
-  { label: 'Identity', icon: HiOutlineUser },
-  { label: 'Contact', icon: HiOutlinePhone },
-  { label: 'Education', icon: HiOutlineAcademicCap },
-  { label: 'Employment', icon: HiOutlineBriefcase },
-  { label: 'Bar Admissions', icon: HiOutlineScale },
-  { label: 'Military', icon: HiOutlineShieldCheck },
-  { label: 'Legal Matters', icon: HiOutlineDocumentText },
-  { label: 'Fitness', icon: HiOutlineHeart },
-  { label: 'Child Support', icon: HiOutlineUsers },
-  { label: 'Financials', icon: HiOutlineCurrencyDollar },
-  { label: 'Licenses', icon: HiOutlineIdentification },
-  { label: 'Signature', icon: HiOutlinePencil },
+// Step info with titles, descriptions, and icons
+const STEP_INFO = [
+  { 
+    label: 'Start', 
+    icon: HiOutlinePlay,
+    title: 'Application Setup',
+    description: 'Upload your Notice of Certification and configure your application settings.'
+  },
+  { 
+    label: 'Identity', 
+    icon: HiOutlineUser,
+    title: 'Personal Identity',
+    description: 'Provide your legal name, date of birth, SSN, and other identifying information.'
+  },
+  { 
+    label: 'Contact', 
+    icon: HiOutlinePhone,
+    title: 'Contact Information',
+    description: 'Enter your current and previous addresses, phone numbers, and email.'
+  },
+  { 
+    label: 'Education', 
+    icon: HiOutlineAcademicCap,
+    title: 'Educational Background',
+    description: 'List all colleges, universities, and law schools you have attended.'
+  },
+  { 
+    label: 'Employment', 
+    icon: HiOutlineBriefcase,
+    title: 'Employment History',
+    description: 'Document your work experience including all legal and non-legal positions.'
+  },
+  { 
+    label: 'Bar Admissions', 
+    icon: HiOutlineScale,
+    title: 'Bar Admissions & Applications',
+    description: 'List any bar admissions you hold or have applied for in any jurisdiction.'
+  },
+  { 
+    label: 'Military', 
+    icon: HiOutlineShieldCheck,
+    title: 'Military Service',
+    description: 'Provide details about any military service in the U.S. or other countries.'
+  },
+  { 
+    label: 'Legal Matters', 
+    icon: HiOutlineDocumentText,
+    title: 'Legal Proceedings',
+    description: 'Disclose any civil or criminal legal matters you have been involved in.'
+  },
+  { 
+    label: 'Fitness', 
+    icon: HiOutlineHeart,
+    title: 'Physical & Mental Fitness',
+    description: 'Answer questions related to your fitness to practice law.'
+  },
+  { 
+    label: 'Child Support', 
+    icon: HiOutlineUsers,
+    title: 'Child Support Obligations',
+    description: 'Disclose any child support orders or arrears.'
+  },
+  { 
+    label: 'Financials', 
+    icon: HiOutlineCurrencyDollar,
+    title: 'Financial History',
+    description: 'Report bankruptcies, tax issues, and other financial matters.'
+  },
+  { 
+    label: 'Licenses', 
+    icon: HiOutlineIdentification,
+    title: 'Professional Licenses',
+    description: 'List any professional licenses or certifications you hold.'
+  },
+  { 
+    label: 'Signature', 
+    icon: HiOutlinePencil,
+    title: 'Signature & Certification',
+    description: 'Review and sign your completed application.'
+  },
+  // Affirmation Forms
+  { 
+    label: 'Character Affirmants',
+    title: 'Character & Fitness Affirmations',
+    description: 'Add references who can attest to your good moral character (2-4 required).'
+  },
+  { 
+    label: 'Employment Affirmants',
+    title: 'Employment Affirmations',
+    description: 'Request affirmations from legal employers you worked for after law school.'
+  },
+  { 
+    label: 'Skills Competency',
+    title: 'Skills Competency Affidavit',
+    description: 'Certify how you met New York\'s Skills Competency requirement.'
+  },
+  { 
+    label: 'Pro Bono (50 Hours)',
+    title: 'Pro Bono Service (50-Hour Requirement)',
+    description: 'Document your qualifying pro bono legal service placements.'
+  },
+  { 
+    label: 'Pro Bono Scholars',
+    title: 'Pro Bono Scholars Program',
+    description: 'Complete the PBSP affidavit for law school pro bono scholars.'
+  },
 ];
 
-// Affirmation form items (keep as simple strings)
-const AFFIRMATION_ITEMS = [
-  'Character Affirmants',
-  'Employment Affirmants',
-  'Skills Competency',
-  'Pro Bono (50 Hours)',
-  'Pro Bono Scholars',
-];
+// Main form items with icons (for sidebar)
+const MAIN_FORM_ITEMS = STEP_INFO.slice(0, 13);
+
+// Affirmation form items (keep as simple strings for sidebar)
+const AFFIRMATION_ITEMS = STEP_INFO.slice(13).map(item => item.label);
 
 // Combined for total steps calculation
 const GROUPS = [
   ...MAIN_FORM_ITEMS.map(item => item.label),
   ...AFFIRMATION_ITEMS,
 ];
+
+// Map step indices to data keys for completeness check
+const STEP_DATA_KEYS: Record<number, string[]> = {
+  0: ['header'], // Start - department, BOLE, etc.
+  1: ['personal_info'], // Identity
+  2: ['contact_info', 'prior_residence', 'office_address'], // Contact
+  3: ['education_undergrad', 'law_schools'], // Education
+  4: ['employment_history'], // Employment
+  5: ['other_ny_applications', 'other_bar_exams', 'other_admissions', 'unauthorized_practice_personal', 'unauthorized_practice_associated', 'unauthorized_practice_acting'], // Bar Admissions
+  6: ['military_us', 'military_foreign', 'military_discipline'], // Military
+  7: ['criminal_history', 'civil_matters'], // Legal Matters
+  8: ['fitness_conduct', 'general_conduct', 'illegal_drugs'], // Fitness
+  9: ['child_support'], // Child Support
+  10: ['financial_judgments', 'financial_defaults', 'past_due_debts', 'bankruptcy'], // Financials
+  11: ['licenses', 'fidelity_bond'], // Licenses
+  12: ['signature_block', 'designation_of_agent'], // Signature
+  13: ['character_affirmants'], // Character Affirmants
+  14: ['employment_affirmants'], // Employment Affirmants
+  15: ['skills_competency'], // Skills Competency
+  16: ['pro_bono_entries'], // Pro Bono
+  17: ['pro_bono_scholars'], // Pro Bono Scholars
+};
 
 interface WizardLayoutProps {
   title: string;
@@ -67,6 +177,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   const goToStep = (step: number) => {
     const next = Math.max(0, Math.min(step, totalSteps - 1));
     setCurrentStep(next);
+    // Auto-scroll to top when changing steps
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNext = () => goToStep(currentStep + 1);
@@ -103,6 +215,76 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
   // Get pro bono scholars data for Form G generation
   const proBonoScholars = (data.pro_bono_scholars || {}) as { placement_name?: string };
   const isProBonoScholar = (data.header as any)?.pro_bono_scholar === 'Yes';
+
+  // Helper to recursively check for Yes/No answers in an object
+  const hasYesNoAnswer = (obj: any): boolean => {
+    if (!obj || typeof obj !== 'object') return false;
+    
+    for (const [key, value] of Object.entries(obj)) {
+      // Check for radio button values stored as { value: 'Yes' | 'No' } or { type: 'radio', value: 'Yes' | 'No' }
+      if (value && typeof value === 'object' && 'value' in value) {
+        const v = (value as any).value;
+        if (v === 'Yes' || v === 'No') {
+          return true;
+        }
+      }
+      // Recursively check nested objects (but not arrays)
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        if (hasYesNoAnswer(value)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  // Check if a step has any data entered (for incomplete indicator)
+  const isStepComplete = (stepIndex: number): boolean => {
+    const keys = STEP_DATA_KEYS[stepIndex];
+    if (!keys) return true; // Unknown step, assume complete
+    
+    for (const key of keys) {
+      const stepData = data[key];
+      if (stepData) {
+        // Check if it's an array with items that have content
+        if (Array.isArray(stepData) && stepData.length > 0) {
+          // Check if array items have actual data
+          for (const item of stepData) {
+            if (item && typeof item === 'object') {
+              const values = Object.values(item);
+              if (values.some(v => v !== '' && v !== null && v !== undefined)) {
+                return true;
+              }
+            }
+          }
+        }
+        // Check if it's an object with Yes/No answers (including nested)
+        if (typeof stepData === 'object' && !Array.isArray(stepData)) {
+          if (hasYesNoAnswer(stepData)) {
+            return true;
+          }
+          // Also check for any non-empty string values (like text inputs)
+          const checkForContent = (obj: any): boolean => {
+            for (const value of Object.values(obj)) {
+              if (typeof value === 'string' && value.trim() !== '') {
+                return true;
+              }
+            }
+            return false;
+          };
+          if (checkForContent(stepData)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
+
+  // Check if step has been visited (any step before current is "visited")
+  const isStepVisited = (stepIndex: number): boolean => {
+    return stepIndex < currentStep;
+  };
 
   const handleSaveDraft = async (silent = false) => {
     if (!userId) {
@@ -420,9 +602,28 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                   const isAffirmantSection = index >= 13;
                   const isFirstAffirmant = index === 13;
                   const isFirstGroup = index === 0;
+                  const visited = isStepVisited(index);
+                  const complete = isStepComplete(index);
+                  const isIncomplete = visited && !complete;
                   
                   // Get icon for main form items
                   const MainFormIcon = isMainFormItem ? MAIN_FORM_ITEMS[index]?.icon : null;
+                  
+                  // Determine button styling
+                  let buttonClasses = 'w-full rounded-md px-3 py-2 text-left transition-colors ';
+                  if (isActive) {
+                    buttonClasses += isAffirmantSection 
+                      ? 'bg-amber-900/50 text-amber-300 font-semibold border border-amber-800' 
+                      : 'bg-slate-800 text-white font-semibold border border-slate-700';
+                  } else if (isIncomplete) {
+                    // Yellow/amber styling for incomplete visited steps
+                    buttonClasses += 'bg-yellow-900/30 text-yellow-400 border border-yellow-800/50 hover:bg-yellow-900/40';
+                  } else if (complete && visited) {
+                    // Subtle green for completed steps
+                    buttonClasses += 'text-slate-400 hover:bg-slate-800 hover:text-slate-300 border-l-2 border-l-blue-500';
+                  } else {
+                    buttonClasses += 'text-slate-400 hover:bg-slate-800 hover:text-slate-300';
+                  }
                   
                   return (
                     <React.Fragment key={label}>
@@ -443,21 +644,25 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
                       <button
                         type="button"
                         onClick={() => goToStep(index)}
-                        className={`w-full rounded-md px-3 py-2 text-left transition-colors ${
-                          isActive 
-                            ? isAffirmantSection 
-                              ? 'bg-amber-900/50 text-amber-300 font-semibold border border-amber-800' 
-                              : 'bg-slate-800 text-white font-semibold border border-slate-700' 
-                            : 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                        }`}
+                        className={buttonClasses}
                       >
                         {isMainFormItem ? (
                           <div className="flex items-center justify-between">
-                            <span>{label}</span>
+                            <div className="flex items-center gap-2">
+                              {isIncomplete && (
+                                <span className="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
+                              )}
+                              <span>{label}</span>
+                            </div>
                             {MainFormIcon && <MainFormIcon className="h-4 w-4 opacity-60" />}
                           </div>
                         ) : (
-                          label
+                          <div className="flex items-center gap-2">
+                            {isIncomplete && (
+                              <span className="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
+                            )}
+                            <span>{label}</span>
+                          </div>
                         )}
                       </button>
                     </React.Fragment>
@@ -648,8 +853,12 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
 
           <section className="rounded-lg border border-slate-800 bg-slate-900 p-6">
             <div className="border-b border-slate-700 pb-4">
-              <h1 className="text-xl font-semibold text-white">{title}</h1>
-              <p className="mt-1 text-sm text-slate-400">Complete each section carefully.</p>
+              <h1 className="text-xl font-semibold text-white">
+                {STEP_INFO[currentStep]?.title || title}
+              </h1>
+              <p className="mt-1 text-sm text-slate-400">
+                {STEP_INFO[currentStep]?.description || 'Complete each section carefully.'}
+              </p>
             </div>
 
             <div className="mt-6">{children}</div>
@@ -657,11 +866,8 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ title, children }) =
             <footer className="mt-8 border-t border-slate-700 pt-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-4">
-                  <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving || isGeneratingPdf}>
+                  <Button variant="outline" onClick={() => handleSaveDraft(false)} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Draft'}
-                  </Button>
-                  <Button onClick={handleGeneratePdf} disabled={isSaving || isGeneratingPdf}>
-                    {isGeneratingPdf ? 'Generating...' : 'Generate PDF'}
                   </Button>
                   {saveMessage && <span className="text-sm text-slate-400">{saveMessage}</span>}
                 </div>

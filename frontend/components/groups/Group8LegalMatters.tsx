@@ -26,13 +26,13 @@ interface CivilMatterData {
 const getCriminalData = (data: any): { has_issue: { value: string }, incidents: CriminalIncident[] } => {
   const base = data ?? {};
   return {
-    has_issue: base.has_issue ?? { value: 'No' },
+    has_issue: base.has_issue ?? { value: '' },
     incidents: Array.isArray(base.incidents) ? base.incidents : [],
   };
 };
 
 const getIssueData = (data: any): CivilMatterData => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   details: '',
   ...data,
 });
@@ -58,7 +58,7 @@ const IncidentBlock: React.FC<{
         <textarea
           value={incident.disposition_and_facts}
           onChange={(e) => updateFn(index, 'disposition_and_facts', e.target.value)}
-          className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+          className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           rows={3}
         />
       </div>
@@ -130,14 +130,14 @@ export const Group8LegalMatters: React.FC = () => {
                 type="radio"
                 checked={criminal.has_issue?.value === 'Yes'}
                 onChange={() => updateCriminalRadio('Yes')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> Yes             </label>
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={criminal.has_issue?.value === 'No'}
                 onChange={() => updateCriminalRadio('No')}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> No             </label>
           </div>
 
@@ -200,7 +200,7 @@ export const Group8LegalMatters: React.FC = () => {
             <textarea
               value={generalExplanation}
               onChange={(e) => updateGeneralExplanation(e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={4}
               placeholder="Provide details for checked items..."
             />

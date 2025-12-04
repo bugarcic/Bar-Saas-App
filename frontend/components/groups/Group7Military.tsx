@@ -21,7 +21,7 @@ interface MilitaryDiscipline {
 }
 
 const getMilitaryData = (data: any): MilitaryData => ({
-  has_service: { value: 'No' },
+  has_service: { value: '' },
   from_date: '',
   to_date: '',
   location: '',
@@ -32,7 +32,7 @@ const getMilitaryData = (data: any): MilitaryData => ({
 });
 
 const getDisciplineData = (data: any): MilitaryDiscipline => ({
-  has_issue: { value: 'No' },
+  has_issue: { value: '' },
   details: '',
   ...(data ?? {}),
 });
@@ -61,14 +61,14 @@ export const Group7Military: React.FC = () => {
               type="radio"
               checked={data.has_service?.value === 'Yes'}
               onChange={() => updateMilitary(sectionKey, 'has_service', { type: 'radio', value: 'Yes' })}
-              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
             /> Yes             </label>
           <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
             <input
               type="radio"
               checked={data.has_service?.value === 'No'}
               onChange={() => updateMilitary(sectionKey, 'has_service', { type: 'radio', value: 'No' })}
-              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+              className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
             /> No             </label>
         </div>
 
@@ -86,11 +86,11 @@ export const Group7Military: React.FC = () => {
              </div>
              <div className="grid gap-4 sm:grid-cols-2">
                <div className="space-y-2">
-                 <Label>From (MM/YYYY)</Label>
+                 <Label>From: (MM/YYYY)</Label>
                  <Input value={data.from_date} onChange={(e) => updateMilitary(sectionKey, 'from_date', e.target.value)} placeholder="MM/YYYY" />
                </div>
                <div className="space-y-2">
-                 <Label>To (MM/YYYY)</Label>
+                 <Label>To: (MM/YYYY)</Label>
                  <Input value={data.to_date} onChange={(e) => updateMilitary(sectionKey, 'to_date', e.target.value)} placeholder="MM/YYYY" />
                </div>
              </div>
@@ -123,14 +123,14 @@ export const Group7Military: React.FC = () => {
                 type="radio"
                 checked={discipline.has_issue?.value === 'Yes'}
                 onChange={() => updateMilitary('military_discipline', 'has_issue', { type: 'radio', value: 'Yes' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> Yes             </label>
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
               <input
                 type="radio"
                 checked={discipline.has_issue?.value === 'No'}
                 onChange={() => updateMilitary('military_discipline', 'has_issue', { type: 'radio', value: 'No' })}
-                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
               /> No             </label>
           </div>
           
@@ -140,7 +140,7 @@ export const Group7Military: React.FC = () => {
               <textarea
                 value={discipline.details}
                 onChange={(e) => updateMilitary('military_discipline', 'details', e.target.value)}
-                className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 rows={3}
               />
             </div>

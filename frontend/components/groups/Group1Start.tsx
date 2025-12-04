@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { useApplicationStore } from '../../store/useApplicationStore';
 import Input from '../ui/Input';
 import Label from '../ui/Label';
+import { HiOutlineCloudUpload, HiOutlineDocumentText, HiOutlineX } from 'react-icons/hi';
 
 // Define the shape of the data for this section
 // We'll store these in a 'header' section in the store, similar to the map
@@ -31,6 +32,10 @@ export const Group1Start: React.FC = () => {
   const setField = useApplicationStore((state) => state.setField);
 
   const section = useMemo(() => getSectionData(data), [data]);
+  
+  // File upload state
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const updateField = (field: keyof HeaderData, value: string) => {
     setField(SECTION_KEY, field, value);
@@ -40,6 +45,43 @@ export const Group1Start: React.FC = () => {
       setField('personal_info', 'bole_id', value);
     }
   };
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file.type === 'application/pdf') {
+        setUploadedFile(file);
+      }
+    }
+  }, []);
+
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setUploadedFile(files[0]);
+    }
+  }, []);
+
+  const removeFile = useCallback(() => {
+    setUploadedFile(null);
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -72,12 +114,54 @@ export const Group1Start: React.FC = () => {
           </div>
 
           {section.has_notice === 'Yes' && (
-            <div className="rounded-md bg-slate-700/50 p-4">
-              <p className="mb-2 text-sm text-slate-300">
-                Please upload your Notice of Certification (PDF).
+            <div className="space-y-3">
+              <p className="text-sm text-slate-300">
+                Upload your Notice of Certification (PDF). You can find this in your email from the NY Bar.
               </p>
-              <input type="file" accept=".pdf" className="text-sm text-slate-400" />
-              {/* Placeholder for parsing logic */}
+              
+              {!uploadedFile ? (
+                <div
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  className={`relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors ${
+                    isDragging
+                      ? 'border-blue-500 bg-blue-900/20'
+                      : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/30'
+                  }`}
+                >
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileSelect}
+                    className="absolute inset-0 cursor-pointer opacity-0"
+                  />
+                  <HiOutlineCloudUpload className={`mb-3 h-12 w-12 ${isDragging ? 'text-blue-400' : 'text-slate-500'}`} />
+                  <p className="mb-1 text-sm font-medium text-slate-300">
+                    Drag and drop your PDF here
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    or click to browse files
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 rounded-lg border border-slate-600 bg-slate-700/50 p-4">
+                  <HiOutlineDocumentText className="h-8 w-8 text-blue-400" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-white">{uploadedFile.name}</p>
+                    <p className="text-xs text-slate-400">
+                      {(uploadedFile.size / 1024).toFixed(1)} KB
+                    </p>
+                  </div>
+                  <button
+                    onClick={removeFile}
+                    className="rounded-full p-1 text-slate-400 hover:bg-slate-600 hover:text-white transition-colors"
+                    title="Remove file"
+                  >
+                    <HiOutlineX className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -116,7 +200,7 @@ export const Group1Start: React.FC = () => {
                     value={dept}
                     checked={section.department_selection === dept}
                     onChange={(e) => updateField('department_selection', e.target.value)}
-                    className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                    className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                   />
                   {dept}
                 </label>
@@ -134,7 +218,7 @@ export const Group1Start: React.FC = () => {
                   value="Examination"
                   checked={section.admission_type === 'Examination'}
                   onChange={(e) => updateField('admission_type', e.target.value)}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 />
                 Admission on examination
               </label>
@@ -145,34 +229,65 @@ export const Group1Start: React.FC = () => {
                   value="Motion"
                   checked={section.admission_type === 'Motion'}
                   onChange={(e) => updateField('admission_type', e.target.value)}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 />
                 Admission on motion without examination
               </label>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label>Did you participate in the Pro Bono Scholars Program?</Label>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2 text-slate-300">
-                <input
-                  type="radio"
-                  name="pro_bono"
-                  value="Yes"
-                  checked={section.pro_bono_scholars === 'Yes'}
-                  onChange={(e) => updateField('pro_bono_scholars', e.target.value)}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
-                /> Yes             </label>
-              <label className="flex items-center gap-2 text-slate-300">
+          <div className="space-y-3">
+            <Label>How will you fulfill the Pro Bono requirement?</Label>
+            <p className="text-sm text-slate-400">
+              All applicants must complete pro bono work. Choose one option:
+            </p>
+            <div className="space-y-3">
+              <label 
+                className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition-colors ${
+                  section.pro_bono_scholars === 'No'
+                    ? 'border-blue-500 bg-blue-900/30'
+                    : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
+                }`}
+              >
                 <input
                   type="radio"
                   name="pro_bono"
                   value="No"
                   checked={section.pro_bono_scholars === 'No'}
                   onChange={(e) => updateField('pro_bono_scholars', e.target.value)}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
-                /> No             </label>
+                  className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
+                />
+                <div>
+                  <div className="font-medium text-white">50-Hour Pro Bono Requirement</div>
+                  <div className="text-sm text-slate-400">
+                    I completed 50+ hours of qualifying pro bono work (before or after passing the bar exam). 
+                    Requires Form F for each placement.
+                  </div>
+                </div>
+              </label>
+              <label 
+                className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition-colors ${
+                  section.pro_bono_scholars === 'Yes'
+                    ? 'border-blue-500 bg-blue-900/30'
+                    : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="pro_bono"
+                  value="Yes"
+                  checked={section.pro_bono_scholars === 'Yes'}
+                  onChange={(e) => updateField('pro_bono_scholars', e.target.value)}
+                  className="mt-1 h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
+                />
+                <div>
+                  <div className="font-medium text-white">Pro Bono Scholars Program</div>
+                  <div className="text-sm text-slate-400">
+                    I participated in the PBSP during my final year of law school. 
+                    Requires Form G (PBSP Completion Affidavit).
+                  </div>
+                </div>
+              </label>
             </div>
           </div>
         </div>

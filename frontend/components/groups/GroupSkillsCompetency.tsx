@@ -97,6 +97,8 @@ const getData = (data: any): SkillsCompetencyData => {
 export const GroupSkillsCompetency: React.FC = () => {
   const rawData = useApplicationStore((state) => state.data[SECTION_KEY]);
   const lawSchools = useApplicationStore((state) => state.data['law_schools']) as any[] | undefined;
+  const personalInfo = useApplicationStore((state) => state.data['personal_info']) as any | undefined;
+  const contactInfo = useApplicationStore((state) => state.data['contact_info']) as any | undefined;
   const allData = useApplicationStore((state) => state.data);
   const userId = useApplicationStore((state) => state.userId);
   const setSection = useApplicationStore((state) => state.setSection);
@@ -105,6 +107,30 @@ export const GroupSkillsCompetency: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
 
   const data = useMemo(() => getData(rawData), [rawData]);
+
+  // Check if we have pre-filled data from earlier sections
+  const hasPersonalData = personalInfo?.first_name || personalInfo?.last_name;
+  const hasContactData = contactInfo?.street || contactInfo?.city;
+  const hasLawSchoolData = lawSchools && lawSchools.length > 0 && lawSchools[0]?.school_name;
+  
+  // Get applicant's full name
+  const applicantName = useMemo(() => {
+    if (!personalInfo) return '';
+    const parts = [personalInfo.first_name, personalInfo.middle_name, personalInfo.last_name].filter(Boolean);
+    return parts.join(' ');
+  }, [personalInfo]);
+
+  // Get applicant's address
+  const applicantAddress = useMemo(() => {
+    if (!contactInfo) return '';
+    const parts = [
+      contactInfo.street,
+      contactInfo.city,
+      contactInfo.state,
+      contactInfo.zip
+    ].filter(Boolean);
+    return parts.join(', ');
+  }, [contactInfo]);
 
   const updateField = (field: keyof SkillsCompetencyData, value: string) => {
     setSection(SECTION_KEY, { ...data, [field]: value } as any);
@@ -170,6 +196,42 @@ export const GroupSkillsCompetency: React.FC = () => {
         </p>
       </div>
 
+      {/* Auto-fill Preview */}
+      {(hasPersonalData || hasLawSchoolData) && (
+        <div className="rounded-lg border border-blue-700 bg-blue-900/30 p-4">
+          <h3 className="font-semibold text-blue-300">✓ Auto-Filled from Your Application</h3>
+          <p className="mt-1 text-sm text-blue-300/80">
+            The following information will be pre-filled on Form H:
+          </p>
+          <div className="mt-3 grid gap-2 text-sm">
+            {applicantName && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Name:</span>
+                <span className="font-medium text-white">{applicantName}</span>
+              </div>
+            )}
+            {personalInfo?.ssn && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">SSN:</span>
+                <span className="font-medium text-white">***-**-{personalInfo.ssn.slice(-4)}</span>
+              </div>
+            )}
+            {applicantAddress && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Address:</span>
+                <span className="font-medium text-white">{applicantAddress}</span>
+              </div>
+            )}
+            {hasLawSchoolData && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Law School:</span>
+                <span className="font-medium text-white">{lawSchools?.[0]?.school_name}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {message && (
         <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
           {message}
@@ -185,7 +247,7 @@ export const GroupSkillsCompetency: React.FC = () => {
               key={pathway.value}
               className={`block cursor-pointer rounded-lg border p-4 transition-colors ${
                 data.pathway === pathway.value
-                  ? 'border-emerald-500 bg-emerald-900/30'
+                  ? 'border-blue-500 bg-blue-900/30'
                   : 'border-slate-600 hover:border-slate-500 hover:bg-slate-700/50'
               }`}
             >
@@ -331,16 +393,16 @@ export const GroupSkillsCompetency: React.FC = () => {
       {data.pathway === 'Pathway 3' && (
         <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-5 ">
           <h3 className="mb-4 text-lg font-semibold text-white">Pathway 3 – Pro Bono Scholars Program</h3>
-          <div className="rounded-md bg-emerald-900/30 border border-emerald-800 p-4">
-            <p className="text-sm text-emerald-300">
+          <div className="rounded-md bg-blue-900/30 border border-blue-800 p-4">
+            <p className="text-sm text-blue-300">
               <strong>Good news!</strong> If you completed the Pro Bono Scholars Program, this pathway is straightforward.
             </p>
-            <p className="mt-2 text-sm text-emerald-300">
+            <p className="mt-2 text-sm text-blue-300">
               This form confirms that you successfully completed the Pro Bono Scholars Program as prescribed 
               in section 520.17 of the Rules of the Court of Appeals. Proof is provided in the Form Affidavit 
               of Applicant's Completion of the Pro Bono Scholars Program.
             </p>
-            <p className="mt-2 text-sm text-emerald-300">
+            <p className="mt-2 text-sm text-blue-300">
               Your name will be pre-filled from your application. You will need to sign and date this form.
             </p>
           </div>
@@ -359,7 +421,7 @@ export const GroupSkillsCompetency: React.FC = () => {
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <Label>Dates of Apprenticeship - From (mm/dd/yyyy)</Label>
+                  <Label>Dates of Apprenticeship - From: (mm/dd/yyyy)</Label>
                   <Input
                     value={data.p4_from_date}
                     onChange={(e) => updateField('p4_from_date', e.target.value)}
@@ -367,7 +429,7 @@ export const GroupSkillsCompetency: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label>To (mm/dd/yyyy)</Label>
+                  <Label>To: (mm/dd/yyyy)</Label>
                   <Input
                     value={data.p4_to_date}
                     onChange={(e) => updateField('p4_to_date', e.target.value)}
@@ -440,7 +502,7 @@ export const GroupSkillsCompetency: React.FC = () => {
                   <textarea
                     value={data.p4_unsatisfactory_explanation}
                     onChange={(e) => updateField('p4_unsatisfactory_explanation', e.target.value)}
-                    className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     rows={3}
                     placeholder="Leave blank if satisfactory"
                   />
@@ -452,7 +514,7 @@ export const GroupSkillsCompetency: React.FC = () => {
                 <textarea
                   value={data.p4_additional_facts}
                   onChange={(e) => updateField('p4_additional_facts', e.target.value)}
-                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   rows={3}
                   placeholder="Any other facts bearing on applicant's qualifications, moral character, or fitness to practice law"
                 />

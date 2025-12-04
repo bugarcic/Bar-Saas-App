@@ -109,6 +109,46 @@ export const GroupEmploymentAffirmants: React.FC = () => {
 
   const affirmants = useMemo(() => getAffirmants(data), [data]);
   const jobs = useMemo(() => employmentHistory || [], [employmentHistory]);
+  
+  // Get jobs marked as legal work that don't have affirmants yet
+  const legalJobs = useMemo(() => {
+    return jobs
+      .map((job, index) => ({ ...job, originalIndex: index }))
+      .filter(job => job.is_legal_work === true);
+  }, [jobs]);
+
+  // Find legal jobs that don't have matching affirmants
+  const suggestedJobs = useMemo(() => {
+    return legalJobs.filter(job => {
+      // Check if there's already an affirmant for this job
+      return !affirmants.some(a => a.employment_index === job.originalIndex);
+    });
+  }, [legalJobs, affirmants]);
+
+  // Quick add from suggested job
+  const addFromLegalJob = (jobIndex: number) => {
+    const job = jobs[jobIndex];
+    if (!job) return;
+    
+    const newAffirmant: EmploymentAffirmant = {
+      ...getDefaultAffirmant(),
+      employment_index: jobIndex,
+      employer_name: job.employer || '',
+      employer_street: job.street || '',
+      employer_city: job.city || '',
+      employer_state: job.state || '',
+      employer_zip: job.zip || '',
+      employer_country: job.country || '',
+      employer_phone: job.phone || '',
+      nature_of_business: job.nature_of_business || '',
+      applicant_position: job.position || '',
+      from_date: job.from_date || '',
+      to_date: job.to_date || '',
+      reason_for_ending: job.reason_for_leaving || '',
+    };
+    
+    setSection(SECTION_KEY, [...affirmants, newAffirmant] as any);
+  };
 
   const addAffirmant = () => {
     const updated = [...affirmants, getDefaultAffirmant()];
@@ -212,9 +252,48 @@ export const GroupEmploymentAffirmants: React.FC = () => {
         </div>
       )}
 
+      {/* Suggested Legal Jobs */}
+      {suggestedJobs.length > 0 && (
+        <div className="rounded-lg border border-blue-700 bg-blue-900/30 p-4">
+          <h3 className="font-semibold text-blue-300">Legal Jobs Needing Affirmations</h3>
+          <p className="mt-1 text-sm text-blue-300/80">
+            These jobs from your employment history are marked as law-related work. Click to add an affirmation:
+          </p>
+          <div className="mt-3 space-y-2">
+            {suggestedJobs.map((job) => (
+              <button
+                key={job.originalIndex}
+                type="button"
+                onClick={() => addFromLegalJob(job.originalIndex)}
+                className="flex w-full items-center justify-between rounded-md border border-blue-600 bg-blue-900/50 p-3 text-left transition-colors hover:bg-blue-800/50"
+              >
+                <div>
+                  <div className="font-medium text-white">{job.employer || `Job #${job.originalIndex + 1}`}</div>
+                  <div className="text-sm text-blue-300">
+                    {job.position} • {job.from_date} - {job.to_date || 'Present'}
+                  </div>
+                </div>
+                <span className="rounded bg-blue-600 px-2 py-1 text-xs font-medium text-white">
+                  + Add Affirmation
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {legalJobs.length === 0 && (
+        <div className="rounded-lg border border-slate-600 bg-slate-800/50 p-4">
+          <p className="text-sm text-slate-400">
+            <strong className="text-slate-300">Tip:</strong> Go to the Employment section and check "This is law-related work" 
+            for any jobs that require an Employment Affirmation. They'll appear here for quick setup.
+          </p>
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">Employment Affirmations</h3>
-        <Button onClick={addAffirmant} variant="secondary">Add Affirmation</Button>
+        <Button onClick={addAffirmant} variant="secondary">Add Manually</Button>
       </div>
 
       {affirmants.length === 0 ? (
@@ -375,14 +454,14 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
                   type="radio"
                   checked={affirmant.is_attorney === 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'Yes')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> Yes             </label>
               <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.is_attorney !== 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'No')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> No             </label>
             </div>
           </div>
@@ -491,7 +570,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             />
           </div>
           <div className="space-y-1.5">
-            <Label>From Date</Label>
+            <Label>From Date:</Label>
             <Input
               value={affirmant.from_date}
               onChange={(e) => onUpdate('from_date', e.target.value)}
@@ -499,7 +578,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             />
           </div>
           <div className="space-y-1.5">
-            <Label>To Date</Label>
+            <Label>To Date:</Label>
             <Input
               value={affirmant.to_date}
               onChange={(e) => onUpdate('to_date', e.target.value)}
@@ -555,7 +634,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             <textarea
               value={affirmant.work_performed}
               onChange={(e) => onUpdate('work_performed', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={3}
               placeholder="Research, drafting, client interaction, court appearances, etc."
             />
@@ -565,7 +644,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             <textarea
               value={affirmant.supervision_explanation}
               onChange={(e) => onUpdate('supervision_explanation', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={2}
               placeholder="Explain how you monitored or supervised the applicant's work"
             />
@@ -578,14 +657,14 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
                   type="radio"
                   checked={affirmant.was_satisfactory === 'Yes'}
                   onChange={() => onUpdate('was_satisfactory', 'Yes')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> Yes             </label>
               <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.was_satisfactory === 'No'}
                   onChange={() => onUpdate('was_satisfactory', 'No')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> No             </label>
             </div>
           </div>
@@ -594,7 +673,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
             <textarea
               value={affirmant.additional_info}
               onChange={(e) => onUpdate('additional_info', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={2}
               placeholder="Any facts bearing on applicant's qualifications, moral character, or fitness"
             />
@@ -608,7 +687,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({
           type="button"
           onClick={onGeneratePdf}
           disabled={isGenerating || !affirmant.affirmant_name}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300"
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300"
         >
           {isGenerating ? 'Generating...' : `Generate Form D PDF for ${affirmant.employer_name || 'this employment'}`}
         </Button>

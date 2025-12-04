@@ -15,11 +15,11 @@ interface ChildSupportData {
 }
 
 const getChildSupportData = (data: any): ChildSupportData => ({
-  has_obligation: { value: 'No' },
-  arrears_4_months: { value: 'No' },
-  income_execution: { value: 'No' },
-  pending_proceeding: { value: 'No' },
-  public_assistance: { value: 'No' },
+  has_obligation: { value: '' },
+  arrears_4_months: { value: '' },
+  income_execution: { value: '' },
+  pending_proceeding: { value: '' },
+  public_assistance: { value: '' },
   explanation: '',
   ...(data ?? {}),
 });
@@ -52,14 +52,14 @@ export const Group10ChildSupport: React.FC = () => {
                   type="radio"
                   checked={section.has_obligation?.value === 'Yes'}
                   onChange={() => updateRadio('has_obligation', 'Yes')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> Yes             </label>
               <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={section.has_obligation?.value === 'No'}
                   onChange={() => updateRadio('has_obligation', 'No')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> No             </label>
             </div>
           </div>
@@ -92,7 +92,7 @@ export const Group10ChildSupport: React.FC = () => {
                 <textarea
                   value={section.explanation}
                   onChange={(e) => updateField('explanation', e.target.value)}
-                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   rows={3}
                 />
               </div>

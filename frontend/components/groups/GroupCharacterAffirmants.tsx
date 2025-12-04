@@ -71,6 +71,8 @@ const getAffirmants = (data: any): [CharacterAffirmant, CharacterAffirmant] => {
 
 export const GroupCharacterAffirmants: React.FC = () => {
   const data = useApplicationStore((state) => state.data[SECTION_KEY]);
+  const personalInfo = useApplicationStore((state) => state.data['personal_info']) as any | undefined;
+  const headerData = useApplicationStore((state) => state.data['header']) as any | undefined;
   const allData = useApplicationStore((state) => state.data);
   const userId = useApplicationStore((state) => state.userId);
   const setSection = useApplicationStore((state) => state.setSection);
@@ -79,6 +81,15 @@ export const GroupCharacterAffirmants: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
 
   const affirmants = useMemo(() => getAffirmants(data), [data]);
+
+  // Get applicant's full name
+  const applicantName = useMemo(() => {
+    if (!personalInfo) return '';
+    const parts = [personalInfo.first_name, personalInfo.middle_name, personalInfo.last_name].filter(Boolean);
+    return parts.join(' ');
+  }, [personalInfo]);
+
+  const hasPrefilledData = applicantName || headerData?.bole_id || headerData?.department_selection;
 
   const updateAffirmant = (index: 0 | 1, field: keyof CharacterAffirmant, value: string) => {
     const updated = [...affirmants] as [CharacterAffirmant, CharacterAffirmant];
@@ -141,6 +152,39 @@ export const GroupCharacterAffirmants: React.FC = () => {
           <strong className="text-amber-200">Note:</strong> These should not be the same people who sign your employment affirmations.
         </p>
       </div>
+
+      {/* Auto-fill Preview */}
+      {hasPrefilledData && (
+        <div className="rounded-lg border border-blue-700 bg-blue-900/30 p-4">
+          <h3 className="font-semibold text-blue-300">✓ Auto-Filled on Form C</h3>
+          <p className="mt-1 text-sm text-blue-300/80">
+            The following applicant information will be pre-filled on each Character Affirmation:
+          </p>
+          <div className="mt-3 grid gap-2 text-sm">
+            {applicantName && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Applicant Name:</span>
+                <span className="font-medium text-white">{applicantName}</span>
+              </div>
+            )}
+            {headerData?.bole_id && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">BOLE ID:</span>
+                <span className="font-medium text-white">{headerData.bole_id}</span>
+              </div>
+            )}
+            {headerData?.department_selection && (
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Department:</span>
+                <span className="font-medium text-white">{headerData.department_selection}</span>
+              </div>
+            )}
+          </div>
+          <p className="mt-3 text-xs text-blue-400">
+            Only the affirmant's information needs to be entered below.
+          </p>
+        </div>
+      )}
 
       {message && (
         <div className="rounded-md bg-slate-700/50 p-3 text-sm text-slate-300">
@@ -285,14 +329,14 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
                   type="radio"
                   checked={affirmant.is_attorney === 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'Yes')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> Yes             </label>
               <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   checked={affirmant.is_attorney !== 'Yes'}
                   onChange={() => onUpdate('is_attorney', 'No')}
-                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-emerald-500 checked:bg-emerald-500 accent-emerald-500 cursor-pointer"
+                  className="h-5 w-5 rounded-full border-2 border-slate-500 bg-slate-800 checked:border-blue-500 checked:bg-blue-500 accent-blue-500 cursor-pointer"
                 /> No             </label>
             </div>
           </div>
@@ -363,7 +407,7 @@ const AffirmantForm: React.FC<AffirmantFormProps> = ({ title, affirmant, onUpdat
             <textarea
               value={affirmant.character_statement}
               onChange={(e) => onUpdate('character_statement', e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-md border border-slate-700 bg-slate-800 p-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={5}
               placeholder="You can pre-fill this or leave notes for your affirmant. They will complete this section when signing the form."
             />
