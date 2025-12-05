@@ -116,53 +116,99 @@ export default function LandingPage() {
             </div>
 
             {/* Right: Visual Abstract */}
-            <div className="lg:col-span-5 relative">
-               <div className="absolute -inset-4 bg-orange/20 blur-3xl rounded-full opacity-20"></div>
+            <div className="lg:col-span-5 relative perspective-1000">
+               {/* Glow effect */}
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-orange/5 blur-[100px] rounded-full pointer-events-none"></div>
                
-               {/* Abstract Card Stack */}
-               <div className="relative space-y-4">
-                  {/* Back Card */}
-                  <div className="absolute top-0 left-4 right-4 h-full bg-slate-800 rounded-lg border border-slate-700 transform -rotate-6 opacity-40 scale-95"></div>
-                  <div className="absolute top-0 left-2 right-2 h-full bg-slate-800 rounded-lg border border-slate-700 transform -rotate-3 opacity-70 scale-95"></div>
+               {/* Main Interface Container */}
+               <div className="relative transform lg:rotate-y-[-10deg] lg:rotate-x-[5deg] transition-transform duration-700 ease-out hover:rotate-y-0 hover:rotate-x-0 preserve-3d">
                   
-                  {/* Main Card */}
-                  <div className="relative bg-slate-900 rounded-lg border border-slate-700 p-6 shadow-2xl">
-                    <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+                  {/* Backdrop Layers (Depth) */}
+                  <div className="absolute inset-0 bg-slate-800/30 rounded-2xl transform translate-z-[-40px] translate-x-4 translate-y-4 border border-white/5"></div>
+                  
+                  {/* Main Digital Dossier Card */}
+                  <div className="relative bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-700 shadow-2xl overflow-hidden">
+                     
+                     {/* Window Header */}
+                     <div className="h-12 border-b border-slate-800 flex items-center justify-between px-4 bg-slate-950/50">
                         <div className="flex gap-2">
-                            <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                            <div className="w-3 h-3 rounded-full bg-slate-700"></div>
+                           <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                           <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                           <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
                         </div>
-                        <div className="text-xs font-sans font-semibold text-slate-500 tracking-wider uppercase">Affidavit Preview</div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                        <div className="space-y-2">
-                            <div className="h-2 w-24 bg-orange/40 rounded"></div>
-                            <div className="h-8 w-full bg-slate-800 rounded border border-slate-700 flex items-center px-3">
-                                <span className="text-slate-500 text-sm">Affirmation of Good Character</span>
-                            </div>
+                        <div className="flex items-center gap-2 px-2 py-1 rounded bg-slate-900 border border-slate-800">
+                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                           <span className="text-[10px] font-sans text-slate-400 font-medium tracking-wide">Applicant Portal</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                             <div className="space-y-2">
-                                <div className="h-2 w-16 bg-slate-700 rounded"></div>
-                                <div className="h-8 w-full bg-slate-800 rounded border border-slate-700"></div>
-                             </div>
-                             <div className="space-y-2">
-                                <div className="h-2 w-16 bg-slate-700 rounded"></div>
-                                <div className="h-8 w-full bg-slate-800 rounded border border-slate-700"></div>
-                             </div>
+                     </div>
+
+                     {/* Content Body */}
+                     <div className="p-6 space-y-6">
+                        
+                        {/* Header Section */}
+                        <div className="flex items-start justify-between">
+                           <div className="space-y-1">
+                              <div className="text-[10px] text-orange font-bold uppercase tracking-widest">Application Status</div>
+                              <div className="text-xl font-serif text-white">Ready for Submission</div>
+                              <div className="text-xs text-slate-500">Last updated: Just now</div>
+                           </div>
+                           {/* Circular Progress */}
+                           <div className="relative w-14 h-14 flex items-center justify-center">
+                              <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                                 <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#1e293b" strokeWidth="3" />
+                                 <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#22c55e" strokeWidth="3" strokeDasharray="98, 100" />
+                              </svg>
+                              <div className="absolute text-xs font-bold text-white">98%</div>
+                           </div>
                         </div>
-                        <div className="pt-4 flex items-center justify-between">
-                            <div className="flex -space-x-2">
-                                <div className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-900"></div>
-                                <div className="w-8 h-8 rounded-full bg-slate-600 border-2 border-slate-900"></div>
-                            </div>
-                            <div className="px-3 py-1 bg-green-500/10 text-green-500 text-xs font-bold rounded uppercase">
-                                Validated
-                            </div>
+
+                        {/* Checklist Items */}
+                        <div className="space-y-3">
+                           {[
+                              { label: "Personal Questionnaire", status: "Complete", color: "text-green-500", bg: "bg-green-500/10" },
+                              { label: "Employment Affidavits", status: "5/5 Signed", color: "text-green-500", bg: "bg-green-500/10" },
+                              { label: "Character References", status: "Pending Review", color: "text-orange", bg: "bg-orange/10" },
+                              { label: "Pro Bono Compliance", status: "Verified", color: "text-blue-400", bg: "bg-blue-500/10" }
+                           ].map((item, i) => (
+                              <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors group cursor-default">
+                                 <div className="flex items-center gap-3">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${item.color === 'text-orange' ? 'bg-orange' : item.color === 'text-blue-400' ? 'bg-blue-400' : 'bg-green-500'}`}></div>
+                                    <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{item.label}</span>
+                                 </div>
+                                 <span className={`text-[10px] font-bold px-2 py-1 rounded ${item.bg} ${item.color}`}>
+                                    {item.status}
+                                 </span>
+                              </div>
+                           ))}
                         </div>
-                    </div>
+
+                        {/* Footer Info */}
+                        <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+                           <div className="flex flex-col">
+                              <span className="text-[10px] text-slate-500 uppercase tracking-wider">Target Dept</span>
+                              <span className="text-sm font-serif text-white">Appellate Div. 2nd Dept.</span>
+                           </div>
+                           <div className="h-8 w-8 rounded bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
+                           </div>
+                        </div>
+
+                     </div>
                   </div>
+
+                  {/* Floating Badge - 3D Element */}
+                  <div className="absolute -right-6 top-20 bg-slate-800/90 backdrop-blur-md p-3 rounded-lg border border-slate-700 shadow-xl transform translate-z-10 lg:translate-x-8">
+                     <div className="flex items-center gap-3">
+                        <div className="bg-green-500/20 p-1.5 rounded text-green-500">
+                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <div>
+                           <div className="text-[10px] text-slate-400 uppercase font-bold">Validation</div>
+                           <div className="text-xs font-bold text-white">Passed</div>
+                        </div>
+                     </div>
+                  </div>
+
                </div>
             </div>
 
